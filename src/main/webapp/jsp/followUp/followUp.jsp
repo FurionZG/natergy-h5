@@ -134,7 +134,7 @@
     /** 添加订单 **/
     function funAdd() {
         mui.toast('添加地产跟进');
-        window.location.href = "<%=request.getContextPath()%>/FollowUpAddInit";
+        window.location.href = "/natergy-h5/followUp/followUpAddInit";
     }
 
     /** 筛选订单 **/

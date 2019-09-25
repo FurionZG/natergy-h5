@@ -147,8 +147,8 @@
 			$(document).ready(function loading() {
 
 				var orderInfoListByUser = ${orderInfoListByUser};
-				console.log(orderInfoListByUser);
-				console.log(orderInfoListByUser[0]);
+				//console.log(orderInfoListByUser);
+				//console.log(orderInfoListByUser[0]);
 				for(var i = 0; i < orderInfoListByUser.length; i++) { //循环数据
 					$("#orderList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
 							orderInfoListByUser[i].orderDetails[0].orderNumber +
@@ -189,19 +189,16 @@
 			function pullupRefresh() {
 				setTimeout(function() {
 					$.ajax({
-						url: "<%=request.getContextPath()%>/OrderReloadLimitServlet",
+						url: "/natergy-h5/order/reload",
 						contentType: "application/x-www-form-urlencoded:charset=UTF-8",
 						type: "get",
 						timeout: "1000",
 						dataType: "json",
 						data: {
-							"limit": $("#limit").val()
+							"limit": $("#orderList li").length
 						},
-						success: function(data) {
-							var json = eval(data);
-							var orderList = json.orderList;
+						success: function(orderList) {
 							var lastLi = $("#orderList li:last-child .mui-media-body");
-							$("#limit").val(json.limit);
 							for(var i = 0; i < orderList.length; i++) { //循环数据
 								if(orderList[i].orderDetails[0].orderNumber != lastLi.text().substr(0, 15)) {
 									//这个if判断是判断上拉加载的第一个订单的订单号是否等于当前ul中最后一个li的订单号，因为使用limit可能导致一个订单的订单明细被分开，如果两者相等，则不动态生成li
@@ -235,16 +232,15 @@
 			function pulldownRefresh() {
 				setTimeout(function() {
 					$.ajax({
-						url: "<%=request.getContextPath()%>/RefreshOrderServlet",
+						url: "/natergy-h5/order/refresh",
 						contentType: "application/x-www-form-urlencoded:charset=UTF-8",
 						type: "get",
 						dataType: "json",
 						data: "",
-						success: function(data) {
+						success: function(orderList) {
+							count=0;
 							$("#orderList li").remove()
-							var json = eval(data);
-							var orderList = json.orderList
-							$("#limit").val(json.limit);
+							$("#limit").val(orderList.limit);
 							for(var i = 0; i < orderList.length; i++) { //循环数据
 								$("#orderList").append("<li class='mui-table-view-cell mui-media' ><a class='mui-navigate-right'><div class='mui-media-body'>" +
 									orderList[i].orderDetails[0].orderNumber +

@@ -1,5 +1,6 @@
 package com.natergy.natergyh5.dao;
 
+import com.natergy.natergyh5.entity.ResultOfAddress;
 import com.natergy.natergyh5.entity.ResultOfSelectCustomerInfoByName;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface CustomerMapper {
 
     @Select("select 客户名称 from 销售客户资料 where 状态 !='删除' and 业务经理 like CONCAT('%',#{uname},'%')")
-    public List<String> getCustomersByUser(String uname);
+    List<String> getCustomersByUser(String uname);
 
     @Select("select * from 销售客户资料 where 状态!='删除' and 状态!='撤销' and 客户名称 =#{customerName}")
     @Results({
@@ -26,5 +27,14 @@ public interface CustomerMapper {
             @Result(property = "attention",column = "发货注意事项"),
             @Result(property = "invoiceAttention",column = "开票资料"),
     })
-    public ResultOfSelectCustomerInfoByName getCustomerInfoByName(String customerName);
+    ResultOfSelectCustomerInfoByName getCustomerInfoByName(String customerName);
+
+
+    @Select("select 省,市,地址 from 销售客户资料 where 状态!='删除' and 状态!='撤销' and 客户名称 =#{companyName} and 业务经理 like CONCAT('%',#{uname},'%')")
+    @Results({
+            @Result(property = "province",column = "省"),
+            @Result(property = "city",column = "市"),
+            @Result(property = "address",column = "地址"),
+    })
+    ResultOfAddress getAddress(String companyName, String uname);
 }

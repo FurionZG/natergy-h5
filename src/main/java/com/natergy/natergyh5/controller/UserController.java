@@ -25,7 +25,6 @@ public class UserController {
     @RequestMapping("/login")
     @ResponseBody
     public String login(@RequestBody User user , HttpServletRequest request) {
-
         Integer reten =  userService.checkUser(user);
         if(1==reten){
             request.getSession().setAttribute("user",user.getUname());

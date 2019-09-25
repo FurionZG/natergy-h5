@@ -154,7 +154,7 @@
 		<script type="text/javascript">
 			/** 订单 **/
 			function funOrder() {
-				window.location.href = "<%=request.getContextPath()%>/order/init";
+				window.location.href = "/natergy-h5/order/init";
 			}
 
 			/** 拜访 **/
@@ -173,7 +173,7 @@
 			}
 			/** 地产跟进 **/
 			function funFollowUp() {
-				window.location.href = "<%=request.getContextPath()%>/FollowUpInit";
+				window.location.href = "/natergy-h5/followUp/init";
 			}
 
 			function test() {

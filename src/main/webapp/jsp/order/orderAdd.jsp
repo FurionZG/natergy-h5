@@ -150,7 +150,7 @@
 							shadeClose: true,
 							shade: 0.8,
 							area: ['100%', '100%'],
-							content: 'Skip', //iframe的url
+							content: '/natergy-h5/order/addDetailInit', //iframe的url
 							btn: ['确定', '关闭'],
 							yes: function(index) {
 								//当点击‘确定’按钮的时候，获取弹出层返回的值
@@ -281,26 +281,51 @@
 				return;
 			}
 			mui.toast('正在保存订单...');
-			var a = document.getElementsByTagName("li");
-			var list = new Array();
-			for(i = 0; i < a.length; i++) {
-				var x = $("#list li").eq(i).text();
-				list[i] = x;
+			var a = $("#list li").length;
+			var list = [];
+			for(i = 0; i < a; i++) {
+				var x = $("#list li").eq(i).text().split("\|");
+				var tax =""
+				if(-1!=x[6].indexOf("是")){
+					tax="是"
+				}else{
+					tax="否"
+				}
+				list.push({
+					size:x[0].trim(),
+					innerWrapper:x[1].trim(),
+					outwrapper:x[2].trim(),
+					count:x[3].split("：")[1].trim(),
+					price:x[4].split("：")[1].trim(),
+					rebate:x[4].split("：")[1].trim(),
+					tax:tax
+				})
 			}
-
-			$.post("<%=request.getContextPath()%>/Insert", {
-				"customerName": customerName,
-				"consignee": consignee,
-				"receivingAddress": receivingAddress,
-				"collector": collector,
-				"invoiceAddress": invoiceAddress,
-				"attention": attention,
-				"invoiceAttention": invoiceAttention,
-				"producer": producer,
-				"list": JSON.stringify(list)
-			}, function(data) {
-				//alert("Data Loaded: " + data);
-				$(".result").html(data);
+			console.log(list)
+			$.ajax({
+				url: "/natergy-h5/order/save",
+				contentType: "application/json;charset=utf-8",
+				type: "post",
+				dataType: "json",
+				data: JSON.stringify({
+					"customerName": customerName,
+					"consignee": consignee,
+					"receivingAddress": receivingAddress,
+					"collector": collector,
+					"invoiceAddress": invoiceAddress,
+					"attention": attention,
+					"invoiceAttention": invoiceAttention,
+					"producer": producer,
+					"orderDetails": list
+				}), success: function (data) {
+					//alert("Data Loaded: " + data);
+					if(1==data){
+						mui.toast('保存成功');
+						window.location.href="/natergy-h5/order/init"
+					}else{
+						mui.toast('订单保存失败，请稍后重试...');
+					}
+				}
 			});
 
 			mui(this).button('loading');
@@ -308,7 +333,7 @@
 			setTimeout(function() {
 				mui(this).button('reset');
 
-				mui.back();
+				//mui.back();
 
 			}.bind(this), 1000);
 		});

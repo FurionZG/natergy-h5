@@ -21,6 +21,7 @@ public class Order {
 	private String producer;
 	private String state;
 	private List<OrderDetail> orderDetails;
+
 	@Override
 	public String toString() {
 		return "Order{" +
@@ -39,6 +40,8 @@ public class Order {
 				", orderDetails=" + orderDetails +
 				'}';
 	}
+
+
 
 	public void setId(String id) {
 		this.id = id;

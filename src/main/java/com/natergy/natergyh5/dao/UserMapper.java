@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UserMapper {
 
     @Select("Select count(*) from 用户 where 用户=#{user.uname} and 密码=#{user.pwd}")
-    public Integer checkUser(@Param("user") User u);
+    Integer checkUser(@Param("user") User u);
 }
