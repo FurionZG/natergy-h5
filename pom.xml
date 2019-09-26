@@ -12,6 +12,7 @@
     <artifactId>natergy-h5</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>natergy-h5</name>
+    <packaging>war</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -115,7 +116,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
+
     </build>
 
 </project>

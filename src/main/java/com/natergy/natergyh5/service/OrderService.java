@@ -3,6 +3,7 @@ package com.natergy.natergyh5.service;
 import com.natergy.natergyh5.dao.CustomerMapper;
 import com.natergy.natergyh5.dao.OrderMapper;
 import com.natergy.natergyh5.dao.ProductMapper;
+import com.natergy.natergyh5.entity.Customer;
 import com.natergy.natergyh5.entity.Order;
 import com.natergy.natergyh5.entity.OrderDetail;
 import com.natergy.natergyh5.entity.ResultOfSelectCustomerInfoByName;
@@ -105,5 +106,9 @@ public class OrderService {
      */
     public List<Order> reloadOrdersLimit(String uname, Integer limit) {
         return orderDao.queryOrdersLimit(uname,limit);
+    }
+
+    public Integer saveCustomer(Customer customer, String uname) {
+        return customerDao.saveCustomer(customer,uname);
     }
 }

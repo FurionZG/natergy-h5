@@ -131,7 +131,7 @@
 <script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
 <script type="text/javascript">
-    /** 添加订单 **/
+
     function funAdd() {
         mui.toast('添加地产跟进');
         window.location.href = "/natergy-h5/followUp/followUpAddInit";
@@ -214,9 +214,7 @@
 
                     }
 
-                    mui('body').on('tap', 'li', function () {
-                        clickLi(this)
-                    });
+
                     mui.toast("已为您加加载" + json.length + "条...");
                 },
                 complete: function (XMLHttpRequest, status) {
@@ -237,29 +235,23 @@
     function pulldownRefresh() {
         setTimeout(function () {
             $.ajax({
-                url: "<%=request.getContextPath()%>/RefreshFollowUpServlet",
-                contentType: "application/x-www-form-urlencoded:charset=UTF-8",
-                type: "get",
+                url: "/natergy-h5/followUp/refresh",
+                contentType: "application/json;charset=utf-8",
+                type: "post",
                 dataType: "json",
                 data: "",
-                success: function (data) {
+                success: function (json) {
                     $("#followUpList li").remove();
-                    var json = eval(data);
-
-                    $("#limit").val(10);
+                    //var json = eval(data);
                     for (var i = 0; i < json.length; i++) { //循环数据
                         $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
                             json[i].customerName +
                             "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
                             "<p class='mui-ellipsis'>" + json[i].nowAddress + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
-
                     }
 
                 }
-            });
-            mui('body').on('tap', 'li', function () {
-                clickLi(this)
             });
             mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
             mui.toast("已刷新...");
@@ -270,10 +262,7 @@
 	function clickLi(obj){
 		localStorage.clear();
 		localStorage.setItem("value",$(obj).find("input:hidden").val());
-
-
-
-		window.location.href="followUpEdit.jsp"
+		window.location.href="<%=request.getContextPath()%>/jsp/followUp/followUpEdit.jsp"
 	}
 </script>
 

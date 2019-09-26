@@ -1,11 +1,9 @@
 package com.natergy.natergyh5.dao;
 
+import com.natergy.natergyh5.entity.Customer;
 import com.natergy.natergyh5.entity.ResultOfAddress;
 import com.natergy.natergyh5.entity.ResultOfSelectCustomerInfoByName;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,4 +35,7 @@ public interface CustomerMapper {
             @Result(property = "address",column = "地址"),
     })
     ResultOfAddress getAddress(String companyName, String uname);
+
+    @Insert("insert into 销售客户资料(状态,业务经理,省,市,地址,客户类别,客户名称) values('新',#{uname},#{customer.province},#{customer.city},#{customer.address},#{customer.type},#{customer.customerName})")
+    Integer saveCustomer(Customer customer, String uname);
 }

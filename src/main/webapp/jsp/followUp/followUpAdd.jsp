@@ -214,6 +214,11 @@
     <div class="mui-input-row" style="margin: 10px 5px;">
         <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
     </div>
+    <div>
+        <input type="button" onclick="test();" value="+++++++"/>
+        <div id="photos"></div>
+        <img src="" id="img" style="width: 100px;height: 100px"/>
+    </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
         <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">提交跟进记录</button>
     </div>
@@ -235,22 +240,22 @@
 
 <!-- 微信jssdk注入 -->
 
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script type="text/javascript">
     /** 添加客户资料 **/
     function funAdd() {
         mui.toast('添加客户资料');
-        window.location.href = "addCustomer.jsp";
+        window.location.href = "<%=request.getContextPath()%>/jsp/customer/addCustomer.jsp";
     }
 </script>
 <script>
     wx.config({
-        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '${appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
         timestamp: parseInt("${timestamp}", 10), // 必填，生成签名的时间戳
         nonceStr: '${noncestr}', // 必填，生成签名的随机串
         signature: '${signature}',// 必填，签名，见附录1
-        jsApiList: ['getLocation', 'openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        jsApiList: ['getLocation', 'openLocation', 'chooseImage','uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function () {
         wx.getLocation({
@@ -424,10 +429,10 @@
                 "record": $("#record").val()
             }), success: function (data) {
                 //alert("Data Loaded: " + data);
-                if(1==data){
+                if (1 == data) {
                     mui.toast('保存成功');
-                    window.location.href="/natergy-h5/followUp/init"
-                }else{
+                    window.location.href = "/natergy-h5/followUp/init"
+                } else {
                     mui.toast('订单保存失败，请稍后重试...');
                 }
             }
@@ -477,6 +482,39 @@
 
         });
     })(mui, document);
+</script>
+<script>
+    function test() {
+        wx.chooseImage({
+            count: 4,
+            sizeType: ['original', 'compressed'],
+            sourceType: ['camera'],
+            success:function(res) {
+                // tempFilePath可以作为img标签的src属性显示图片
+                //const tempFilePaths = res.tempFilePaths
+                var localId =res.localIds[0];
+                alert(localId);
+                $("#img").attr("src",localId);
+                wx.uploadImage({
+                    localId: localId,
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        auth_image.serverId = res.serverId;
+                        alert(auth_image);
+                    },
+                    fail: function (res) {
+                        alert(JSON.stringify(res));
+                    }
+                });
+
+                //$("#image").attr("src",res.tempFilePaths);
+                // wx.previewImage({
+                //      // 当前显示图片的http链接
+                //     urls: localIds // 需要预览的图片http链接列表
+                // })
+            }
+        })
+    }
 </script>
 </body>
 

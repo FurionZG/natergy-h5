@@ -247,4 +247,6 @@ public class FollowUp {
 	public String getRelation() {
 		return relation;
 	}
+
+
 }

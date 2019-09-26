@@ -2,7 +2,7 @@
 spring:
   #配置druid数据源
   datasource:
-    url: jdbc:mysql://219.146.150.102:12309/natergy?useUnicode=true&amp;characterEncoding=utf-8
+    url: jdbc:mysql://219.146.150.102:12309/natergy?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true
     username: root
     password: Nty-Mg-2018*04*09
     driver-class-name: com.mysql.jdbc.Driver
@@ -25,11 +25,13 @@ spring:
 
 
 
+
 server:
   servlet:
     context-path: /natergy-h5 #访问路径带项目名
     session:
       timeout: PT30M #session失效时间
+  port: 80
 
 
 

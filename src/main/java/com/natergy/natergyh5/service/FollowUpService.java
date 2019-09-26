@@ -35,4 +35,12 @@ public class FollowUpService {
     public Integer saveFollowUp(FollowUp followUp) {
         return followUpDao.saveFollowUp(followUp);
     }
+
+    public List<FollowUp> refreshFollowUp(String uname) {
+        return  followUpDao.getFollowUpByUser(uname);
+    }
+
+    public Integer updateFollowUp(FollowUp followUp, String uname) {
+        return followUpDao.updateFollowUp(followUp,uname);
+    }
 }

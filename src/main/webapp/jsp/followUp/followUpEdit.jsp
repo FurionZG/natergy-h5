@@ -218,40 +218,48 @@
 //			}
         mui.toast('正在保存跟进记录...');
 
-
-        $.post("<%=request.getContextPath()%>/UpdateFollowUpServlet", {
-            "province": $("#province").val(),
-            "city": $("#city").val(),
-            "nowAddress": $("#nowAddress").val(),
-            "customerName": $("#customerName").val(),
-            "address": $("#address").val(),
-            "contacts_1": $("#contacts_1").val(),
-            "contacts_2": $("#contacts_2").val(),
-            "tel_1": $("#tel_1").val(),
-            "tel_2": $("#tel_2").val(),
-            "department_1": $("#department_1").val(),
-            "department_2": $("#department_2").val(),
-            "post_1": $("#post_1").val(),
-            "post_2": $("#post_2").val(),
-            "tel": $("#tel").val(),
-            "email": $("#email").val(),
-            "web": $("#web").val(),
-            "chart_1": $("#chart_1").val(),
-            "chart_2": $("#chart_2").val(),
-            "industry": $("#industryPicker").text(),
-            "relation": chk_value.join("/"),
-            "record": $("#record").val(),
-            "id":$("#id").val()
-        }, function (data) {
-            //alert("Data Loaded: " + data);
-            $(".result").html(data);
+        $.ajax({
+            url: "/natergy-h5/followUp/update",
+            contentType: "application/json;charset=utf-8",
+            type: "post",
+            dataType: "json",
+            data: JSON.stringify({
+                "id":$("#id").val(),
+                "province": $("#province").val(),
+                "city": $("#city").val(),
+                "nowAddress": $("#nowAddress").val(),
+                "customerName": $("#customerName").val(),
+                "address": $("#address").val(),
+                "contacts_1": $("#contacts_1").val(),
+                "contacts_2": $("#contacts_2").val(),
+                "tel_1": $("#tel_1").val(),
+                "tel_2": $("#tel_2").val(),
+                "department_1": $("#department_1").val(),
+                "department_2": $("#department_2").val(),
+                "post_1": $("#post_1").val(),
+                "post_2": $("#post_2").val(),
+                "tel": $("#tel").val(),
+                "email": $("#email").val(),
+                "web": $("#web").val(),
+                "chart_1": $("#chart_1").val(),
+                "chart_2": $("#chart_2").val(),
+                "industry": $("#industryPicker").text(),
+                "relation": chk_value.join("/"),
+                "record": $("#record").val()
+            }), success: function (data) {
+                if(1==data){
+                    mui.toast('修改成功');
+                    window.location.href="/natergy-h5/followUp/init"
+                }else{
+                    mui.toast('订单修改失败，请稍后重试...');
+                }
+            }
         });
 
         mui(this).button('loading');
 
         setTimeout(function () {
             mui(this).button('reset');
-            window.location.href="<%=request.getContextPath()%>/FollowUpInit"
             //mui.back();
 
         }.bind(this), 1000);

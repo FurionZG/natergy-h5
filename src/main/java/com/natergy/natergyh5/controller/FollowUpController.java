@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,8 @@ public class FollowUpController {
     @RequestMapping("/init")
     public ModelAndView followUpInit(HttpServletRequest request){
         ModelAndView mv = new ModelAndView();
-        String user =  (String)request.getSession().getAttribute("user");
-        List<FollowUp> resultList = followUpService.getFollowUpByUser(user);
+        String uname =  (String)request.getSession().getAttribute("user");
+        List<FollowUp> resultList = followUpService.getFollowUpByUser(uname);
         request.setAttribute("followUpList", JSON.toJSONString(resultList));
         mv.setViewName("forward:/jsp/followUp/followUp.jsp");
         return mv;
@@ -50,11 +51,11 @@ public class FollowUpController {
         List<String> allCompanysNameList = followUpService.getAllCompanys(uname);
 
         WXJsSdk d= new WXJsSdk();
-        Map map1= d.getAccessToken("wxf5304d7eb35a3907","9c7316b65bb71046c80d4532709d4b56");
+        Map map1= d.getAccessToken("wx3dabea702b3ea6cb","a7425fad59cf43f1d7e4a6b946e42033");
         Map map2=d.getJsapiTicket((String) map1.get("accessToken"));
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         String noncestr = UUID.randomUUID().toString().replace("-", "");
-        String url="http://www.iluluya.com/natergy-h5/FollowUpAddInit";
+        String url="http://sungong1987.gicp.net:46175/natergy-h5/followUp/followUpAddInit";
         String str = "jsapi_ticket=" + map2.get("ticket") + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
         String signature = d.SHA1(str);
 
@@ -62,7 +63,7 @@ public class FollowUpController {
         request.setAttribute("signature", signature);
         request.setAttribute("timestamp", timestamp);
         request.setAttribute("noncestr", noncestr);
-        request.setAttribute("appId", "wxf5304d7eb35a3907");
+        request.setAttribute("appId", "wx3dabea702b3ea6cb");
         mv.setViewName("forward:/jsp/followUp/followUpAdd.jsp");
         return mv;
     }
@@ -82,6 +83,21 @@ public class FollowUpController {
         followUp.setUser(uname);
         followUp.setDate(sdf.format(new Date()));
         Integer reten= followUpService.saveFollowUp(followUp);
+        response.getWriter().write(JSON.toJSONString(reten));
+    }
+
+    @RequestMapping("/refresh")
+    public void followUpRefresh(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String uname = (String) request.getSession().getAttribute("user");
+        List<FollowUp> resultList = followUpService.refreshFollowUp(uname);
+        response.getWriter().write(JSON.toJSONString(resultList));
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public void updateFollowUp(@RequestBody FollowUp followUp,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String uname = (String) request.getSession().getAttribute("user");
+        Integer reten = followUpService.updateFollowUp(followUp,uname);
         response.getWriter().write(JSON.toJSONString(reten));
     }
 }

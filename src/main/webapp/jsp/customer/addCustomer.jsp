@@ -81,27 +81,36 @@
             mui.toast('请选择客户类别');
             return;
         }
-        mui.toast('正在保存订单...');
+        mui.toast('正在保存客户...');
 
-
-        $.post("<%=request.getContextPath()%>/AddCustomer", {
-            "customerName": customerName,
-            "pro": pro,
-            "city": city,
-            "address": address,
-            "type": type
-
-        }, function(data) {
-            //alert("Data Loaded: " + data);
-            $(".result").html(data);
+        $.ajax({
+            url: "/natergy-h5/customer/save",
+            contentType: "application/json;charset=utf-8",
+            type: "post",
+            dataType: "json",
+            data: JSON.stringify({
+                "customerName": customerName,
+                "province": pro,
+                "city": city,
+                "address": address,
+                "type": type
+            }), success: function (data) {
+                if(1==data){
+                    mui.toast('保存成功...');
+                    window.location.href = "/natergy-h5/followUp/followUpAddInit";
+                }else{
+                    mui.toast('保存失败，请稍后重试...');
+                }
+            }
         });
+
 
         mui(this).button('loading');
 
         setTimeout(function() {
             mui(this).button('reset');
 
-            window.location.href="<%=request.getContextPath()%>/FollowUpAddInit"
+
             //mui.back();
 
         }.bind(this), 1000);
