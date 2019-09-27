@@ -1,6 +1,7 @@
 package com.natergy.natergyh5.dao;
 
 import com.natergy.natergyh5.entity.FollowUp;
+import com.natergy.natergyh5.entity.Option;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -40,10 +41,16 @@ public interface FollowUpMapper {
     List<FollowUp> getFollowUpByUser(String uname);
 
 
-    @Insert("insert into 销售地产业务跟进(创建日期,业务经理,省,市,所在地,公司,行业,地址,固话,网页,电子邮件,联系人1,移动电话1,聊天软件账号1,部门1,职位1,联系人2,移动电话2,聊天软件账号2,部门2,职位2,图片附件,影响关联,跟进记录) values(#{date},#{user},#{province},#{city},#{nowAddress},#{customerName},#{industry},#{address},#{tel},#{web},#{email},#{contacts_1},#{tel_1},#{chart_1},#{department_1},#{post_1},#{contacts_2},#{tel_2},#{chart_2},#{department_2},#{post_2},'TODO',#{relation},#{record})")
+    @Insert("insert into 销售地产业务跟进(创建日期,业务经理,省,市,所在地,公司,行业,地址,固话,网页,电子邮件,联系人1,移动电话1,聊天软件账号1,部门1,职位1,联系人2,移动电话2,聊天软件账号2,部门2,职位2,图片附件,影响关联,跟进记录) values(#{date},#{user},#{province},#{city},#{nowAddress},#{customerName},#{industry},#{address},#{tel},#{web},#{email},#{contacts_1},#{tel_1},#{chart_1},#{department_1},#{post_1},#{contacts_2},#{tel_2},#{chart_2},#{department_2},#{post_2},#{imgStr},#{relation},#{record})")
     Integer saveFollowUp(FollowUp followUp);
 
 
-    @Update("update  销售地产业务跟进 set 业务经理=#{uname},行业=#{followUp.industry},固话=#{followUp.tel},网页=#{followUp.web},电子邮件=#{followUp.email},联系人1=#{followUp.contacts_1},移动电话1=#{followUp.tel_1},聊天软件账号1=#{followUp.chart_1},部门1=#{followUp.department_1},职位1=#{followUp.post_1},联系人2=#{followUp.contacts_2},移动电话2=#{followUp.tel_2},聊天软件账号2=#{followUp.chart_2},部门2=#{followUp.department_2},职位2=#{followUp.post_2},图片附件='TODO',影响关联=#{followUp.relation},跟进记录=#{followUp.record}where id = #{followUp.id}")
+    @Update("update  销售地产业务跟进 set 业务经理=#{uname},行业=#{followUp.industry},固话=#{followUp.tel},网页=#{followUp.web},电子邮件=#{followUp.email},联系人1=#{followUp.contacts_1},移动电话1=#{followUp.tel_1},聊天软件账号1=#{followUp.chart_1},部门1=#{followUp.department_1},职位1=#{followUp.post_1},联系人2=#{followUp.contacts_2},移动电话2=#{followUp.tel_2},聊天软件账号2=#{followUp.chart_2},部门2=#{followUp.department_2},职位2=#{followUp.post_2},影响关联=#{followUp.relation},跟进记录=#{followUp.record}where id = #{followUp.id}")
     Integer updateFollowUp(FollowUp followUp, String uname);
+
+
+    @Insert("<script>insert into 附件(名称,位置) values " +
+            "<foreach collection='list' item='c' separator=','>(#{c.name},#{c.pos})</foreach></script>")
+    @Options(useGeneratedKeys=true,keyColumn="Id",keyProperty="id")
+    void saveOptions(@Param("list") List<Option> filename);
 }

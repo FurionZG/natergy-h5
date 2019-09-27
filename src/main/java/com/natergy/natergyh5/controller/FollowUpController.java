@@ -7,6 +7,7 @@ import com.natergy.natergyh5.entity.ResultOfAddress;
 import com.natergy.natergyh5.entity.WXJsSdk;
 import com.natergy.natergyh5.service.FollowUpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,12 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/followUp")
 public class FollowUpController {
+    @Value("${natergy.appId}")
+    String appId;
+    @Value("${natergy.appSecret}")
+    String appSecret;
+    @Value("${natergy.host}")
+    String host;
 
     @Autowired
     private FollowUpService followUpService;
@@ -51,11 +58,11 @@ public class FollowUpController {
         List<String> allCompanysNameList = followUpService.getAllCompanys(uname);
 
         WXJsSdk d= new WXJsSdk();
-        Map map1= d.getAccessToken("wx3dabea702b3ea6cb","a7425fad59cf43f1d7e4a6b946e42033");
+        Map map1= d.getAccessToken(appId,appSecret);
         Map map2=d.getJsapiTicket((String) map1.get("accessToken"));
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         String noncestr = UUID.randomUUID().toString().replace("-", "");
-        String url="http://sungong1987.gicp.net:46175/natergy-h5/followUp/followUpAddInit";
+        String url="http://"+host+"/natergy-h5/followUp/followUpAddInit";
         String str = "jsapi_ticket=" + map2.get("ticket") + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
         String signature = d.SHA1(str);
 
@@ -77,9 +84,9 @@ public class FollowUpController {
     }
 
     @RequestMapping("/save")
-    public void saveFollowUp(@RequestBody FollowUp followUp,HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void saveFollowUp(@RequestBody FollowUp followUp,HttpServletRequest request,HttpServletResponse response) throws Exception {
         String uname = (String) request.getSession().getAttribute("user");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
         followUp.setUser(uname);
         followUp.setDate(sdf.format(new Date()));
         Integer reten= followUpService.saveFollowUp(followUp);

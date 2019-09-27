@@ -1,5 +1,9 @@
 package com.natergy.natergyh5.entity;
 
+
+
+import java.util.List;
+
 public class FollowUp {
 	private String id;
 	private String date;
@@ -25,6 +29,17 @@ public class FollowUp {
 	private String industry;
 	private String record;
 	private String relation;
+	private List<String> images;
+	private String imgStr;
+
+
+	public String getImgStr() {
+		return imgStr;
+	}
+
+	public void setImgStr(String imgStr) {
+		this.imgStr = imgStr;
+	}
 
 	@Override
 	public String toString() {
@@ -53,7 +68,17 @@ public class FollowUp {
 				", industry='" + industry + '\'' +
 				", record='" + record + '\'' +
 				", relation='" + relation + '\'' +
+				", images=" + images +
+				", imgStr='" + imgStr + '\'' +
 				'}';
+	}
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 	public void setId(String id) {

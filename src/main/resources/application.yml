@@ -23,9 +23,6 @@ spring:
       enabled: true
       force: true
 
-
-
-
 server:
   servlet:
     context-path: /natergy-h5 #访问路径带项目名
@@ -33,6 +30,14 @@ server:
       timeout: PT30M #session失效时间
   port: 80
 
+natergy:
+  ftpUrl: 219.146.150.102
+  ftpPort: 60001
+  ftpUser: Ni
+  ftpPassword: 52nj1T2T
+  appId: wx3dabea702b3ea6cb
+  appSecret: a7425fad59cf43f1d7e4a6b946e42033
+  host: sungong1987.gicp.net:46175
 
 
 

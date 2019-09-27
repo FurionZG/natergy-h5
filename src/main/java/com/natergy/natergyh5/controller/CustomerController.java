@@ -30,6 +30,7 @@ public class CustomerController {
     @RequestMapping("/save")
     @ResponseBody
     public void saveCustomer(@RequestBody Customer customer, HttpServletResponse response, HttpServletRequest request) throws IOException {
+
         String uname = (String) request.getSession().getAttribute("user");
         Integer reten = orderService.saveCustomer(customer,uname);
         response.getWriter().write(JSON.toJSONString(reten));

@@ -214,10 +214,20 @@
     <div class="mui-input-row" style="margin: 10px 5px;">
         <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
     </div>
-    <div>
-        <input type="button" onclick="test();" value="+++++++"/>
-        <div id="photos"></div>
-        <img src="" id="img" style="width: 100px;height: 100px"/>
+<%--    <div>--%>
+<%--        <input type="button" onclick="test();" value="+++++++"/>--%>
+<%--        <div id="photos">--%>
+
+<%--        </div>--%>
+
+<%--    </div>--%>
+    <div class="photos">
+        <p>同时选择上传1-9张照片，第一张为封面图</p>
+        <div class="photosInput">
+            <div id="dd"></div>   //这里面是存储放置上传的图片的
+            <div onclick="ChoosePhoto()" id="chooseimgDiv" >选择图片</div>
+            <input type="hidden" id ="imgId"/>
+        </div>
     </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
         <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">提交跟进记录</button>
@@ -393,6 +403,20 @@
         $('input[name="checkbox"]:checked').each(function () {//遍历每一个名字为interest的复选框，其中选中的执行函数
             chk_value.push($(this).val());//将选中的值添加到数组chk_value中    
         });
+        var img_alt=[]
+        $("#photos img").each(function(){
+            img_alt.push($(this).attr("alt"));
+        });
+        var imgs=[];
+        var str=$("#imgId").val().split(",");
+        for(i=0;i<str.length;i++){
+            imgs.push(str[i]);
+        }
+        // arrayImgs=[]
+        // $("#photos img").each(function () {
+        //     alert($(this).attr("alt"));
+        //     arrayImgs.push($(this).attr("alt"));
+        // });
 
 
 //			if("" == customerName || "" == consignee || "" == receivingAddress || null == producer) {
@@ -425,6 +449,8 @@
                 "chart_1": $("#chart_1").val(),
                 "chart_2": $("#chart_2").val(),
                 "industry": $("#industryPicker").text(),
+                //"images":img_alt,
+                "images":imgs,
                 "relation": chk_value.join("/"),
                 "record": $("#record").val()
             }), success: function (data) {
@@ -483,38 +509,105 @@
         });
     })(mui, document);
 </script>
-<script>
-    function test() {
-        wx.chooseImage({
-            count: 4,
-            sizeType: ['original', 'compressed'],
-            sourceType: ['camera'],
-            success:function(res) {
-                // tempFilePath可以作为img标签的src属性显示图片
-                //const tempFilePaths = res.tempFilePaths
-                var localId =res.localIds[0];
-                alert(localId);
-                $("#img").attr("src",localId);
-                wx.uploadImage({
-                    localId: localId,
-                    isShowProgressTips: 1,
-                    success: function (res) {
-                        auth_image.serverId = res.serverId;
-                        alert(auth_image);
-                    },
-                    fail: function (res) {
-                        alert(JSON.stringify(res));
-                    }
-                });
+<%--<script>--%>
+<%--    function test() {--%>
+<%--        var localIds = [];--%>
 
-                //$("#image").attr("src",res.tempFilePaths);
-                // wx.previewImage({
-                //      // 当前显示图片的http链接
-                //     urls: localIds // 需要预览的图片http链接列表
-                // })
+<%--        wx.chooseImage({--%>
+<%--            count: 4,--%>
+<%--            sizeType: ['original', 'compressed'],--%>
+<%--            sourceType: ['camera','album'],--%>
+<%--            success:function(res) {--%>
+<%--                // tempFilePath可以作为img标签的src属性显示图片--%>
+<%--                //const tempFilePaths = res.tempFilePaths--%>
+<%--                // var localId =res.localIds;--%>
+<%--                // for(i=0;i<localId.length;i++){--%>
+<%--                //     wx.uploadImage({--%>
+<%--                //         localId: localId[i],--%>
+<%--                //         isShowProgressTips: 1,--%>
+<%--                //         success: function (res) {--%>
+<%--                //             auth_image = res.serverId;--%>
+<%--                //             $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+auth_image+"'/>");--%>
+<%--                //             alert(auth_image);--%>
+<%--                //         },--%>
+<%--                //         fail: function (res) {--%>
+<%--                //             alert("照片上传失败"+JSON.stringify(res));--%>
+<%--                //         }--%>
+<%--                //     });--%>
+<%--                // }--%>
+<%--                localIds = res.localIds;--%>
+
+<%--                syncUpload();--%>
+<%--            }--%>
+<%--        });--%>
+<%--        function syncUpload() {--%>
+<%--            if (!localIds.length) {--%>
+<%--                alert('上传成功!');--%>
+<%--            } else {--%>
+<%--                var localId = localIds.pop();--%>
+<%--                wx.uploadImage({--%>
+<%--                    localId: localId,--%>
+<%--                    success: function(res) {--%>
+<%--                        $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+res.serverId+"'/>");--%>
+
+<%--                        window.setTimeout(function() {--%>
+<%--                            syncUpload();--%>
+<%--                        },100);--%>
+<%--                    }--%>
+<%--                });--%>
+<%--            }--%>
+<%--        }--%>
+<%--    }--%>
+
+<%--</script>--%>
+<script>
+
+        var imgA=new Array();
+        var imgserverId;  //存储的图片拼接字符；<br>function ChoosePhoto(){
+        function ChoosePhoto(){
+        wx.chooseImage({
+            count: 9, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                document.getElementById("dd").innerHTML="";
+                imgA=[];
+                imgserverId="";
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                var htmlPhoto="";
+                for(var i=0;i<localIds.length;i++){
+                    htmlPhoto +='<div class="imgdiv"><img style="width: 100px;height: 100px" src='+ localIds[i]+' /></div>';
+                }
+                syncUpload(localIds)
+                document.getElementById("dd").innerHTML+=htmlPhoto;
+            }
+        });
+    };
+
+    var syncUpload = function(localIds){
+        var localId = localIds.pop();
+        wx.uploadImage({
+            localId: localId.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                //res.serverId 返回图片的服务器端ID
+                var serverId = res.serverId; // 返回图片的服务器端ID
+                imgA.push(serverId)
+                imgserverId=imgA;
+                if(localIds.length > 0){
+                    window.setTimeout(function(){
+                        syncUpload(localIds);
+                    },500);
+                }else{
+                    window.setTimeout(function(){
+                        $("#imgId").val(imgA);
+                    },500);
+
+                }
             }
         })
     }
+
 </script>
 </body>
 
