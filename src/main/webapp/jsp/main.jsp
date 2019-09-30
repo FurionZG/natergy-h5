@@ -44,8 +44,14 @@
 				<ul class="mui-table-view mui-grid-view mui-grid-9">
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 						<a href="javascript:;" onclick="funOrder()">
-							<span class="mui-icon iconfont icon-dd_active"></span>
+							<span class="mui-icon iconfont icon-dingdan"></span>
 							<div class="mui-media-body">订单</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+						<a href="javascript:;" onclick="funRefund()">
+							<span class="mui-icon iconfont icon-refund"></span>
+							<div class="mui-media-body">退款</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
@@ -68,7 +74,7 @@
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 						<a href="javascript:;" onclick="funFollowUp()">
-							<span class="mui-icon mui-icon-map"></span>
+							<span class="mui-icon iconfont icon-qiyegenjinguanli"></span>
 							<div class="mui-media-body">地产跟进</div>
 						</a>
 					</li>
@@ -156,6 +162,9 @@
 			function funOrder() {
 				window.location.href = "/natergy-h5/order/init";
 			}
+			function funRefund() {
+				window.location.href = "/natergy-h5/refund/init";
+			}
 
 			/** 拜访 **/
 			function funVisit() {
@@ -175,6 +184,7 @@
 			function funFollowUp() {
 				window.location.href = "/natergy-h5/followUp/init";
 			}
+
 
 			function test() {
 				window.location.href = "<%=request.getContextPath()%>/xx";

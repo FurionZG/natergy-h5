@@ -70,7 +70,7 @@ public class FollowUpController {
         request.setAttribute("signature", signature);
         request.setAttribute("timestamp", timestamp);
         request.setAttribute("noncestr", noncestr);
-        request.setAttribute("appId", "wx3dabea702b3ea6cb");
+        request.setAttribute("appId", appId);
         mv.setViewName("forward:/jsp/followUp/followUpAdd.jsp");
         return mv;
     }
@@ -99,6 +99,15 @@ public class FollowUpController {
         List<FollowUp> resultList = followUpService.refreshFollowUp(uname);
         response.getWriter().write(JSON.toJSONString(resultList));
     }
+
+    @RequestMapping("/reload")
+    public void followUpReload(Integer limit,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String uname = (String) request.getSession().getAttribute("user");
+        List<FollowUp> resultList = followUpService.reloadFolloUp(uname,limit);
+        response.getWriter().write(JSON.toJSONString(resultList));
+    }
+
+
 
     @RequestMapping("/update")
     @ResponseBody

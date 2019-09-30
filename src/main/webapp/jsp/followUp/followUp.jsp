@@ -106,8 +106,9 @@
 
 </div>
 <!--下拉刷新容器-->
-<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-    <div class="mui-scroll">
+
+<div id="pullrefresh" class="mui-content mui-scroll-wrapper" >
+    <div class="mui-scroll" style="width: 95%">
         <!-- limit-->
         <input type="hidden" id="limit" value=""/>
 
@@ -151,14 +152,14 @@
 <script>
     $(document).ready(function loading() {
         var followUpListByUser = ${followUpList};
+
         var json = eval(followUpListByUser);
 
         $("#limit").val(10);
         for (var i = 0; i < json.length; i++) { //循环数据
-            $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+            $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/"+json[i].images[0]+"'>" +
                 json[i].customerName +
                 "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
-                "<p class='mui-ellipsis'>" + json[i].nowAddress + "</p>" +
                 "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
 
         }
@@ -188,30 +189,30 @@
         }
     });
 
-    var count = 0;
+    var count = false;
 
     function pullupRefresh() {
         setTimeout(function () {
+
             $.ajax({
-                url: "<%=request.getContextPath()%>/followUpReloadLimitServlet",
+                url: "/natergy-h5/followUp/reload",
                 contentType: "application/x-www-form-urlencoded:charset=UTF-8",
                 type: "get",
                 timeout: "1000",
                 dataType: "json",
                 data: {
-                    "limit": $("#limit").val()
+                    "limit": $("#followUpList li").length
                 },
                 success: function (data) {
                     var json = eval(data);
-
-                    $("#limit").val(Number($("#limit").val()) + 5);//或者$("#limit").val()*1
+                    if(json.length<5){
+                        count=true;
+                    }
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                        $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/"+json[i].images[0]+"'>" +
                             json[i].customerName +
                             "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
-                            "<p class='mui-ellipsis'>" + json[i].nowAddress + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
-
                     }
 
 
@@ -225,7 +226,7 @@
 
             });
 
-            mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 10)); //参数为true代表没有更多数据了。
+            mui('#pullrefresh').pullRefresh().endPullupToRefresh(count); //参数为true代表没有更多数据了。
         }, 500);
     }
 
@@ -244,10 +245,9 @@
                     $("#followUpList li").remove();
                     //var json = eval(data);
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                        $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/"+json[i].images[0]+"'>" +
                             json[i].customerName +
                             "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
-                            "<p class='mui-ellipsis'>" + json[i].nowAddress + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                     }
 

@@ -75,6 +75,12 @@
             cursor: pointer;
         }
 
+
+
+
+
+
+
     </style>
 </head>
 
@@ -214,19 +220,14 @@
     <div class="mui-input-row" style="margin: 10px 5px;">
         <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
     </div>
-<%--    <div>--%>
-<%--        <input type="button" onclick="test();" value="+++++++"/>--%>
-<%--        <div id="photos">--%>
 
-<%--        </div>--%>
-
-<%--    </div>--%>
+    <h5>同时选择上传1-4张照片，第一张为封面图</h5>
     <div class="photos">
-        <p>同时选择上传1-9张照片，第一张为封面图</p>
         <div class="photosInput">
-            <div id="dd"></div>   //这里面是存储放置上传的图片的
-            <div onclick="ChoosePhoto()" id="chooseimgDiv" >选择图片</div>
+            <button id='chooseimgDiv' type="button"  onclick="ChoosePhoto()" class="mui-btn mui-btn-success" style="width: 100%;">选择图片</button>
+            <div id="dd" style="margin-top:15px;margin-left: 1%;margin-right: 1%;height: 350px;border: 1px solid #8D8D8D " ></div>
             <input type="hidden" id ="imgId"/>
+
         </div>
     </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
@@ -260,12 +261,12 @@
 </script>
 <script>
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '${appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
         timestamp: parseInt("${timestamp}", 10), // 必填，生成签名的时间戳
         nonceStr: '${noncestr}', // 必填，生成签名的随机串
         signature: '${signature}',// 必填，签名，见附录1
-        jsApiList: ['getLocation', 'openLocation', 'chooseImage','uploadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        jsApiList: ['getLocation', 'openLocation', 'chooseImage','uploadImage','previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function () {
         wx.getLocation({
@@ -472,7 +473,7 @@
 
             //mui.back();
 
-        }.bind(this), 1000);
+        }.bind(this), 2000);
     });
 </script>
 
@@ -562,6 +563,7 @@
 <%--</script>--%>
 <script>
 
+
         var imgA=new Array();
         var imgserverId;  //存储的图片拼接字符；<br>function ChoosePhoto(){
         function ChoosePhoto(){
@@ -570,19 +572,21 @@
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
-                document.getElementById("dd").innerHTML="";
-                imgA=[];
-                imgserverId="";
+                document.getElementById("dd").innerHTML = "";
+                imgA = [];
+                imgserverId = "";
                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                var htmlPhoto="";
-                for(var i=0;i<localIds.length;i++){
-                    htmlPhoto +='<div class="imgdiv"><img style="width: 100px;height: 100px" src='+ localIds[i]+' /></div>';
+                var htmlPhoto = "";
+                for (var i = 0; i < localIds.length; i++) {
+                    htmlPhoto += '<img style="width: 150px;height: 150px; margin-left: 15px;margin-top: 15px;" src=' + localIds[i] + ' />';
                 }
                 syncUpload(localIds)
-                document.getElementById("dd").innerHTML+=htmlPhoto;
+                document.getElementById("dd").innerHTML += htmlPhoto;
+                preview();
             }
         });
     };
+
 
     var syncUpload = function(localIds){
         var localId = localIds.pop();
@@ -607,6 +611,22 @@
             }
         })
     }
+
+    function preview(){
+        var imgs = [];
+        var imgObj = $("#dd img");//这里改成相应的对象
+        for (var i = 0; i < imgObj.length; i++) {
+            imgs.push(imgObj.eq(i).attr('src'));
+            imgObj.eq(i).click(function () {
+                var nowImgurl = $(this).attr('src');
+                WeixinJSBridge.invoke("imagePreview", {
+                    "urls": imgs,
+                    "current": nowImgurl
+                });
+            });
+        }
+    }
+
 
 </script>
 </body>

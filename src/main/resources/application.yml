@@ -28,16 +28,12 @@ server:
     context-path: /natergy-h5 #访问路径带项目名
     session:
       timeout: PT30M #session失效时间
-  port: 80
+  port: 8080
 
 natergy:
-  ftpUrl: 219.146.150.102
-  ftpPort: 60001
-  ftpUser: Ni
-  ftpPassword: 52nj1T2T
-  appId: wx3dabea702b3ea6cb
-  appSecret: a7425fad59cf43f1d7e4a6b946e42033
-  host: sungong1987.gicp.net:46175
+  appId: wxf5304d7eb35a3907
+  appSecret: 9c7316b65bb71046c80d4532709d4b56
+  host: www.iluluya.com
 
 
 

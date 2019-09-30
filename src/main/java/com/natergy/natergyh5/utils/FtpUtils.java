@@ -4,16 +4,15 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FtpUtils {
 
 
     private static String ftpUrl="219.146.150.102";
-
     private static String ftpPort="60001";
-
     private static String ftpPassword="52nj1T2T";
-
     private static String ftpUser="Ni";
 
     public static FTPClient getFtpClient() throws Exception{

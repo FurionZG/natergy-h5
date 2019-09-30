@@ -134,6 +134,12 @@
     <div class="mui-input-row" style="margin: 10px 5px;">
         <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
     </div>
+    <h5>图片附件</h5>
+    <div class="photos">
+        <div class="photosInput">
+            <div id="dd" style="margin-top:15px;margin-left: 1%;margin-right: 1%;height: 350px;border: 1px solid #8D8D8D " ></div>
+        </div>
+    </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
         <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">修改跟进记录</button>
     </div>
@@ -291,7 +297,14 @@
             doc.getElementById('email').value=json.email;
             doc.getElementById('tel').value=json.tel;
             doc.getElementById('record').value=json.record;
-            doc.getElementById('industryPicker').innerText =json.industry
+            doc.getElementById('industryPicker').innerText =json.industry;
+
+            var htmlPhoto = "";
+            for(var i=0;i<json.images.length;i++){
+                htmlPhoto+='<img style="width: 150px;height: 150px; margin-left: 15px;margin-top: 15px;" src="http://219.146.150.102:20005/'+json.images[i]+'"/>';
+            }
+            document.getElementById("dd").innerHTML += htmlPhoto;
+
             if(-1!=json.relation.indexOf("房地产商")){
                 doc.getElementById('checkbox1').checked=true;
             }

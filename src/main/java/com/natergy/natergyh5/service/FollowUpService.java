@@ -44,12 +44,23 @@ public class FollowUpService {
     @Autowired
     private CustomerMapper customerDao;
 
-    public FollowUpService() {
-    }
+
 
 
     public List<FollowUp> getFollowUpByUser(String user) {
-        return  followUpDao.getFollowUpByUser(user);
+        List<FollowUp>resultList=  followUpDao.getFollowUpByUser(user);
+        for(FollowUp followUp:resultList){
+            String imgStr=followUp.getImgStr();
+            String[] images =imgStr.split("/");
+            List<String> imgesList = new ArrayList<>();
+            //不要第一个值，因为第一个值是""
+            for(int i=1;i<images.length;i++){
+                String imageUrl=followUpDao.queryOption(images[i]);
+                imgesList.add(imageUrl);
+            }
+            followUp.setImages(imgesList);
+        }
+        return resultList;
     }
 
     public List<String> getAllCompanys(String uname) {
@@ -111,12 +122,23 @@ public class FollowUpService {
             sb.append(option.getId());
         }
         followUp.setImgStr(sb.toString());
-        System.out.println(followUp);
         return followUpDao.saveFollowUp(followUp);
     }
 
     public List<FollowUp> refreshFollowUp(String uname) {
-        return  followUpDao.getFollowUpByUser(uname);
+        List<FollowUp>resultList=  followUpDao.getFollowUpByUser(uname);
+        for(FollowUp followUp:resultList){
+            String imgStr=followUp.getImgStr();
+            String[] images =imgStr.split("/");
+            List<String> imgesList = new ArrayList<>();
+            //不要第一个值，因为第一个值是""
+            for(int i=1;i<images.length;i++){
+                String imageUrl=followUpDao.queryOption(images[i]);
+                imgesList.add(imageUrl);
+            }
+            followUp.setImages(imgesList);
+        }
+        return resultList;
     }
 
     public Integer updateFollowUp(FollowUp followUp, String uname) {
@@ -137,5 +159,21 @@ public class FollowUpService {
             ftpClient.logout();
             ftpClient.disconnect();
         }
+    }
+
+    public List<FollowUp> reloadFolloUp(String uname, Integer limit) {
+        List<FollowUp>resultList=  followUpDao.reloadFollowUp(limit,uname);
+        for(FollowUp followUp:resultList){
+            String imgStr=followUp.getImgStr();
+            String[] images =imgStr.split("/");
+            List<String> imgesList = new ArrayList<>();
+            //不要第一个值，因为第一个值是""
+            for(int i=1;i<images.length;i++){
+                String imageUrl=followUpDao.queryOption(images[i]);
+                imgesList.add(imageUrl);
+            }
+            followUp.setImages(imgesList);
+        }
+        return resultList;
     }
 }
