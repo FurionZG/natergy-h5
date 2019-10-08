@@ -97,7 +97,7 @@
             }), success: function (data) {
                 if(1==data){
                     mui.toast('保存成功...');
-                    window.location.href = "/natergy-h5/followUp/followUpAddInit";
+                    window.location.href=document.referrer;
                 }else{
                     mui.toast('保存失败，请稍后重试...');
                 }

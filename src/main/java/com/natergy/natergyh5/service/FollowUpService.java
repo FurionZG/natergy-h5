@@ -2,6 +2,7 @@ package com.natergy.natergyh5.service;
 
 import com.natergy.natergyh5.dao.CustomerMapper;
 import com.natergy.natergyh5.dao.FollowUpMapper;
+import com.natergy.natergyh5.dao.OptionsMapper;
 import com.natergy.natergyh5.entity.FollowUp;
 import com.natergy.natergyh5.entity.Option;
 import com.natergy.natergyh5.entity.ResultOfAddress;
@@ -33,7 +34,7 @@ import java.util.UUID;
 public class FollowUpService {
 
     @Value("${natergy.appId}")
-    private  String appId;
+    private String appId;
     @Value("${natergy.appSecret}")
     private String appSecret;
     @Value("${natergy.host}")
@@ -43,19 +44,19 @@ public class FollowUpService {
     private FollowUpMapper followUpDao;
     @Autowired
     private CustomerMapper customerDao;
-
-
+    @Autowired
+    private OptionsMapper optionsDao;
 
 
     public List<FollowUp> getFollowUpByUser(String user) {
-        List<FollowUp>resultList=  followUpDao.getFollowUpByUser(user);
-        for(FollowUp followUp:resultList){
-            String imgStr=followUp.getImgStr();
-            String[] images =imgStr.split("/");
+        List<FollowUp> resultList = followUpDao.getFollowUpByUser(user);
+        for (FollowUp followUp : resultList) {
+            String imgStr = followUp.getImgStr();
+            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
             //不要第一个值，因为第一个值是""
-            for(int i=1;i<images.length;i++){
-                String imageUrl=followUpDao.queryOption(images[i]);
+            for (int i = 1; i < images.length; i++) {
+                String imageUrl = optionsDao.queryOption(images[i]);
                 imgesList.add(imageUrl);
             }
             followUp.setImages(imgesList);
@@ -68,7 +69,7 @@ public class FollowUpService {
     }
 
     public ResultOfAddress getAddressInfo(String companyName, String uname) {
-        ResultOfAddress result=customerDao.getAddress(companyName,uname);
+        ResultOfAddress result = customerDao.getAddress(companyName, uname);
         result.setCompanyName(companyName);
         return result;
     }
@@ -80,60 +81,63 @@ public class FollowUpService {
      * 3.保存图片名到附件表和位置，返回id
      * 4.保存地产跟进信息
      * 以上三条作为一个事务
+     *
      * @param followUp
      * @return
      */
     public Integer saveFollowUp(FollowUp followUp) throws Exception {
-        WXJsSdk d= new WXJsSdk();
-        Map map1= d.getAccessToken(appId,appSecret);
-        String accessToken=(String) map1.get("accessToken");
+        WXJsSdk d = new WXJsSdk();
+        Map map1 = d.getAccessToken(appId, appSecret);
+        String accessToken = (String) map1.get("accessToken");
         List<Option> options = new ArrayList<>();
         List<String> list = followUp.getImages();
-        for(String media_id :list){
-            String requestUrl="http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-            requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
-            URL url = new URL(requestUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoInput(true);
-            conn.setRequestMethod("GET");
-            //图片缓冲输入流
-            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-            //获取FtpClient
-            FTPClient ftpClient = FtpUtils.getFtpClient();
-            ftpClient.changeWorkingDirectory("natergy");
-            ftpClient.enterLocalPassiveMode();
-            String fileName=followUp.getUser()+"-"+followUp.getDate()+"-"+ (UUID.randomUUID().toString().replace("-",""))+".jpg";
-            String path = new String(("./pic/"+fileName).getBytes("gbk"),"iso-8859-1");
-            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-            //System.out.println(ftpClient.storeFile(path,bis));
-            if(ftpClient.storeFile(path,bis)){
-                Option option = new Option();
-                option.setName(fileName);
-                option.setPos("地产业务跟进");
-                options.add(option);
-            }else{
-                throw new Exception("照片保存错误");
+        if ("" != list.get(0)) {
+            for (String media_id : list) {
+                String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
+                requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
+                URL url = new URL(requestUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true);
+                conn.setRequestMethod("GET");
+                //图片缓冲输入流
+                BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                //获取FtpClient
+                FTPClient ftpClient = FtpUtils.getFtpClient();
+                ftpClient.changeWorkingDirectory("natergy");
+                ftpClient.enterLocalPassiveMode();
+                String fileName = followUp.getUser() + "-" + followUp.getDate() + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
+                String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
+                ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+                //System.out.println(ftpClient.storeFile(path,bis));
+                if (ftpClient.storeFile(path, bis)) {
+                    Option option = new Option();
+                    option.setName(fileName);
+                    option.setPos("地产业务跟进");
+                    options.add(option);
+                } else {
+                    throw new Exception("照片保存错误");
+                }
             }
+            optionsDao.saveOptions(options);
+            StringBuffer sb = new StringBuffer();
+            for (Option option : options) {
+                sb.append("/");
+                sb.append(option.getId());
+            }
+            followUp.setImgStr(sb.toString());
         }
-        followUpDao.saveOptions(options);
-        StringBuffer sb = new StringBuffer();
-        for(Option option : options){
-            sb.append("/");
-            sb.append(option.getId());
-        }
-        followUp.setImgStr(sb.toString());
         return followUpDao.saveFollowUp(followUp);
     }
 
     public List<FollowUp> refreshFollowUp(String uname) {
-        List<FollowUp>resultList=  followUpDao.getFollowUpByUser(uname);
-        for(FollowUp followUp:resultList){
-            String imgStr=followUp.getImgStr();
-            String[] images =imgStr.split("/");
+        List<FollowUp> resultList = followUpDao.getFollowUpByUser(uname);
+        for (FollowUp followUp : resultList) {
+            String imgStr = followUp.getImgStr();
+            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
             //不要第一个值，因为第一个值是""
-            for(int i=1;i<images.length;i++){
-                String imageUrl=followUpDao.queryOption(images[i]);
+            for (int i = 1; i < images.length; i++) {
+                String imageUrl = optionsDao.queryOption(images[i]);
                 imgesList.add(imageUrl);
             }
             followUp.setImages(imgesList);
@@ -142,7 +146,7 @@ public class FollowUpService {
     }
 
     public Integer updateFollowUp(FollowUp followUp, String uname) {
-        return followUpDao.updateFollowUp(followUp,uname);
+        return followUpDao.updateFollowUp(followUp, uname);
     }
 
     @Test
@@ -151,10 +155,10 @@ public class FollowUpService {
         System.out.println(ftpClient.changeWorkingDirectory("natergy"));
 
         ftpClient.enterLocalPassiveMode();
-        String removePath = new String("./pic/张伟1-2019年.txt".getBytes("gbk"),"iso-8859-1");
+        String removePath = new String("./pic/张伟1-2019年.txt".getBytes("gbk"), "iso-8859-1");
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
 
-        System.out.println(ftpClient.storeFile(removePath,new FileInputStream(new File("E:\\1.txt"))));
+        System.out.println(ftpClient.storeFile(removePath, new FileInputStream(new File("E:\\1.txt"))));
         if (ftpClient != null) {
             ftpClient.logout();
             ftpClient.disconnect();
@@ -162,14 +166,14 @@ public class FollowUpService {
     }
 
     public List<FollowUp> reloadFolloUp(String uname, Integer limit) {
-        List<FollowUp>resultList=  followUpDao.reloadFollowUp(limit,uname);
-        for(FollowUp followUp:resultList){
-            String imgStr=followUp.getImgStr();
-            String[] images =imgStr.split("/");
+        List<FollowUp> resultList = followUpDao.reloadFollowUp(limit, uname);
+        for (FollowUp followUp : resultList) {
+            String imgStr = followUp.getImgStr();
+            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
             //不要第一个值，因为第一个值是""
-            for(int i=1;i<images.length;i++){
-                String imageUrl=followUpDao.queryOption(images[i]);
+            for (int i = 1; i < images.length; i++) {
+                String imageUrl = optionsDao.queryOption(images[i]);
                 imgesList.add(imageUrl);
             }
             followUp.setImages(imgesList);

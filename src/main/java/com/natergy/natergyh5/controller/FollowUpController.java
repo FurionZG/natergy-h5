@@ -27,11 +27,11 @@ import java.util.UUID;
 @RequestMapping("/followUp")
 public class FollowUpController {
     @Value("${natergy.appId}")
-    String appId;
+    private String appId;
     @Value("${natergy.appSecret}")
-    String appSecret;
+    private String appSecret;
     @Value("${natergy.host}")
-    String host;
+    private String host;
 
     @Autowired
     private FollowUpService followUpService;

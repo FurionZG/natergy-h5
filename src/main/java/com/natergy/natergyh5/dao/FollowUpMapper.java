@@ -50,14 +50,7 @@ public interface FollowUpMapper {
     Integer updateFollowUp(FollowUp followUp, String uname);
 
 
-    @Insert("<script>insert into 附件(名称,位置) values " +
-            "<foreach collection='list' item='c' separator=','>(#{c.name},#{c.pos})</foreach></script>")
-    @Options(useGeneratedKeys=true,keyColumn="Id",keyProperty="id")
-    void saveOptions(@Param("list") List<Option> filename);
 
-
-    @Select("select 名称 from 附件 where Id=#{id}")
-    String queryOption(String id);
 
 
     @Select("select * from 销售地产业务跟进 where 业务经理 = #{uname} order by Id desc limit #{limit},5")

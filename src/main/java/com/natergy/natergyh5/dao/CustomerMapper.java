@@ -3,10 +3,12 @@ package com.natergy.natergyh5.dao;
 import com.natergy.natergyh5.entity.Customer;
 import com.natergy.natergyh5.entity.ResultOfAddress;
 import com.natergy.natergyh5.entity.ResultOfSelectCustomerInfoByName;
+import com.natergy.natergyh5.entity.Visit;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Mapper
@@ -38,4 +40,8 @@ public interface CustomerMapper {
 
     @Insert("insert into 销售客户资料(状态,业务经理,省,市,地址,客户类别,客户名称) values('新',#{uname},#{customer.province},#{customer.city},#{customer.address},#{customer.type},#{customer.customerName})")
     Integer saveCustomer(Customer customer, String uname);
+
+
+    @Update("update 销售客户资料 set 干燥剂类型=#{visit.productType},玻璃企业规模=#{visit.consumption},客户类别=#{visit.customerType},联系人姓名=#{visit.contacts_1},联系人2姓名=#{visit.contacts_2},联系人3姓名=#{visit.contacts_3},联系人手机=#{visit.tel_1},联系人2手机=#{visit.tel_2},联系人3手机=#{visit.tel_3} where Id=#{visit.customerId} ")
+    Integer updateVisit(Visit visit, String uname);
 }

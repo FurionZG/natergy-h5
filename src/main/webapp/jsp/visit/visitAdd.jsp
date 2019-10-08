@@ -27,7 +27,6 @@
         }
 
         /* pop层样式 */
-
         .mui-plus .plus {
             display: inline;
         }
@@ -74,13 +73,6 @@
         selector {
             cursor: pointer;
         }
-
-
-
-
-
-
-
     </style>
 </head>
 
@@ -91,7 +83,7 @@
 
     <div class="mui-content-padded" style="margin: 15px;">
         <header class="mui-bar mui-bar-nav">
-            <h1 class="mui-title">添加跟进记录</h1>
+            <h1 class="mui-title">添加销售拜访</h1>
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
             <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
         </header>
@@ -101,7 +93,7 @@
                 <div class="mui-scroll">
                     <ul class="mui-table-view">
                         <li class="mui-table-view-cell">
-                            <a href="javascript:;" onclick="funAdd()" id="addFollow"> <span
+                            <a href="javascript:;" onclick="funAdd()" id="addCustomer"> <span
                                     class="mui-icon iconfont icon-add"></span>客户
                             </a>
                         </li>
@@ -109,6 +101,7 @@
                 </div>
             </div>
         </div>
+
         <form id="form-country_v1" name="form-country_v1" style="margin-top: 50px;">
             <div class="typeahead__container">
                 <div class="typeahead__field">
@@ -125,7 +118,10 @@
             </div>
         </form>
     </div>
-    <form class="mui-input-group" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+    <form  class="mui-input-group" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+        <hr>
+        <h5>出差开始时间${businessStartTime}</h5>
+        <h5>出差编号${businessNo}</h5>
         <div class="mui-input-row">
             <label>客户名称</label> <input type="text" placeholder="" id="customerName" readonly="true">
         </div>
@@ -138,100 +134,91 @@
         <div class="mui-input-row">
             <label>地址</label> <input type="text" placeholder="" id="address">
         </div>
-        <p>定位信息</p>
+        <h5>定位信息</h5>
 
         <div class="mui-input-row">
             <label>定位</label> <input type="text" placeholder="" id="nowAddress" readonly="true">
-
+            <input type="hidden" id="addressJson">
+            <input type="hidden" id="latitude">
+            <input type="hidden" id="longitude">
         </div>
 
-        <p> 联系人1</p>
+        <h5> 联系人1</h5>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_1">
+            <label>联系人</label> <input type="text" placeholder="" id="contacts_1">
         </div>
         <div class="mui-input-row">
             <label>联系电话</label> <input type="text" placeholder="" id="tel_1">
         </div>
-        <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_1">
-        </div>
-        <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_1">
-        </div>
-        <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_1">
-        </div>
-        <p> 联系人2</p>
+        <h5> 联系人2</h5>
         <div class="mui-input-row">
             <label>名称</label> <input type="text" placeholder="" id="contacts_2">
         </div>
         <div class="mui-input-row">
             <label>联系电话</label> <input type="text" placeholder="" id="tel_2">
         </div>
+        <h5> 联系人3</h5>
         <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_2">
+            <label>名称</label> <input type="text" placeholder="" id="contacts_3">
         </div>
         <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_2">
-        </div>
-        <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_2">
-        </div>
-        <p>其他信息</p>
-        <div class="mui-input-row">
-            <label>固话 </label> <input type="text" placeholder="" id="tel">
-        </div>
-        <div class="mui-input-row">
-            <label>电子邮件</label> <input type="text" placeholder="" id="email">
-        </div>
-        <div class="mui-input-row">
-            <label>网址</label> <input type="text" placeholder="" id="web">
+            <label>联系电话</label> <input type="text" placeholder="" id="tel_3">
         </div>
 
 
     </form>
-    <h5 class="mui-content-padded">行业</h5>
+    <h5 class="mui-content-padded">其他信息</h5>
     <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
-        <button id='industryPicker' class="mui-btn mui-btn-block" type='button'
-                style="width: 100%; text-align: center;">选择行业
+        <button id='productBrandPicker' class="mui-btn mui-btn-block" type='button'
+                style="width: 100%; text-align: center;">干燥剂品牌
         </button>
-        <input type="hidden" id="industry"/>
+        <input type="hidden" id="productBrand"/>
+    </div>
+    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+        <button id='productTypePicker' class="mui-btn mui-btn-block" type='button'
+                style="width: 100%; text-align: center;">干燥剂类型
+        </button>
+        <input type="hidden" id="productType"/>
+    </div>
+    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+        <button id='consumptionPicker' class="mui-btn mui-btn-block" type='button'
+                style="width: 100%; text-align: center;">年用量
+        </button>
+        <input type="hidden" id="consumption"/>
+    </div>
+    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+        <button id='customerTypePicker' class="mui-btn mui-btn-block" type='button'
+                style="width: 100%; text-align: center;">客户类型
+        </button>
+        <input type="hidden" id="customerType"/>
+    </div>
+    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+        <button id='pricePicker' class="mui-btn mui-btn-block" type='button'
+                style="width: 100%; text-align: center;">单价
+        </button>
+        <input type="hidden" id="price"/>
     </div>
 
-    <h5 class="mui-content-padded">影响关联</h5>
-    <div class="mui-card">
-        <form class="mui-input-group">
-            <div class="mui-input-row mui-checkbox mui-left">
-                <label>房地产商</label>
-                <input name="checkbox" value="房地产商" type="checkbox">
-            </div>
-            <div class="mui-input-row mui-checkbox mui-left">
-                <label>门窗幕墙厂</label>
-                <input name="checkbox" value="门窗幕墙厂" type="checkbox">
-            </div>
-            <div class="mui-input-row mui-checkbox mui-left ">
-                <label>玻璃厂</label>
-                <input name="checkbox" value="玻璃厂" type="checkbox">
-            </div>
-        </form>
-    </div>
 
-    <h5 class="mui-content-padded">跟进记录</h5>
+    <h5 class="mui-content-padded">拜访记录</h5>
     <div class="mui-input-row" style="margin: 10px 5px;">
-        <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
+        <textarea id="record" rows="5" placeholder="拜访记录"></textarea>
     </div>
 
     <h5>同时选择上传1-4张照片，第一张为封面图</h5>
     <div class="photos">
         <div class="photosInput">
-            <button id='chooseimgDiv' type="button"  onclick="ChoosePhoto()" class="mui-btn mui-btn-success" style="width: 100%;">选择图片</button>
-            <div id="dd" style="margin-top:15px;margin-left: 1%;margin-right: 1%;height: 350px;border: 1px solid #8D8D8D " ></div>
-            <input type="hidden" id ="imgId"/>
+            <button id='chooseimgDiv' type="button" onclick="ChoosePhoto()" class="mui-btn mui-btn-success"
+                    style="width: 100%;">选择图片
+            </button>
+            <div id="dd"
+                 style="margin-top:15px;margin-left: 1%;margin-right: 1%;height: 350px;border: 1px solid #8D8D8D "></div>
+            <input type="hidden" id="imgId"/>
 
         </div>
     </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
-        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">提交跟进记录</button>
+        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">提交拜访记录</button>
     </div>
 
 </div>
@@ -261,19 +248,21 @@
 </script>
 <script>
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '${appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
         timestamp: parseInt("${timestamp}", 10), // 必填，生成签名的时间戳
         nonceStr: '${noncestr}', // 必填，生成签名的随机串
         signature: '${signature}',// 必填，签名，见附录1
-        jsApiList: ['getLocation', 'openLocation', 'chooseImage','uploadImage','previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        jsApiList: ['getLocation', 'openLocation', 'chooseImage', 'uploadImage', 'previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function () {
         wx.getLocation({
             type: 'gcj02',
             success: function (res) {
-                var latitude = res.latitude
-                var longitude = res.longitude
+                var latitude = res.latitude;
+                var longitude = res.longitude;
+                $("#latitude").val(latitude);
+                $("#longitude").val(longitude);
                 $.ajax({
                     url: 'https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=' + longitude + ',' + latitude + '&key=026415b8165d5b4fabe82bc9a253e96a',
                     //url: 'https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=116.39,39.9&key=026415b8165d5b4fabe82bc9a253e96a',
@@ -287,6 +276,7 @@
                     success: function (result) {
                         var obj = eval(result);
                         $("#nowAddress").val(obj.regeocode.formatted_address);
+                        $("#addressJson").val(obj.regeocode.addressComponent.city + "-" + obj.regeocode.addressComponent.province + "-" + obj.regeocode.addressComponent.district + "-" + obj.regeocode.addressComponent.streetNumber.street + obj.regeocode.addressComponent.streetNumber.number);
                     }
                 })
                 // wx.openLocation({
@@ -390,43 +380,25 @@
         });
 </script>
 
-<!--
-    作者：240232995@qq.com
-    时间：2019-08-24
-    描述：保存订单
--->
+
 <script>
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function () {
 
 
-        var chk_value = [];//定义一个数组
-        $('input[name="checkbox"]:checked').each(function () {//遍历每一个名字为interest的复选框，其中选中的执行函数
-            chk_value.push($(this).val());//将选中的值添加到数组chk_value中    
-        });
-        var img_alt=[]
-        $("#photos img").each(function(){
+        var img_alt = []
+        $("#photos img").each(function () {
             img_alt.push($(this).attr("alt"));
         });
-        var imgs=[];
-        var str=$("#imgId").val().split(",");
-        for(i=0;i<str.length;i++){
+        var imgs = [];
+        var str = $("#imgId").val().split(",");
+        for (i = 0; i < str.length; i++) {
             imgs.push(str[i]);
         }
-        // arrayImgs=[]
-        // $("#photos img").each(function () {
-        //     alert($(this).attr("alt"));
-        //     arrayImgs.push($(this).attr("alt"));
-        // });
-
-
-//			if("" == customerName || "" == consignee || "" == receivingAddress || null == producer) {
-//				mui.toast('请完善订单信息...');
-//				return;
-//			}
-        mui.toast('正在保存跟进记录...');
+        var businessNo = ${businessNo};
+        mui.toast('正在保存拜访记录...');
         $.ajax({
-            url: "/natergy-h5/followUp/save",
+            url: "/natergy-h5/visit/save",
             contentType: "application/json;charset=utf-8",
             type: "post",
             dataType: "json",
@@ -438,27 +410,29 @@
                 "address": $("#address").val(),
                 "contacts_1": $("#contacts_1").val(),
                 "contacts_2": $("#contacts_2").val(),
+                "contacts_3": $("#contacts_3").val(),
                 "tel_1": $("#tel_1").val(),
                 "tel_2": $("#tel_2").val(),
-                "department_1": $("#department_1").val(),
-                "department_2": $("#department_2").val(),
-                "post_1": $("#post_1").val(),
-                "post_2": $("#post_2").val(),
-                "tel": $("#tel").val(),
-                "email": $("#email").val(),
-                "web": $("#web").val(),
-                "chart_1": $("#chart_1").val(),
-                "chart_2": $("#chart_2").val(),
-                "industry": $("#industryPicker").text(),
-                //"images":img_alt,
-                "images":imgs,
-                "relation": chk_value.join("/"),
-                "record": $("#record").val()
+                "tel_3": $("#tel_3").val(),
+                "productBrand": $("#productBrandPicker").text(),
+                "productType": $("#productTypePicker").text(),
+                "consumption": $("#consumptionPicker").text(),
+                "customerType": $("#customerTypePicker").text(),
+                "price": $("#pricePicker").text(),
+                "images": imgs,
+                "record": $("#record").val(),
+                "province": $("#addressJson").val().split("-")[1],
+                "city": $("#addressJson").val().split("-")[0],
+                "district": $("#addressJson").val().split("-")[2],
+                "street": $("#addressJson").val().split("-")[3],
+                "latitude":$("#latitude").val(),
+                "longitude":$("#longitude").val(),
+                "businessNo":businessNo
             }), success: function (data) {
                 //alert("Data Loaded: " + data);
                 if (1 == data) {
                     mui.toast('保存成功');
-                    window.location.href = "/natergy-h5/followUp/init"
+                    window.location.href = "/natergy-h5/visit/init"
                 } else {
                     mui.toast('订单保存失败，请稍后重试...');
                 }
@@ -490,18 +464,52 @@
             var _getParam = function (obj, param) {
                 return obj[param] || '';
             };
-
-            var picker = new $.PopPicker({
-                layer: 2
-            });
-
-            picker.setData(industry_data);
-            var industryPickerPickerButton = doc.getElementById('industryPicker');
-            //				var cityResult3 = doc.getElementById('userResult');
-            industryPickerPickerButton.addEventListener('tap', function (event) {
+            var picker = new $.PopPicker();
+            picker.setData(productBrand);
+            var productBrandPickerButton = doc.getElementById('productBrandPicker');
+            productBrandPickerButton.addEventListener('tap', function (event) {
                 picker.show(function (items) {
-                    //						cityResult3.innerText = "你选择的城市是:" + _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
-                    doc.getElementById('industryPicker').innerText = _getParam(items[0], 'text') + "-" + _getParam(items[1], 'text');
+                    doc.getElementById('productBrandPicker').innerText = _getParam(items[0], 'text');
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+            var picker1 = new $.PopPicker();
+            picker1.setData(productType);
+            var productTypePickerButton = doc.getElementById('productTypePicker');
+            productTypePickerButton.addEventListener('tap', function (event) {
+                picker1.show(function (items) {
+                    doc.getElementById('productTypePicker').innerText = _getParam(items[0], 'text');
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+            var picker2 = new $.PopPicker();
+            picker2.setData(consumption);
+            var consumptionPickerButton = doc.getElementById('consumptionPicker');
+            consumptionPickerButton.addEventListener('tap', function (event) {
+                picker2.show(function (items) {
+                    doc.getElementById('consumptionPicker').innerText = _getParam(items[0], 'text');
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+            var picker3 = new $.PopPicker();
+            picker3.setData(customerType);
+            var customerTypePickerButton = doc.getElementById('customerTypePicker');
+            customerTypePickerButton.addEventListener('tap', function (event) {
+                picker3.show(function (items) {
+                    doc.getElementById('customerTypePicker').innerText = _getParam(items[0], 'text');
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+            var picker4 = new $.PopPicker();
+            picker4.setData(price);
+            var pricePickerButton = doc.getElementById('pricePicker');
+            pricePickerButton.addEventListener('tap', function (event) {
+                picker4.show(function (items) {
+                    doc.getElementById('pricePicker').innerText = _getParam(items[0], 'text');
                     //返回 false 可以阻止选择框的关闭
                     //return false;
                 });
@@ -510,63 +518,13 @@
         });
     })(mui, document);
 </script>
-<%--<script>--%>
-<%--    function test() {--%>
-<%--        var localIds = [];--%>
 
-<%--        wx.chooseImage({--%>
-<%--            count: 4,--%>
-<%--            sizeType: ['original', 'compressed'],--%>
-<%--            sourceType: ['camera','album'],--%>
-<%--            success:function(res) {--%>
-<%--                // tempFilePath可以作为img标签的src属性显示图片--%>
-<%--                //const tempFilePaths = res.tempFilePaths--%>
-<%--                // var localId =res.localIds;--%>
-<%--                // for(i=0;i<localId.length;i++){--%>
-<%--                //     wx.uploadImage({--%>
-<%--                //         localId: localId[i],--%>
-<%--                //         isShowProgressTips: 1,--%>
-<%--                //         success: function (res) {--%>
-<%--                //             auth_image = res.serverId;--%>
-<%--                //             $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+auth_image+"'/>");--%>
-<%--                //             alert(auth_image);--%>
-<%--                //         },--%>
-<%--                //         fail: function (res) {--%>
-<%--                //             alert("照片上传失败"+JSON.stringify(res));--%>
-<%--                //         }--%>
-<%--                //     });--%>
-<%--                // }--%>
-<%--                localIds = res.localIds;--%>
-
-<%--                syncUpload();--%>
-<%--            }--%>
-<%--        });--%>
-<%--        function syncUpload() {--%>
-<%--            if (!localIds.length) {--%>
-<%--                alert('上传成功!');--%>
-<%--            } else {--%>
-<%--                var localId = localIds.pop();--%>
-<%--                wx.uploadImage({--%>
-<%--                    localId: localId,--%>
-<%--                    success: function(res) {--%>
-<%--                        $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+res.serverId+"'/>");--%>
-
-<%--                        window.setTimeout(function() {--%>
-<%--                            syncUpload();--%>
-<%--                        },100);--%>
-<%--                    }--%>
-<%--                });--%>
-<%--            }--%>
-<%--        }--%>
-<%--    }--%>
-
-<%--</script>--%>
 <script>
 
 
-        var imgA=new Array();
-        var imgserverId;  //存储的图片拼接字符；<br>function ChoosePhoto(){
-        function ChoosePhoto(){
+    var imgA = new Array();
+    var imgserverId;  //存储的图片拼接字符；<br>function ChoosePhoto(){
+    function ChoosePhoto() {
         wx.chooseImage({
             count: 9, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -588,7 +546,7 @@
     };
 
 
-    var syncUpload = function(localIds){
+    var syncUpload = function (localIds) {
         var localId = localIds.pop();
         wx.uploadImage({
             localId: localId.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -597,22 +555,22 @@
                 //res.serverId 返回图片的服务器端ID
                 var serverId = res.serverId; // 返回图片的服务器端ID
                 imgA.push(serverId)
-                imgserverId=imgA;
-                if(localIds.length > 0){
-                    window.setTimeout(function(){
+                imgserverId = imgA;
+                if (localIds.length > 0) {
+                    window.setTimeout(function () {
                         syncUpload(localIds);
-                    },500);
-                }else{
-                    window.setTimeout(function(){
+                    }, 500);
+                } else {
+                    window.setTimeout(function () {
                         $("#imgId").val(imgA);
-                    },500);
+                    }, 500);
 
                 }
             }
         })
     }
 
-    function preview(){
+    function preview() {
         var imgs = [];
         var imgObj = $("#dd img");//这里改成相应的对象
         for (var i = 0; i < imgObj.length; i++) {

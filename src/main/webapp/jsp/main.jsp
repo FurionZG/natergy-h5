@@ -60,6 +60,12 @@
 							<div class="mui-media-body">拜访</div>
 						</a>
 					</li>
+                    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                        <a href="javascript:;" onclick="funBusiness()">
+                            <span class="mui-icon iconfont icon-gongzuo1"></span>
+                            <div class="mui-media-body">出差</div>
+                        </a>
+                    </li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 						<a href="javascript:;" onclick="funWork()">
 							<span class="mui-icon iconfont icon-gongzuo1"></span>
@@ -168,9 +174,12 @@
 
 			/** 拜访 **/
 			function funVisit() {
-				mui.toast('拜访客户-待开放...');
+                window.location.href = "/natergy-h5/visit/init";
 			}
-
+            /** 出差 **/
+            function funBusiness() {
+                window.location.href = "business/business.jsp";
+            }
 			/** 工作 **/
 			function funWork() {
 				mui.toast('工作日报-待开放...');

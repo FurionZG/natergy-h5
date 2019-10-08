@@ -12,4 +12,7 @@ public interface UserMapper {
 
     @Select("Select count(*) from 用户 where 用户=#{user.uname} and 密码=#{user.pwd}")
     Integer checkUser(@Param("user") User u);
+
+    @Select("select 用户编号 from 用户 where 用户=#{uname}")
+    String getUserNo(String uname);
 }

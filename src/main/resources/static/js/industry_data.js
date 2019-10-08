@@ -33,4 +33,9 @@ var industry_data= [{
 	}, {
 		text: "其他甲方单位"
 	}]
-}]
+}];
+var productBrand =[{text: '绿能'}, {text: '永成'}, {text: '福龙'}, {text: '海鑫'}, {text: '赛利'}];
+var productType=[{text: '3A分子筛'}, {text: '4A分子筛'}, {text: '干燥剂'}, {text: '氧化钙'}, {text: '氯化钙'}, {text: '其他'}];
+var consumption=[{text: '5吨以下（含）'}, {text: '5-10吨（含）'}, {text: '10-20吨（含）'}, {text: '20吨以上'}];
+var customerType=[{text: '合作'}, {text: '未合作'}, {text: '流失'}, {text: '倒闭'}, {text: '混合使用'}, {text: '不做中空'}, {text: '其他'}];
+var price=[{text: '3-4'}, {text: '4-5'}, {text: '5-6'}, {text: '6-7'}, {text: '7-8'}, {text: '8-9'}, {text: '其他'}];

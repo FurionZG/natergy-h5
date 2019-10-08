@@ -73,40 +73,12 @@
 <body>
 
 <header class="mui-bar mui-bar-nav">
-    <h1 class="mui-title">地产跟进</h1>
+    <h1 class="mui-title">出差计划</h1>
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
-
 </header>
-<!--右上角弹出菜单-->
-<div id="topPopover" class="mui-popover">
-    <div class="mui-popover-arrow"></div>
-    <div class="mui-scroll-wrapper">
-        <div class="mui-scroll">
-            <ul class="mui-table-view">
-                <li class="mui-table-view-cell">
-                    <a href="javascript:;" onclick="funAdd()" id="addFollow"> <span
-                            class="mui-icon iconfont icon-add"></span>添加
-                    </a>
-                </li>
 
-                <li class="mui-table-view-cell">
-                    <a href="javascript:;" onclick="funFilter()"> <span class="mui-icon iconfont icon-shaixuan"></span>筛选
-                    </a>
-                </li>
 
-                <li class="mui-table-view-cell">
-                    <a href="javascript:;" onclick="funRefresh()"> <span class="mui-icon iconfont icon-shuaxin"></span>刷新
-
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-</div>
 <!--下拉刷新容器-->
-
 <div id="pullrefresh" class="mui-content mui-scroll-wrapper" >
     <div class="mui-scroll" style="width: 95%">
         <!-- limit-->
@@ -117,7 +89,12 @@
 
         </ul>
     </div>
+    <div class="mui-content-padded" style="margin-top: 20px;">
+        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">开始出差</button>
+        <input type="hidden" id ='flag'>
+    </div>
 </div>
+
 <!--<div style="margin-top: 30px;">
     <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
         <div class="mui-scroll">
@@ -134,8 +111,8 @@
 <script type="text/javascript">
 
     function funAdd() {
-        mui.toast('添加地产跟进');
-        window.location.href = "/natergy-h5/followUp/followUpAddInit";
+        mui.toast('添加销售拜访');
+        window.location.href = "visitAdd.jsp";
     }
 
     /** 筛选订单 **/
@@ -151,26 +128,24 @@
 
 <script>
     $(document).ready(function loading() {
-        var followUpListByUser = ${followUpList};
-
-        var json = eval(followUpListByUser);
-
-        $("#limit").val(10);
-        for (var i = 0; i < json.length; i++) { //循环数据
-            $("#followUpList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/"+json[i].images[0]+"'>" +
-                json[i].customerName +
-                "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
-                "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
-
-        }
-
-        mui('body').on('tap', '#followUpList li', function () {
-            clickLi(this)
+        $.ajax({
+            url: "/natergy-h5/visit/init",
+            contentType: "application/json;charset=utf-8",
+            type: "post",
+            dataType: "json",
+            data: "",
+            success: function (json) {
+                var count = json;
+                $("#flag").val(count);
+                if(1==count){
+                    $("#id_btnSave").attr('class','mui-btn mui-btn-danger');
+                    $("#id_btnSave").text('结束出差');
+                }else{
+                    $("#id_btnSave").attr('class','mui-btn mui-btn-success');
+                    $("#id_btnSave").text('开始出差');
+                }
+            }
         });
-        mui('body').on('tap', '#addFollow', function () {
-            funAdd()
-        });
-
     });
 </script>
 <script>
@@ -259,13 +234,60 @@
     }
 </script>
 <script>
-	function clickLi(obj){
-		localStorage.clear();
-		localStorage.setItem("value",$(obj).find("input:hidden").val());
-		window.location.href="<%=request.getContextPath()%>/jsp/followUp/followUpEdit.jsp"
-	}
-</script>
+    var btnSave = document.getElementById("id_btnSave");
+    btnSave.addEventListener("tap", function() {
 
+        var flag=$("#flag").val();
+        if(1==flag){
+            mui.toast('正在结束出差...');
+            $.ajax({
+                url: "/natergy-h5/visit/end",
+                contentType: "application/json;charset=utf-8",
+                type: "post",
+                dataType: "json",
+                data: "",
+                success: function (data) {
+                    if(1==data){
+                        mui.toast('保存成功');
+                        window.location.reload();
+                    }else{
+                        mui.toast('订单保存失败，请稍后重试...');
+                    }
+                }
+            });
+        }else {
+            mui.toast('正在开始出差...');
+            $.ajax({
+                url: "/natergy-h5/visit/begin",
+                contentType: "application/json;charset=utf-8",
+                type: "post",
+                dataType: "json",
+                data: "",
+                success: function (data) {
+
+                    if(1==data){
+                        mui.toast('保存成功');
+                        window.location.reload();
+                    }else{
+                        mui.toast('订单保存失败，请稍后重试...');
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+        setTimeout(function() {
+            mui(this).button('reset');
+
+            //mui.back();
+
+        }.bind(this), 1000);
+    });
+</script>
 </body>
 
 </html>
