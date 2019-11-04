@@ -13,9 +13,9 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
-    -
+
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/css/mui.poppicker.css" rel="stylesheet"/>
 
@@ -35,10 +35,12 @@
         <header class="mui-bar mui-bar-nav">
             <h1 class="mui-title">修改拜访记录</h1>
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 30%;float: right">修改
+            </button>
         </header>
 
     </div>
-    <form  class="mui-input-group" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+    <form  class="mui-input-group" style="margin: 50px 5px 0px 5px; border-radius: 10px;">
         <input type="hidden" id = "id">
         <hr>
         <h5>出差开始时间${businessStartTime}</h5>
@@ -59,24 +61,24 @@
 
         <h5> 联系人1</h5>
         <div class="mui-input-row">
-            <label>联系人</label> <input type="text" placeholder="" id="contacts_1">
+            <label>联系人</label> <input type="text" placeholder="请输入联系人1" id="contacts_1">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_1">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话1" id="tel_1">
         </div>
         <h5> 联系人2</h5>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_2">
+            <label>名称</label> <input type="text" placeholder="请输入联系人2" id="contacts_2">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_2">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话2" id="tel_2">
         </div>
         <h5> 联系人3</h5>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_3">
+            <label>名称</label> <input type="text" placeholder="请输入联系人3" id="contacts_3">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_3">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话3" id="tel_3">
         </div>
 
 
@@ -116,7 +118,7 @@
 
     <h5 class="mui-content-padded">拜访记录</h5>
     <div class="mui-input-row" style="margin: 10px 5px;">
-        <textarea id="record" rows="5" placeholder="拜访记录"></textarea>
+        <textarea id="record" rows="5" placeholder="请输入拜访记录"></textarea>
     </div>
     <h5>图片附件</h5>
     <div class="photos">
@@ -125,7 +127,7 @@
         </div>
     </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
-        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 100%;">修改跟进记录</button>
+        <button id='delete' type="button" class="mui-btn mui-btn-danger" style="width: 100%;">删除跟进记录</button>
     </div>
 
 </div>
@@ -133,13 +135,13 @@
 </body>
 
 
-<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
 
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 
 <script src="<%=request.getContextPath()%>/js/mui.picker.js"></script>
 <script src="<%=request.getContextPath()%>/js/mui.poppicker.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 
 
@@ -232,7 +234,7 @@
                     mui.toast('修改成功');
                     window.location.href="/natergy-h5/visit/init"
                 }else{
-                    mui.toast('订单修改失败，请稍后重试...');
+                    mui.toast('出差拜访修改失败，请稍后重试...');
                 }
             }
         });
@@ -251,7 +253,7 @@
     (function ($, doc) {
         $.init();
         $.ready(function () {
-            var json =eval("("+localStorage.getItem("value")+")");
+            var json =eval("("+localStorage.getItem("visit")+")");
             console.log(json);
             doc.getElementById('id').value=json.id;
             doc.getElementById('customerName').value=json.customerName;
@@ -335,6 +337,28 @@
 
         });
     })(mui, document);
+</script>
+<script>
+    var btnSave = document.getElementById("delete");
+    btnSave.addEventListener("tap", function () {
+        $.ajax({
+            url: "/natergy-h5/visit/delete",
+            contentType: "application/json;charset=utf-8",
+            type: "get",
+            dataType: "json",
+            data: {
+                "id" :$("#id").val()
+            }, success: function (data) {
+                if(1==data){
+                    mui.toast('删除成功');
+                    window.location.href="/natergy-h5/visit/init"
+                }else{
+                    mui.toast('出差拜访删除失败，请稍后重试...');
+                }
+            }
+        });
+    });
+
 </script>
 
 </body>

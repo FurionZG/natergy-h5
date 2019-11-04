@@ -13,7 +13,7 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
 
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
@@ -145,24 +145,24 @@
 
         <h5> 联系人1</h5>
         <div class="mui-input-row">
-            <label>联系人</label> <input type="text" placeholder="" id="contacts_1">
+            <label>联系人</label> <input type="text" placeholder="请输入联系人1" id="contacts_1">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_1">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话1" id="tel_1">
         </div>
         <h5> 联系人2</h5>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_2">
+            <label>名称</label> <input type="text" placeholder="请输入联系人2" id="contacts_2">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_2">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话2" id="tel_2">
         </div>
         <h5> 联系人3</h5>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_3">
+            <label>名称</label> <input type="text" placeholder="请输入联系人3" id="contacts_3">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_3">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话3" id="tel_3">
         </div>
 
 
@@ -202,7 +202,7 @@
 
     <h5 class="mui-content-padded">拜访记录</h5>
     <div class="mui-input-row" style="margin: 10px 5px;">
-        <textarea id="record" rows="5" placeholder="拜访记录"></textarea>
+        <textarea id="record" rows="5" placeholder="请输入拜访记录"></textarea>
     </div>
 
     <h5>同时选择上传1-4张照片，第一张为封面图</h5>
@@ -226,8 +226,8 @@
 </body>
 
 
-<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -344,12 +344,12 @@
     function getAddressByAjax() {
 
         $.ajax({
-            url: "/natergy-h5/followUp/getAddress",
+            url: "/natergy-h5/visit/getAddress",
             contentType: "application/x-www-form-urlencoded:charset=UTF-8",
             type: "get",
             dataType: "json",
             data: {
-                "name": $("#searchedName").val()
+                "customerName": $("#searchedName").val()
             },
             success: function (data) {
                 //var json = eval("(" + data + ")");
@@ -384,7 +384,11 @@
 <script>
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function () {
-
+        var cName = $("#customerName").val();
+        if(""==cName){
+            mui.toast('客户名为空，请关联客户名...');
+            return;
+        }
 
         var img_alt = []
         $("#photos img").each(function () {
@@ -434,7 +438,7 @@
                     mui.toast('保存成功');
                     window.location.href = "/natergy-h5/visit/init"
                 } else {
-                    mui.toast('订单保存失败，请稍后重试...');
+                    mui.toast('出差拜访保存失败，请稍后重试...');
                 }
             }
         });

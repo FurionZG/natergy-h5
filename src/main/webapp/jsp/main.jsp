@@ -7,7 +7,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css" />
+		<link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/fonts/my001/iconfont.css" />
 		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
@@ -62,13 +62,13 @@
 					</li>
                     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
                         <a href="javascript:;" onclick="funBusiness()">
-                            <span class="mui-icon iconfont icon-gongzuo1"></span>
+                            <span class="mui-icon iconfont icon-chuchashenqing"></span>
                             <div class="mui-media-body">出差</div>
                         </a>
                     </li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 						<a href="javascript:;" onclick="funWork()">
-							<span class="mui-icon iconfont icon-gongzuo1"></span>
+							<span class="mui-icon iconfont icon-rizhi"></span>
 							<div class="mui-media-body">工作</div>
 						</a>
 					</li>
@@ -178,11 +178,11 @@
 			}
             /** 出差 **/
             function funBusiness() {
-                window.location.href = "business/business.jsp";
+                window.location.href = "/natergy-h5/business/init";
             }
 			/** 工作 **/
 			function funWork() {
-				mui.toast('工作日报-待开放...');
+				window.location.href = "/natergy-h5/working/init";
 			}
 
 			/** 统计报表 **/
@@ -196,11 +196,12 @@
 
 
 			function test() {
-				window.location.href = "<%=request.getContextPath()%>/xx";
+				mui.toast('测试测试...');
+				//window.location.href = "<%=request.getContextPath()%>/xx";
 			}
 			/** 退出系统，返回登录界面 **/
 			function funExit() {
-				window.location.href = "login.html";
+				window.location.href = "/natergy-h5/logout";
 			}
 
 			/** 禁止微信下拉动作 **/

@@ -13,8 +13,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
-
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -26,16 +25,16 @@
 <div class="mui-content">
     <form class="mui-input-group" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
         <div class="mui-input-row">
-            <label>客户名称</label> <input type="text" placeholder="" id="customerName" >
+            <label>客户名称</label> <input type="text" placeholder="请输入客户名称" id="customerName" >
         </div>
         <div class="mui-input-row">
-            <label>省</label> <input type="text" placeholder="" id="pro" >
+            <label>省</label> <input type="text" placeholder="请输入省" id="pro" >
         </div>
         <div class="mui-input-row">
-            <label>市</label> <input type="text" placeholder="" id="city" >
+            <label>市</label> <input type="text" placeholder="请输入市" id="city" >
         </div>
         <div class="mui-input-row">
-            <label>客户地址</label> <input type="text" placeholder="" id="address" >
+            <label>客户地址</label> <input type="text" placeholder="请输入客户地址" id="address" >
         </div>
     </form>
     <div class="mui-content">
@@ -64,8 +63,8 @@
         </div>
     </div>
 </div>
-<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script>
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function() {

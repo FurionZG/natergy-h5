@@ -51,13 +51,15 @@ public class FollowUpService {
     public List<FollowUp> getFollowUpByUser(String user) {
         List<FollowUp> resultList = followUpDao.getFollowUpByUser(user);
         for (FollowUp followUp : resultList) {
-            String imgStr = followUp.getImgStr();
-            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
-            //不要第一个值，因为第一个值是""
-            for (int i = 1; i < images.length; i++) {
-                String imageUrl = optionsDao.queryOption(images[i]);
-                imgesList.add(imageUrl);
+            if (null != followUp.getImgStr()) {
+                String imgStr = followUp.getImgStr();
+                String[] images = imgStr.split("/");
+                //不要第一个值，因为第一个值是""
+                for (int i = 1; i < images.length; i++) {
+                    String imageUrl = optionsDao.queryOption(images[i]);
+                    imgesList.add(imageUrl);
+                }
             }
             followUp.setImages(imgesList);
         }
@@ -132,13 +134,15 @@ public class FollowUpService {
     public List<FollowUp> refreshFollowUp(String uname) {
         List<FollowUp> resultList = followUpDao.getFollowUpByUser(uname);
         for (FollowUp followUp : resultList) {
-            String imgStr = followUp.getImgStr();
-            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
-            //不要第一个值，因为第一个值是""
-            for (int i = 1; i < images.length; i++) {
-                String imageUrl = optionsDao.queryOption(images[i]);
-                imgesList.add(imageUrl);
+            if (null != followUp.getImgStr()) {
+                String imgStr = followUp.getImgStr();
+                String[] images = imgStr.split("/");
+                //不要第一个值，因为第一个值是""
+                for (int i = 1; i < images.length; i++) {
+                    String imageUrl = optionsDao.queryOption(images[i]);
+                    imgesList.add(imageUrl);
+                }
             }
             followUp.setImages(imgesList);
         }
@@ -168,13 +172,15 @@ public class FollowUpService {
     public List<FollowUp> reloadFolloUp(String uname, Integer limit) {
         List<FollowUp> resultList = followUpDao.reloadFollowUp(limit, uname);
         for (FollowUp followUp : resultList) {
-            String imgStr = followUp.getImgStr();
-            String[] images = imgStr.split("/");
             List<String> imgesList = new ArrayList<>();
-            //不要第一个值，因为第一个值是""
-            for (int i = 1; i < images.length; i++) {
-                String imageUrl = optionsDao.queryOption(images[i]);
-                imgesList.add(imageUrl);
+            if (null != followUp.getImgStr()) {
+                String imgStr = followUp.getImgStr();
+                String[] images = imgStr.split("/");
+                //不要第一个值，因为第一个值是""
+                for (int i = 1; i < images.length; i++) {
+                    String imageUrl = optionsDao.queryOption(images[i]);
+                    imgesList.add(imageUrl);
+                }
             }
             followUp.setImages(imgesList);
         }

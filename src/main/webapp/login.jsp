@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css" />
+		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
 		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 		<title></title>
@@ -35,10 +35,29 @@
 
 		</div>
 
-		<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-		<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+		<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				var code = getUrlParam('code');
+				$.ajax({
+					url: "<%=request.getContextPath()%>/wxOpenId",
+					contentType: "application/json;charset=utf-8",
+					type: "post",
+					dataType: "json",
+					data: JSON.stringify({
+						"code": code
+					}),
+					success: function(data) {
+						if(0==data){
+                            mui.toast('微信登录失败，请手动输入账号密码');
+                        }else{
+                            mui.toast('欢迎'+data);
+                            window.location.href = "jsp/main.jsp";
+                        }
+
+					}
+				});
 				var uName = window.localStorage.getItem('userName');
 				var pwd = window.localStorage.getItem('password');
 				if(null != uName&&null!=pwd) {
@@ -48,6 +67,7 @@
 			});
 			
 		</script>
+
 		<script type="text/javascript">
 			/** 登录 **/
 			var btnLogin = document.getElementById("id_btnLogin");
@@ -93,6 +113,21 @@
 				passive: false
 			}); //passive 参数不能省略，用来兼容ios和android
 		</script>
+		<script>
+			function getUrlParam (name) {
+				var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+				var url = window.location.href.split('#')[0]
+				var search = url.split('?')[1]
+				if (search) {
+					var r = search.substr(0).match(reg)
+					if (r !== null) return unescape(r[2])
+					return null
+				} else {
+					return null
+				}
+			}
+		</script>
+
 	</body>
 
 </html>

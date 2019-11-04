@@ -13,7 +13,7 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
 
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
@@ -147,45 +147,45 @@
 
         <p> 联系人1</p>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_1">
+            <label>名称</label> <input type="text" placeholder="请输入联系人1" id="contacts_1">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_1">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话1" id="tel_1">
         </div>
         <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_1">
+            <label>部门</label> <input type="text" placeholder="请输入联系人1部门" id="department_1">
         </div>
         <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_1">
+            <label>职务</label> <input type="text" placeholder="请输入联系人1职务" id="post_1">
         </div>
         <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_1">
+            <label>聊天账号</label> <input type="text" placeholder="请输入联系人1聊天账号" id="chart_1">
         </div>
         <p> 联系人2</p>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_2">
+            <label>名称</label> <input type="text" placeholder="请输入联系人2" id="contacts_2">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_2">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话2" id="tel_2">
         </div>
         <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_2">
+            <label>部门</label> <input type="text" placeholder="请输入联系人2部门" id="department_2">
         </div>
         <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_2">
+            <label>职务</label> <input type="text" placeholder="请输入联系人2职务" id="post_2">
         </div>
         <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_2">
+            <label>聊天账号</label> <input type="text" placeholder="请输入联系人2聊天账号" id="chart_2">
         </div>
         <p>其他信息</p>
         <div class="mui-input-row">
-            <label>固话 </label> <input type="text" placeholder="" id="tel">
+            <label>固话 </label> <input type="text" placeholder="请输入固话" id="tel">
         </div>
         <div class="mui-input-row">
-            <label>电子邮件</label> <input type="text" placeholder="" id="email">
+            <label>电子邮件</label> <input type="text" placeholder="请输入电子邮箱" id="email">
         </div>
         <div class="mui-input-row">
-            <label>网址</label> <input type="text" placeholder="" id="web">
+            <label>网址</label> <input type="text" placeholder="请输入公司主页" id="web">
         </div>
 
 
@@ -218,7 +218,7 @@
 
     <h5 class="mui-content-padded">跟进记录</h5>
     <div class="mui-input-row" style="margin: 10px 5px;">
-        <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
+        <textarea id="record" rows="5" placeholder="请输入跟进记录"></textarea>
     </div>
 
     <h5>同时选择上传1-4张照片，第一张为封面图</h5>
@@ -239,8 +239,8 @@
 </body>
 
 
-<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -261,7 +261,7 @@
 </script>
 <script>
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '${appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
         timestamp: parseInt("${timestamp}", 10), // 必填，生成签名的时间戳
         nonceStr: '${noncestr}', // 必填，生成签名的随机串
@@ -399,7 +399,11 @@
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function () {
 
-
+        var cName = $("#customerName").val();
+        if(""==cName){
+            mui.toast('客户名为空，请关联客户名...');
+            return;
+        }
         var chk_value = [];//定义一个数组
         $('input[name="checkbox"]:checked').each(function () {//遍历每一个名字为interest的复选框，其中选中的执行函数
             chk_value.push($(this).val());//将选中的值添加到数组chk_value中    
@@ -510,57 +514,7 @@
         });
     })(mui, document);
 </script>
-<%--<script>--%>
-<%--    function test() {--%>
-<%--        var localIds = [];--%>
 
-<%--        wx.chooseImage({--%>
-<%--            count: 4,--%>
-<%--            sizeType: ['original', 'compressed'],--%>
-<%--            sourceType: ['camera','album'],--%>
-<%--            success:function(res) {--%>
-<%--                // tempFilePath可以作为img标签的src属性显示图片--%>
-<%--                //const tempFilePaths = res.tempFilePaths--%>
-<%--                // var localId =res.localIds;--%>
-<%--                // for(i=0;i<localId.length;i++){--%>
-<%--                //     wx.uploadImage({--%>
-<%--                //         localId: localId[i],--%>
-<%--                //         isShowProgressTips: 1,--%>
-<%--                //         success: function (res) {--%>
-<%--                //             auth_image = res.serverId;--%>
-<%--                //             $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+auth_image+"'/>");--%>
-<%--                //             alert(auth_image);--%>
-<%--                //         },--%>
-<%--                //         fail: function (res) {--%>
-<%--                //             alert("照片上传失败"+JSON.stringify(res));--%>
-<%--                //         }--%>
-<%--                //     });--%>
-<%--                // }--%>
-<%--                localIds = res.localIds;--%>
-
-<%--                syncUpload();--%>
-<%--            }--%>
-<%--        });--%>
-<%--        function syncUpload() {--%>
-<%--            if (!localIds.length) {--%>
-<%--                alert('上传成功!');--%>
-<%--            } else {--%>
-<%--                var localId = localIds.pop();--%>
-<%--                wx.uploadImage({--%>
-<%--                    localId: localId,--%>
-<%--                    success: function(res) {--%>
-<%--                        $("#photos").append("<img class='imgs' src='"+localId+"' style='width: 100px;height: 100px' alt='"+res.serverId+"'/>");--%>
-
-<%--                        window.setTimeout(function() {--%>
-<%--                            syncUpload();--%>
-<%--                        },100);--%>
-<%--                    }--%>
-<%--                });--%>
-<%--            }--%>
-<%--        }--%>
-<%--    }--%>
-
-<%--</script>--%>
 <script>
 
 

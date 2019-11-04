@@ -13,9 +13,9 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
-    -
+
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/css/mui.poppicker.css" rel="stylesheet"/>
 
@@ -31,7 +31,7 @@
 <div class="mui-content">
 
 
-    <div class="mui-content-padded" style="margin: 15px;">
+    <div class="mui-content-padded" style="margin: 50px;">
         <header class="mui-bar mui-bar-nav">
             <h1 class="mui-title">修改跟进记录</h1>
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -61,45 +61,45 @@
 
         <p> 联系人1</p>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_1">
+            <label>名称</label> <input type="text" placeholder="请输入联系人1" id="contacts_1">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_1">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话1" id="tel_1">
         </div>
         <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_1">
+            <label>部门</label> <input type="text" placeholder="请输入联系人1部门" id="department_1">
         </div>
         <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_1">
+            <label>职务</label> <input type="text" placeholder="请输入联系人1职务" id="post_1">
         </div>
         <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_1">
+            <label>聊天账号</label> <input type="text" placeholder="请输入联系人1聊天账号" id="chart_1">
         </div>
         <p> 联系人2</p>
         <div class="mui-input-row">
-            <label>名称</label> <input type="text" placeholder="" id="contacts_2">
+            <label>名称</label> <input type="text" placeholder="请输入联系人2" id="contacts_2">
         </div>
         <div class="mui-input-row">
-            <label>联系电话</label> <input type="text" placeholder="" id="tel_2">
+            <label>联系电话</label> <input type="text" placeholder="请输入联系电话2" id="tel_2">
         </div>
         <div class="mui-input-row">
-            <label>部门</label> <input type="text" placeholder="" id="department_2">
+            <label>部门</label> <input type="text" placeholder="请输入联系人2部门" id="department_2">
         </div>
         <div class="mui-input-row">
-            <label>职务</label> <input type="text" placeholder="" id="post_2">
+            <label>职务</label> <input type="text" placeholder="请输入联系人2职务" id="post_2">
         </div>
         <div class="mui-input-row">
-            <label>聊天账号</label> <input type="text" placeholder="" id="chart_2">
+            <label>聊天账号</label> <input type="text" placeholder="请输入联系人2聊天账号" id="chart_2">
         </div>
         <p>其他信息</p>
         <div class="mui-input-row">
-            <label>固话 </label> <input type="text" placeholder="" id="tel">
+            <label>固话 </label> <input type="text" placeholder="请输入固话" id="tel">
         </div>
         <div class="mui-input-row">
-            <label>电子邮件</label> <input type="text" placeholder="" id="email">
+            <label>电子邮件</label> <input type="text" placeholder="请输入电子邮箱" id="email">
         </div>
         <div class="mui-input-row">
-            <label>网址</label> <input type="text" placeholder="" id="web">
+            <label>网址</label> <input type="text" placeholder="请输入公司主页" id="web">
         </div>
 
 
@@ -132,7 +132,7 @@
 
     <h5 class="mui-content-padded">跟进记录</h5>
     <div class="mui-input-row" style="margin: 10px 5px;">
-        <textarea id="record" rows="5" placeholder="跟进记录"></textarea>
+        <textarea id="record" rows="5" placeholder="请输入跟进记录"></textarea>
     </div>
     <h5>图片附件</h5>
     <div class="photos">
@@ -149,13 +149,13 @@
 </body>
 
 
-<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
 
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 
 <script src="<%=request.getContextPath()%>/js/mui.picker.js"></script>
 <script src="<%=request.getContextPath()%>/js/mui.poppicker.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 
 

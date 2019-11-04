@@ -19,7 +19,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         if (req.getServletPath().contains("/login.jsp") || req.getServletPath().contains("/login")
-                || req.getServletPath().endsWith(".js") || req.getServletPath().endsWith(".css")) {
+                || req.getServletPath().endsWith(".js") || req.getServletPath().endsWith(".css")||req.getServletPath().contains("/wxOpenId")) {
             chain.doFilter(request, response);
             return;
         }

@@ -74,7 +74,7 @@
 <body>
 
 <header class="mui-bar mui-bar-nav">
-    <h1 class="mui-title">销售拜访</h1>
+    <h1 class="mui-title">工作进程</h1>
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
     <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
 
@@ -98,44 +98,43 @@
 
                 <li class="mui-table-view-cell">
                     <a href="javascript:;" onclick="funRefresh()"> <span class="mui-icon iconfont icon-shuaxin"></span>刷新
+
                     </a>
                 </li>
             </ul>
         </div>
     </div>
+
 </div>
 <div class="mui-content">
-    <form id="form-country_v1" name="form-country_v1" style="margin-top: 10px;">
-        <div class="typeahead__container">
-            <div class="typeahead__field" style="">
-                <div class="typeahead__query">
-                    <input class="js-typeahead-country_v1" name="country_v1[query]" type="search"
-                           placeholder="Search" autocomplete="off" id="searchedName">
-                </div>
-                <div class="typeahead__button">
-                    <button type="button" onclick="getVisitByAjax()">
-                        <i class="typeahead__search-icon"></i>
-                    </button>
+        <form id="form-country_v1" name="form-country_v1" style="margin-top: 10px;display: none; " >
+            <div class="typeahead__container">
+                <div class="typeahead__field" style="">
+                    <div class="typeahead__query">
+                        <input class="js-typeahead-country_v1" name="country_v1[query]" type="search"
+                               placeholder="Search" autocomplete="off" id="searchedName">
+                    </div>
+                    <div class="typeahead__button">
+                        <button type="button" onclick="getWorkingsByAjax()">
+                            <i class="typeahead__search-icon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-
+        </form>
     <!--下拉刷新容器-->
 
-    <div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: 100px;padding-top: 0px">
-
+    <div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: 50px;padding-top: 0px">
         <div class="mui-scroll" style="width: 95%">
             <!-- limit-->
             <input type="hidden" id="limit" value=""/>
-
+            <input type="hidden" id="search" value=""/>
             <!--数据列表-->
-            <ul class="mui-table-view mui-table-view-chevron" id="visitList">
+            <ul class="mui-table-view mui-table-view-chevron" id="workingList">
 
             </ul>
         </div>
     </div>
-
 </div>
 
 
@@ -147,8 +146,8 @@
 <script type="text/javascript">
 
     function funAdd() {
-        mui.toast('添加销售拜访');
-        window.location.href = "/natergy-h5/visit/visitAddInit";
+        mui.toast('添加工作进程');
+        window.location.href = "/natergy-h5/working/workingAddInit";
     }
 
     /** 筛选订单 **/
@@ -165,65 +164,35 @@
 <script>
     $(document).ready(function loading() {
 
-        var visitListListByUser = ${visitList};
+        var workings = ${workings};
+        var user = "${user}";
+        var salesExecutive=${salesExecutive}
+        if(salesExecutive.indexOf(user)!=-1){
+            $("#form-country_v1").css("display","block");
+            $("#pullrefresh").css("margin-top","100px");
 
-        var json = eval(visitListListByUser);
+        }
+        var json = eval(workings);
 
-        $("#limit").val(10);
+
         for (var i = 0; i < json.length; i++) { //循环数据
-            $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
-                json[i].customerName +
-                "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+            $("#workingList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                json[i].date +
+                "<p class='mui-ellipsis'>" + json[i].status + "</p>" +
+                "<p class='mui-ellipsis'>" + json[i].user + "</p>" +
                 "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
         }
 
-        mui('body').on('tap', '#visitList li', function () {
+        mui('body').on('tap', '#workingList li', function () {
             clickLi(this)
         });
-        mui('body').on('tap', '#addVisit', function () {
+        mui('body').on('tap', '#addWorking', function () {
             funAdd()
         });
     });
 </script>
-<script>
-    var allName = ${visitsNameSet}
-        $.typeahead({
-            input: '.js-typeahead-country_v1',
-            order: "desc",
-            source: {
-                data: allName
-            },
-            callback: {
-                onInit: function (node) {
-                    console.log('Typeahead Initiated on ' + node.selector);
-                }
-            }
-        });
-</script>
-<script>
-    function getVisitByAjax() {
-        $.ajax({
-            url: "/natergy-h5/visit/getVisitInfoByAjax",
-            contentType: "application/json;charset=utf-8",
-            type: "get",
-            data: {
-                "customerName": $("#searchedName").val(),
-            },
-            dataType: "json",
-            success: function (data) {
-                var json = eval(data);
-                $("#visitList li").remove();
-                for (var i = 0; i < json.length; i++) { //循环数据
-                    $("#visitList").append("<li class='mui-table-view-cell mui-media' style='height:55px' ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
-                        json[i].customerName +
-                        "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
-                        "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
-                }
-            }
-        });
 
-    }
-</script>
+
 <script>
     mui.init({
         pullRefresh: {
@@ -246,13 +215,14 @@
         setTimeout(function () {
 
             $.ajax({
-                url: "/natergy-h5/visit/reload",
+                url: "/natergy-h5/working/reload",
                 contentType: "application/x-www-form-urlencoded:charset=UTF-8",
                 type: "get",
                 timeout: "1000",
                 dataType: "json",
                 data: {
-                    "limit": $("#visitList li").length
+                    "limit": $("#workingList li").length,
+                    "name": $("#search").val()
                 },
                 success: function (data) {
                     var json = eval(data);
@@ -260,9 +230,10 @@
                         count = true;
                     }
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
-                            json[i].customerName +
-                            "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                        $("#workingList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                            json[i].date +
+                            "<p class='mui-ellipsis'>" + json[i].status + "</p>" +
+                            "<p class='mui-ellipsis'>" + json[i].user + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                     }
 
@@ -285,22 +256,25 @@
      * 下拉刷新具体业务实现
      */
     function pulldownRefresh() {
+        $("#search").val("");
         setTimeout(function () {
             $.ajax({
-                url: "/natergy-h5/visit/refresh",
+                url: "/natergy-h5/working/refresh",
                 contentType: "application/json;charset=utf-8",
                 type: "post",
                 dataType: "json",
                 data: "",
                 success: function (json) {
-                    $("#visitList li").remove();
+                    $("#workingList li").remove();
                     //var json = eval(data);
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
-                            json[i].customerName +
-                            "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                        $("#workingList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                            json[i].date +
+                            "<p class='mui-ellipsis'>" + json[i].status + "</p>" +
+                            "<p class='mui-ellipsis'>" + json[i].user + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                     }
+
                 }
             });
             mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
@@ -310,11 +284,50 @@
 </script>
 <script>
     function clickLi(obj) {
-        localStorage.setItem("visit", $(obj).find("input:hidden").val());
-        window.location.href = "<%=request.getContextPath()%>/jsp/visit/visitEdit.jsp"
+        localStorage.setItem("working", $(obj).find("input:hidden").val());
+        window.location.href = "/natergy-h5/working/workingEditInit"
     }
 </script>
-
+<script>
+    var allName = ${workingNameSet}
+        $.typeahead({
+            input: '.js-typeahead-country_v1',
+            order: "desc",
+            source: {
+                data: allName
+            },
+            callback: {
+                onInit: function (node) {
+                    console.log('Typeahead Initiated on ' + node.selector);
+                }
+            }
+        });
+</script>
+<script>
+    function getWorkingsByAjax(){
+        $.ajax({
+            url: "/natergy-h5/working/getWorkingsByName",
+            contentType: "application/json;charset=utf-8",
+            type: "get",
+            dataType: "json",
+            data: {
+                "name": $("#searchedName").val()
+            },
+            success: function (json) {
+                $("#workingList li").remove();
+                //var json = eval(data);
+                $("#search").val($("#searchedName").val());
+                for (var i = 0; i < json.length; i++) { //循环数据
+                    $("#workingList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                        json[i].date +
+                        "<p class='mui-ellipsis'>" + json[i].status + "</p>" +
+                        "<p class='mui-ellipsis'>" + json[i].user + "</p>" +
+                        "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
+                }
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

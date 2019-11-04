@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -36,8 +33,8 @@ public class OrderService {
 
     }
 
-    public ResultOfSelectCustomerInfoByName getCustomerInfoByName(String customerName) {
-        return customerDao.getCustomerInfoByName(customerName);
+    public ResultOfSelectCustomerInfoByName getCustomerInfoByName(String customerName, String uname) {
+        return customerDao.getCustomerInfoByName(customerName, uname);
     }
 
     /**
@@ -78,6 +75,7 @@ public class OrderService {
 
     /**
      * 保存订单的业务方法
+     *
      * @param order
      * @param uname
      * @return
@@ -85,7 +83,7 @@ public class OrderService {
     @Transactional
     public Integer saveOrderTranscation(Order order, String uname) {
         //查询省，市，客户编码，合同方式，合同编号
-        Map<String, String> customerInfo = orderDao.getCustomerInfo(order.getCustomerName());
+        Map<String, String> customerInfo = orderDao.getCustomerInfo(order.getCustomerName(), uname);
         //保存主表
         Integer reten = orderDao.saveOrder(order, uname, customerInfo);
         //分别保存订单明细
@@ -100,15 +98,45 @@ public class OrderService {
 
     /**
      * 下拉多加载五条的查询方法
+     *
      * @param uname
      * @param limit
      * @return
      */
     public List<Order> reloadOrdersLimit(String uname, Integer limit) {
-        return orderDao.queryOrdersLimit(uname,limit);
+        return orderDao.queryOrdersLimit(uname, limit);
     }
 
     public Integer saveCustomer(Customer customer, String uname) {
-        return customerDao.saveCustomer(customer,uname);
+        return customerDao.saveCustomer(customer, uname);
+    }
+
+    public Integer updateArrived(String orderNumber) {
+        return orderDao.updateArrived(orderNumber);
+    }
+
+    public Set<String> queryCustomerName(String uname) {
+        List<String> resultSet = orderDao.queryCustomerName(uname);
+        return new HashSet(resultSet);
+    }
+
+    public List<Order> getOrdersInfoByAjax(String customerName, String uname) {
+        return orderDao.getOrdersInfoByAjax(customerName, uname);
+    }
+
+    @Transactional
+    public Integer updateOrder(Order order, String uname) {
+        Order oldOrder = orderDao.queryOldOrderById(order.getId());
+        order.setOrderTime(oldOrder.getOrderTime());
+        order.setOrderNumber(oldOrder.getOrderNumber());
+        for (OrderDetail od : order.getOrderDetails()) {
+            od.setTotalWeight(String.valueOf(od.getOutwrapper().contains("桶") ? 160 * Integer.parseInt(od.getCount()) : 25 * Integer.parseInt(od.getCount())));
+            od.setTotalPrice(String.valueOf(Double.parseDouble(od.getTotalWeight()) * Double.parseDouble(od.getPrice())));
+            od.setOrderNumber(order.getOrderNumber());
+        }
+        Integer deleteOrderDetails = orderDao.deleteOrderDetails(order.getId());
+        Integer deleteOrders = orderDao.deleteOrders(order.getId());
+        Integer insertNewOrder = saveOrderTranscation(order, uname);
+        return deleteOrderDetails * deleteOrders * insertNewOrder;
     }
 }

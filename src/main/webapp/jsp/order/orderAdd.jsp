@@ -6,13 +6,13 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>添加销售订单</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.min.css">
+		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css"> -
 
 		<style>
@@ -51,22 +51,22 @@
 					<label>客户名称</label> <input type="text"  placeholder="" id="customerName" readonly="true">
 				</div>
 				<div class="mui-input-row">
-					<label>收货人</label> <input type="text" placeholder="" id="consignee">
+					<label>收货人</label> <input type="text" placeholder="请输入收货人" id="consignee">
 				</div>
 				<div class="mui-input-row">
-					<label>收货地址</label> <input type="text" placeholder="" id="receivingAddress">
+					<label>收货地址</label> <input type="text" placeholder="请输入收货地址" id="receivingAddress">
 				</div>
 				<div class="mui-input-row">
-					<label>收票人</label> <input type="text" placeholder="" id="collector">
+					<label>收票人</label> <input type="text" placeholder="请输入收票人" id="collector">
 				</div>
 				<div class="mui-input-row">
-					<label>收票地址</label> <input type="text" placeholder="" id="invoiceAddress">
+					<label>收票地址</label> <input type="text" placeholder="请输入收票地址" id="invoiceAddress">
 				</div>
 				<div class="mui-input-row">
-					<label>注意事项</label> <input type="text" placeholder="" id="attention">
+					<label>注意事项</label> <input type="text" placeholder="请输入注意事项" id="attention">
 				</div>
 				<div class="mui-input-row">
-					<label>发票事项</label> <input type="text" placeholder="" id="invoiceAttention">
+					<label>发票事项</label> <input type="text" placeholder="请输入发票注意事项称" id="invoiceAttention">
 				</div>
 			</form>
 			<div class="mui-content">
@@ -104,8 +104,8 @@
 
 	</body>
 
-	<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
+	<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
 	<script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -149,7 +149,7 @@
 							title: '订单明细',
 							shadeClose: true,
 							shade: 0.8,
-							area: ['100%', '100%'],
+							area: ['90%', '80%'],
 							content: '/natergy-h5/order/addDetailInit', //iframe的url
 							btn: ['确定', '关闭'],
 							yes: function(index) {
@@ -297,7 +297,7 @@
 					outwrapper:x[2].trim(),
 					count:x[3].split("：")[1].trim(),
 					price:x[4].split("：")[1].trim(),
-					rebate:x[4].split("：")[1].trim(),
+					rebate:x[5].split("：")[1].trim(),
 					tax:tax
 				})
 			}

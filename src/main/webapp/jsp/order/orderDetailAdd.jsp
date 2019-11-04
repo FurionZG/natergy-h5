@@ -9,7 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" href="<%=request.getContextPath()%>/css/mui.min.css">
+		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
 		<!--App自定义的css-->
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/app.css" />
 		<link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet" />
@@ -77,16 +77,14 @@
 			<div id="num-card" class="mui-card">
 				<div class="mui-input-row">
 					<label>数量</label>
-					<input id="count" type="text" placeholder="" class="num">
+					<input id="count" type="text" placeholder="请输入数量" class="num">
 				</div>
-			</div>
-			<div id="num-card" class="mui-card">
+
 				<div class="mui-input-row">
 					<label>价格</label>
-					<input id="price" type="text" placeholder="" class="num">
+					<input id="price" type="text" placeholder="请输入价格" class="num">
 				</div>
-			</div>
-			<div id="num-card" class="mui-card">
+
 				<div class="mui-input-row">
 					<label>回扣</label>
 					<input id="rebate" type="text" placeholder="" class="num" value="0" >
@@ -110,9 +108,8 @@
 
 		</div>
 	</body>
-	<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
+	<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%=request.getContextPath()%>/js/mui.picker.js"></script>
 	<script src="<%=request.getContextPath()%>/js/mui.poppicker.js"></script>
@@ -174,8 +171,7 @@
 				tax: $("input:radio:checked").val()
 
 			};
-			if(""!=$('#size').text() && ""!=$('#outWrapper').text() &&""!=$('#innerWrapper').text()&& ""!=$('#count').val()&& ""!= $('#price').val() && ""!= $('#rebate').val()){
-
+			if(""!=$('#size').text() && ""!=$('#outWrapper').text() && ""!=$('#count').val()&& ""!= $('#price').val() && ""!= $('#rebate').val()){
 				return data;
 			}else{
 				mui.toast('请完善订单明细...');

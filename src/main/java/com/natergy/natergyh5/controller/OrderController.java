@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.natergy.natergyh5.entity.Order;
 import com.natergy.natergyh5.entity.OrderDetail;
 import com.natergy.natergyh5.service.OrderService;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.tags.Param;
@@ -20,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 订单相关Controller
@@ -33,15 +36,18 @@ public class OrderController {
 
     /**
      * 初始化订单页面控制器
+     *
      * @param request
      * @return
      */
     @RequestMapping("/init")
-    public ModelAndView orderInit(HttpServletRequest request){
+    public ModelAndView orderInit(HttpServletRequest request) {
         String uname = (String) request.getSession().getAttribute("user");
         ModelAndView mv = new ModelAndView();
-        List<Order> resultList=orderService.queryOrders(uname);
+        List<Order> resultList = orderService.queryOrders(uname);
+        Set<String> customerNameList = orderService.queryCustomerName(uname);
         request.setAttribute("orderInfoListByUser", JSON.toJSONString(resultList));
+        request.setAttribute("orderNameSet", JSON.toJSONString(customerNameList));
         mv.setViewName("forward:/jsp/order/order.jsp");
         return mv;
 
@@ -49,6 +55,7 @@ public class OrderController {
 
     /**
      * 初始化订单添加页控制器
+     *
      * @param request
      * @param response
      * @throws IOException
@@ -57,64 +64,85 @@ public class OrderController {
     public void orderAddInit(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String uname = (String) request.getSession().getAttribute("user");
         ModelAndView mv = new ModelAndView();
-        List<String> customerList=orderService.queryCustomersByUser(uname);
+        List<String> customerList = orderService.queryCustomersByUser(uname);
         response.getWriter().write(JSON.toJSONString(customerList));
     }
+
     /**
      * 初始化添加订单明细控制器
+     *
      * @param request
      * @param response
      * @throws IOException
      */
     @RequestMapping("/addDetailInit")
-    public void orderDetailAddInit(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        List<Map<String, Object>> result=orderService.getAllProductInfo();
+    public void orderDetailAddInit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Map<String, Object>> result = orderService.getAllProductInfo();
         request.getSession().setAttribute("result", JSON.toJSONString(result));
         request.getRequestDispatcher("/jsp/order/orderDetailAdd.jsp").forward(request, response);
     }
 
     /**
      * 保存订单控制器
+     *
      * @param order
      * @param request
      */
     @RequestMapping("/save")
     @ResponseBody
-    public void orderSave(@RequestBody Order order, HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void orderSave(@RequestBody Order order, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Date nowDateStamp = new Date();
         String orderNumber = ("D" + new SimpleDateFormat("yyyyMMddHHmmss").format(nowDateStamp)).substring(0, 15);
         String orderTime = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(nowDateStamp);
         order.setOrderNumber(orderNumber);
         order.setOrderTime(orderTime);
-        for(OrderDetail od : order.getOrderDetails()){
-            od.setTotalWeight(String.valueOf(od.getOutwrapper().contains("桶")?160*Integer.parseInt(od.getCount()):25*Integer.parseInt(od.getCount())));
-            od.setTotalPrice(String.valueOf(Double.parseDouble(od.getTotalWeight())*Double.parseDouble(od.getPrice())));
+        for (OrderDetail od : order.getOrderDetails()) {
+            od.setTotalWeight(String.valueOf(od.getOutwrapper().contains("桶") ? 160 * Integer.parseInt(od.getCount()) : 25 * Integer.parseInt(od.getCount())));
+            od.setTotalPrice(String.valueOf(Double.parseDouble(od.getTotalWeight()) * Double.parseDouble(od.getPrice())));
             od.setOrderNumber(order.getOrderNumber());
         }
         String uname = (String) request.getSession().getAttribute("user");
-        Integer reten =orderService.saveOrderTranscation(order,uname);
+        Integer reten = orderService.saveOrderTranscation(order, uname);
         response.getWriter().write(JSON.toJSONString(reten));
     }
 
     /**
      * 下拉刷新控制器
+     *
      * @param request
      * @param response
      * @throws IOException
      */
     @RequestMapping("/refresh")
-    public void orderRefresh(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void orderRefresh(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String uname = (String) request.getSession().getAttribute("user");
-        List<Order> resultList=orderService.queryOrders(uname);
+        List<Order> resultList = orderService.queryOrders(uname);
         response.getWriter().write(JSON.toJSONString(resultList));
     }
 
     @RequestMapping("/reload")
-    public void orderReload(Integer limit,HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void orderReload(Integer limit, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String uname = (String) request.getSession().getAttribute("user");
-        List<Order> resultList=orderService.reloadOrdersLimit(uname,limit);
+        List<Order> resultList = orderService.reloadOrdersLimit(uname, limit);
         response.getWriter().write(JSON.toJSONString(resultList));
     }
 
+    @RequestMapping("/arrived")
+    public void updateArrived(String orderNumber, HttpServletResponse response) throws IOException {
+        response.getWriter().write(JSON.toJSONString(orderService.updateArrived(orderNumber)));
+    }
 
+    @RequestMapping("/getOrderInfoByAjax")
+    public void getOrderInfoByAjax(@RequestParam String customerName, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String uname = (String) request.getSession().getAttribute("user");
+        List<Order> resultList = orderService.getOrdersInfoByAjax(customerName, uname);
+        response.getWriter().write(JSON.toJSONString(resultList));
+    }
+
+    @RequestMapping("/update")
+    public void orderUpdate(@RequestBody Order order, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String uname = (String) request.getSession().getAttribute("user");
+        Integer result = orderService.updateOrder(order, uname);
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 }

@@ -23,7 +23,8 @@ public class CustomerController {
     @RequestMapping("/getCustomerInfo")
     public void getCustomerInfo(HttpServletRequest request,HttpServletResponse response) throws IOException {
         String customerName = request.getParameter("name");
-        ResultOfSelectCustomerInfoByName customerInfo = orderService.getCustomerInfoByName(customerName);
+        String uname = (String) request.getSession().getAttribute("user");
+        ResultOfSelectCustomerInfoByName customerInfo = orderService.getCustomerInfoByName(customerName,uname);
         response.getWriter().write(JSON.toJSONString(customerInfo));
     }
 

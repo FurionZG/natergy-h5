@@ -38,8 +38,6 @@ public class VisitService {
     private String host;
 
 
-
-
     public List<String> getAllCompanys(String uname) {
         return customerDao.getCustomersByUser(uname);
     }
@@ -51,7 +49,7 @@ public class VisitService {
         String accessToken = (String) map1.get("accessToken");
         List<Option> options = new ArrayList<>();
         List<String> list = visit.getImages();
-        if(""!=list.get(0)) {
+        if ("" != list.get(0)) {
             for (String media_id : list) {
                 String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
                 requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
@@ -89,6 +87,9 @@ public class VisitService {
 
         visit.setCustomerNo(visitDao.selectCustomerNo(visit.getCustomerName(), visit.getUser()));
         visit.setCustomerId(visitDao.selectCustomerId(visit.getCustomerName(), visit.getUser()));
+        if(null==visit.getCustomerId()){
+            visit.setCustomerId("0");
+        }
         Integer reten1 = visitDao.saveBusiness(visit);
         Integer reten2 = visitDao.updateCustomer(visit);
         return reten1*reten2;
@@ -103,19 +104,9 @@ public class VisitService {
     }
 
     public List<Visit> getVisitsByUser(String uname) {
-        List<Visit> resultList=visitDao.getVisitsByUser(uname);
-        for (Visit visit : resultList) {
-            String imgStr = visit.getImgStr();
-            String[] images = imgStr.split("/");
-            List<String> imgesList = new ArrayList<>();
-            //不要第一个值，因为第一个值是""
-            for (int i = 1; i < images.length; i++) {
-                String imageUrl = optionsDao.queryOption(images[i]);
-                imgesList.add(imageUrl);
-            }
-            visit.setImages(imgesList);
-        }
-        return  resultList;
+        List<Visit> resultList = visitDao.getVisitsByUser(uname);
+        detailImages(resultList);
+        return resultList;
 
     }
 
@@ -123,8 +114,66 @@ public class VisitService {
     public Integer updateVisit(Visit visit, String uname) {
         String customerId = visitDao.selectCustomerIdByVisitId(visit.getId());
         visit.setCustomerId(customerId);
-        Integer reten1= visitDao.updateVisit(visit);
-        Integer reten2=customerDao.updateVisit(visit,uname);
-        return  reten1*reten2;
+        Integer reten1 = visitDao.updateVisit(visit);
+        Integer reten2 = customerDao.updateVisit(visit, uname);
+        return reten1 * reten2;
+    }
+
+    public List<Visit> refreshVisit(String uname) {
+        List<Visit> resultList = visitDao.getVisitsByUser(uname);
+        detailImages(resultList);
+        return resultList;
+    }
+
+    public List<Visit> reloadVisit(String uname, Integer limit) {
+        List<Visit> resultList = visitDao.reloadVisit(limit, uname);
+        detailImages(resultList);
+        return resultList;
+    }
+
+    private void detailImages(List<Visit> resultList){
+        for (Visit visit : resultList) {
+            List<String> imgesList = new ArrayList<>();
+            String imgStr = visit.getImgStr();
+            if (null != imgStr) {
+                String[] images = imgStr.split("/");
+                //不要第一个值，因为第一个值是""
+                for (int i = 1; i < images.length; i++) {
+                    String imageUrl = optionsDao.queryOption(images[i]);
+                    imgesList.add(imageUrl);
+                }
+            }
+            visit.setImages(imgesList);
+        }
+    }
+
+    public List<Visit> selectVisitByBusiness(String businessNo) {
+        List<Visit> resultList=visitDao.selectVisitByBusiness(businessNo);
+        detailImages(resultList);
+        return resultList;
+    }
+
+    public List<String> selectVisitCustomerNameByBusiness(String businessNo) {
+        return visitDao.selectVisitCustomerNameByBusiness(businessNo);
+    }
+
+    public List<Visit> getVisitsByAjax(String customerName, String businessNo) {
+        List<Visit> resultList=visitDao.getVisitsByAjax(customerName,businessNo);
+        detailImages(resultList);
+        return resultList;
+    }
+
+    public Set<String> getVisitsCustomerNames(String uname) {
+        return new HashSet(visitDao.getVisitsCustomerNames(uname));
+    }
+
+    public List<Visit> getVisitsInfoByAjax(String customerName,String uname) {
+        List<Visit> resultList=visitDao.getVisitsInfoByAjax(customerName,uname);
+        detailImages(resultList);
+        return resultList;
+    }
+
+    public String deleteVisit(String id) {
+        return String.valueOf(visitDao.deleteVisit(id));
     }
 }

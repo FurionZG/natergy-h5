@@ -1,9 +1,7 @@
 package com.natergy.natergyh5.dao;
 
 import com.natergy.natergyh5.entity.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,4 +13,10 @@ public interface UserMapper {
 
     @Select("select 用户编号 from 用户 where 用户=#{uname}")
     String getUserNo(String uname);
+
+    @Select("Select 用户,密码 from 用户 where 微信关联=#{openId}")
+    @Results({
+            @Result(column = "用户",property ="uname")
+    })
+    User selectUserByOpenid(String openId);
 }
