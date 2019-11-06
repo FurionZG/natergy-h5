@@ -1,7 +1,8 @@
 package com.natergy.natergyh5.entity;
 
+
 public class Business {
-    private String Id;
+    private String id;
     private String status;
     private String uname;
     private String businessNo;
@@ -14,7 +15,7 @@ public class Business {
     private String startImage;
     private String endMileage;
     private String endImage;
-    private String Mileage;
+    private String mileage;
     private String roadToll;
     private String fuelCosts;
     private String fuelVolume;
@@ -33,7 +34,7 @@ public class Business {
     @Override
     public String toString() {
         return "Business{" +
-                "Id='" + Id + '\'' +
+                "id='" + id + '\'' +
                 ", status='" + status + '\'' +
                 ", uname='" + uname + '\'' +
                 ", businessNo='" + businessNo + '\'' +
@@ -46,7 +47,7 @@ public class Business {
                 ", startImage='" + startImage + '\'' +
                 ", endMileage='" + endMileage + '\'' +
                 ", endImage='" + endImage + '\'' +
-                ", Mileage='" + Mileage + '\'' +
+                ", mileage='" + mileage + '\'' +
                 ", roadToll='" + roadToll + '\'' +
                 ", fuelCosts='" + fuelCosts + '\'' +
                 ", fuelVolume='" + fuelVolume + '\'' +
@@ -64,20 +65,12 @@ public class Business {
                 '}';
     }
 
-    public String getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getStatus() {
@@ -177,11 +170,11 @@ public class Business {
     }
 
     public String getMileage() {
-        return Mileage;
+        return mileage;
     }
 
     public void setMileage(String mileage) {
-        Mileage = mileage;
+        this.mileage = mileage;
     }
 
     public String getRoadToll() {
@@ -214,6 +207,14 @@ public class Business {
 
     public void setOilConsumption(String oilConsumption) {
         this.oilConsumption = oilConsumption;
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
 
     public String getSpecialSubsidies() {

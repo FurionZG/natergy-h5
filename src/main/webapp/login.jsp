@@ -49,6 +49,7 @@
 						"code": code
 					}),
 					success: function(data) {
+						console.log(data);
 						if(0==data){
                             mui.toast('微信登录失败，请手动输入账号密码');
                         }else{

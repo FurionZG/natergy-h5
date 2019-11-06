@@ -4,20 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.natergy.natergyh5.entity.Order;
 import com.natergy.natergyh5.entity.OrderDetail;
 import com.natergy.natergyh5.service.OrderService;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.tags.Param;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +15,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 订单相关Controller
+ * 订单控制器
+ * @author 杨枕戈
  */
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 
@@ -35,114 +26,122 @@ public class OrderController {
     private OrderService orderService;
 
     /**
-     * 初始化订单页面控制器
-     *
-     * @param request
-     * @return
+     * 初始化订单
+     * @return 将当前用户的最后10条订单列表和有订单的客户名称列表添加到模型中，并转发到order.jsp
      */
     @RequestMapping("/init")
-    public ModelAndView orderInit(HttpServletRequest request) {
-        String uname = (String) request.getSession().getAttribute("user");
-        ModelAndView mv = new ModelAndView();
+    public ModelAndView orderInit(HttpSession session) {
+        String uname = (String) session.getAttribute("user");
+        ModelAndView mv = new ModelAndView("forward:/jsp/order/order.jsp");
         List<Order> resultList = orderService.queryOrders(uname);
         Set<String> customerNameList = orderService.queryCustomerName(uname);
-        request.setAttribute("orderInfoListByUser", JSON.toJSONString(resultList));
-        request.setAttribute("orderNameSet", JSON.toJSONString(customerNameList));
-        mv.setViewName("forward:/jsp/order/order.jsp");
+        mv.addObject("orderInfoListByUser", JSON.toJSONString(resultList));
+        mv.addObject("orderNameSet", JSON.toJSONString(customerNameList));
         return mv;
 
     }
 
     /**
-     * 初始化订单添加页控制器
-     *
-     * @param request
-     * @param response
-     * @throws IOException
+     * 初始化添加订单
+     * @return 返回客户经理为当前用户的所有客户
      */
     @RequestMapping("/addInit")
-    public void orderAddInit(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        ModelAndView mv = new ModelAndView();
-        List<String> customerList = orderService.queryCustomersByUser(uname);
-        response.getWriter().write(JSON.toJSONString(customerList));
+    public List<String> orderAddInit(HttpSession session) {
+        String uname = (String)session.getAttribute("user");
+        return orderService.queryCustomersByUser(uname);
     }
 
+
     /**
-     * 初始化添加订单明细控制器
-     *
-     * @param request
-     * @param response
-     * @throws IOException
+     * 初始化添加订单明细
+     * @return 设置
      */
     @RequestMapping("/addDetailInit")
-    public void orderDetailAddInit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView orderDetailAddInit()  {
+        ModelAndView  modelAndView = new ModelAndView("forward:/jsp/order/orderDetailAdd.jsp");
         List<Map<String, Object>> result = orderService.getAllProductInfo();
-        request.getSession().setAttribute("result", JSON.toJSONString(result));
-        request.getRequestDispatcher("/jsp/order/orderDetailAdd.jsp").forward(request, response);
+        modelAndView.addObject("result",JSON.toJSONString(result));
+        return modelAndView;
+
+
     }
 
     /**
-     * 保存订单控制器
-     *
-     * @param order
-     * @param request
+     * 保存订单
+     * @param order 前台提交的订单对象
+     * @return 返回插入返回值的乘积
      */
     @RequestMapping("/save")
     @ResponseBody
-    public void orderSave(@RequestBody Order order, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Integer orderSave(@RequestBody Order order, HttpSession session)  {
         Date nowDateStamp = new Date();
+        //设置订单号
         String orderNumber = ("D" + new SimpleDateFormat("yyyyMMddHHmmss").format(nowDateStamp)).substring(0, 15);
+        //设置订单时间
         String orderTime = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(nowDateStamp);
         order.setOrderNumber(orderNumber);
         order.setOrderTime(orderTime);
+        //循环遍历订单明细，设置总重量、总价格和订单明细的订单号
         for (OrderDetail od : order.getOrderDetails()) {
             od.setTotalWeight(String.valueOf(od.getOutwrapper().contains("桶") ? 160 * Integer.parseInt(od.getCount()) : 25 * Integer.parseInt(od.getCount())));
             od.setTotalPrice(String.valueOf(Double.parseDouble(od.getTotalWeight()) * Double.parseDouble(od.getPrice())));
             od.setOrderNumber(order.getOrderNumber());
         }
-        String uname = (String) request.getSession().getAttribute("user");
-        Integer reten = orderService.saveOrderTranscation(order, uname);
-        response.getWriter().write(JSON.toJSONString(reten));
+        String uname = (String) session.getAttribute("user");
+        return orderService.saveOrderTranscation(order, uname);
     }
 
     /**
-     * 下拉刷新控制器
-     *
-     * @param request
-     * @param response
-     * @throws IOException
+     * 下拉刷新
+     * @return 返回重新查询的订单列表
      */
     @RequestMapping("/refresh")
-    public void orderRefresh(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        List<Order> resultList = orderService.queryOrders(uname);
-        response.getWriter().write(JSON.toJSONString(resultList));
+    public List<Order> orderRefresh(HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return orderService.queryOrders(uname);
     }
 
+
+    /**
+     * 上拉加载更多
+     * @param limit 当前订单条数
+     * @return 返回从limit开始后面的5条订单
+     */
     @RequestMapping("/reload")
-    public void orderReload(Integer limit, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        List<Order> resultList = orderService.reloadOrdersLimit(uname, limit);
-        response.getWriter().write(JSON.toJSONString(resultList));
+    public List<Order> orderReload(Integer limit, HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return orderService.reloadOrdersLimit(uname, limit);
     }
 
+    /**
+     * 已到货
+     * @param orderNumber 订单号
+     * @return 返回是否更新成功
+     */
     @RequestMapping("/arrived")
-    public void updateArrived(String orderNumber, HttpServletResponse response) throws IOException {
-        response.getWriter().write(JSON.toJSONString(orderService.updateArrived(orderNumber)));
+    public Integer updateArrived(String orderNumber)  {
+        return orderService.updateArrived(orderNumber);
     }
 
+    /**
+     * 通过ajax获取某个客户的订单信息
+     * @param customerName 客户名称
+     * @return 返回该客户的最后10条订单信息
+     */
     @RequestMapping("/getOrderInfoByAjax")
-    public void getOrderInfoByAjax(@RequestParam String customerName, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        List<Order> resultList = orderService.getOrdersInfoByAjax(customerName, uname);
-        response.getWriter().write(JSON.toJSONString(resultList));
+    public List<Order> getOrderInfoByAjax(@RequestParam String customerName, HttpSession session) {
+        String uname = (String) session.getAttribute("user");
+        return orderService.getOrdersInfoByAjax(customerName, uname);
     }
 
+    /**
+     * 更新订单信息（只有草稿状态可以编辑订单信息）
+     * @param order 被选中订单
+     * @return 返回是否更新成功
+     */
     @RequestMapping("/update")
-    public void orderUpdate(@RequestBody Order order, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        Integer result = orderService.updateOrder(order, uname);
-        response.getWriter().write(JSON.toJSONString(result));
+    public Integer orderUpdate(@RequestBody Order order, HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return orderService.updateOrder(order, uname);
     }
 }

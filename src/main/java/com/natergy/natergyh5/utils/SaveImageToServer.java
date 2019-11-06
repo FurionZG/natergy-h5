@@ -15,6 +15,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * 附件处理工具类
+ * @author 杨枕戈
+ */
 @Component
 public class SaveImageToServer {
     @Value("${natergy.appId}")
@@ -26,13 +30,20 @@ public class SaveImageToServer {
     @Autowired
     private OptionsMapper optionsDao;
 
-    public String saveImageToServer(String media_id, String user, String from) throws Exception {
+    /**
+     * 该方法将微信服务器上的图片通过I/O流传输到FTP服务器上
+     * @param mediaId 微信服务器图片的唯一id
+     * @param user 用户名
+     * @param from 附件表中的位置字段
+     * @return 返回附件表中的Id字段，多条记录用"/"隔开
+     */
+    public String saveImageToServer(String mediaId, String user, String from) throws Exception {
         WXJsSdk d = new WXJsSdk();
         Map map1 = d.getAccessToken(appId, appSecret);
         String accessToken = (String) map1.get("accessToken");
         List<Option> options = new ArrayList<>();
         String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-        requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
+        requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
         URL url = new URL(requestUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoInput(true);
@@ -46,7 +57,6 @@ public class SaveImageToServer {
         String fileName = user + "-" + new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒").format(new Date()) + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
         String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-        //System.out.println(ftpClient.storeFile(path,bis));
         if (ftpClient.storeFile(path, bis)) {
             Option option = new Option();
             option.setName(fileName);

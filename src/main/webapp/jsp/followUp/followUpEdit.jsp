@@ -217,11 +217,6 @@
             chk_value.push($(this).val());//将选中的值添加到数组chk_value中
         });
 
-
-//			if("" == customerName || "" == consignee || "" == receivingAddress || null == producer) {
-//				mui.toast('请完善订单信息...');
-//				return;
-//			}
         mui.toast('正在保存跟进记录...');
 
         $.ajax({
@@ -236,19 +231,19 @@
                 "nowAddress": $("#nowAddress").val(),
                 "customerName": $("#customerName").val(),
                 "address": $("#address").val(),
-                "contacts_1": $("#contacts_1").val(),
-                "contacts_2": $("#contacts_2").val(),
-                "tel_1": $("#tel_1").val(),
-                "tel_2": $("#tel_2").val(),
-                "department_1": $("#department_1").val(),
-                "department_2": $("#department_2").val(),
-                "post_1": $("#post_1").val(),
-                "post_2": $("#post_2").val(),
+                "contacts1": $("#contacts_1").val(),
+                "contacts2": $("#contacts_2").val(),
+                "tel1": $("#tel_1").val(),
+                "tel2": $("#tel_2").val(),
+                "department1": $("#department_1").val(),
+                "department2": $("#department_2").val(),
+                "post1": $("#post_1").val(),
+                "post2": $("#post_2").val(),
                 "tel": $("#tel").val(),
                 "email": $("#email").val(),
                 "web": $("#web").val(),
-                "chart_1": $("#chart_1").val(),
-                "chart_2": $("#chart_2").val(),
+                "chart1": $("#chart_1").val(),
+                "chart2": $("#chart_2").val(),
                 "industry": $("#industryPicker").text(),
                 "relation": chk_value.join("/"),
                 "record": $("#record").val()
@@ -283,16 +278,16 @@
             doc.getElementById('city').value=json.city;
             doc.getElementById('nowAddress').value=json.nowAddress;
             doc.getElementById('address').value=json.address;
-            doc.getElementById('contacts_1').value=json.contacts_1;
-            doc.getElementById('tel_1').value=json.tel_1;
-            doc.getElementById('department_1').value=json.department_1;
-            doc.getElementById('post_1').value=json.post_1;
-            doc.getElementById('chart_1').value=json.chart_1;
-            doc.getElementById('contacts_2').value=json.contacts_2;
-            doc.getElementById('tel_2').value=json.tel_2;
-            doc.getElementById('department_2').value=json.department_2;
-            doc.getElementById('post_2').value=json.post_2;
-            doc.getElementById('chart_2').value=json.chart_2;
+            doc.getElementById('contacts_1').value=json.contacts1;
+            doc.getElementById('tel_1').value=json.tel1;
+            doc.getElementById('department_1').value=json.department1;
+            doc.getElementById('post_1').value=json.post1;
+            doc.getElementById('chart_1').value=json.chart1;
+            doc.getElementById('contacts_2').value=json.contacts2;
+            doc.getElementById('tel_2').value=json.tel2;
+            doc.getElementById('department_2').value=json.department2;
+            doc.getElementById('post_2').value=json.post2;
+            doc.getElementById('chart_2').value=json.chart2;
             doc.getElementById('web').value=json.web;
             doc.getElementById('email').value=json.email;
             doc.getElementById('tel').value=json.tel;

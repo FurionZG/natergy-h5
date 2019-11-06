@@ -217,12 +217,12 @@
             dataType: "json",
             data: JSON.stringify({
                 "id":$("#id").val(),
-                "contacts_1": $("#contacts_1").val(),
-                "contacts_2": $("#contacts_2").val(),
-                "tel_1": $("#tel_1").val(),
-                "tel_2": $("#tel_2").val(),
-                "contacts_3": $("#contacts_3").val(),
-                "tel_3": $("#tel_3").val(),
+                "contacts1": $("#contacts_1").val(),
+                "contacts2": $("#contacts_2").val(),
+                "tel1": $("#tel_1").val(),
+                "tel2": $("#tel_2").val(),
+                "contacts3": $("#contacts_3").val(),
+                "tel3": $("#tel_3").val(),
                 "record": $("#record").val(),
                 "productBrand":$("#productBrandPicker").text(),
                 "productType":$("#productTypePicker").text(),
@@ -260,12 +260,12 @@
             doc.getElementById('province').value=json.province;
             doc.getElementById('city').value=json.city;
             doc.getElementById('address').value=json.address;
-            doc.getElementById('contacts_1').value=json.contacts_1;
-            doc.getElementById('tel_1').value=json.tel_1;
-            doc.getElementById('contacts_2').value=json.contacts_2;
-            doc.getElementById('tel_2').value=json.tel_2;
-            doc.getElementById('contacts_3').value=json.contacts_3;
-            doc.getElementById('tel_3').value=json.tel_3;
+            doc.getElementById('contacts_1').value=json.contacts1;
+            doc.getElementById('tel_1').value=json.tel1;
+            doc.getElementById('contacts_2').value=json.contacts2;
+            doc.getElementById('tel_2').value=json.tel2;
+            doc.getElementById('contacts_3').value=json.contacts3;
+            doc.getElementById('tel_3').value=json.tel3;
             doc.getElementById('productBrandPicker').innerText =json.productBrand;
             doc.getElementById('productTypePicker').innerText =json.productType;
             doc.getElementById('consumptionPicker').innerText =json.consumption;

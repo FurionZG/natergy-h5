@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 出差Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface BusinessMapper {
@@ -42,7 +46,7 @@ public interface BusinessMapper {
             @Result(property = "startImage",column = "起始里程照片_附件"),
             @Result(property = "endMileage",column = "终止里程"),
             @Result(property = "endImage",column = "终止里程照片_附件"),
-            @Result(property = "Mileage",column = "公里数"),
+            @Result(property = "mileage",column = "公里数"),
             @Result(property = "roadToll",column = "过路费"),
             @Result(property = "fuelCosts",column = "加油费"),
             @Result(property = "fuelVolume",column = "加油数（升）"),
@@ -60,7 +64,7 @@ public interface BusinessMapper {
     })
     List<Business> getBusinessByUser(String uname);
 
-    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{Mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},特补=#{specialSubsidies},特补说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},终止里程照片_附件=#{endImage} where Id=#{Id}")
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},特补=#{specialSubsidies},特补说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},终止里程照片_附件=#{endImage} where Id=#{id}")
     Integer updateBusiness(Business business);
 
     @Select("select * from 销售出差登记 where 姓名=#{uname} order by Id desc limit #{limit},5")
@@ -77,7 +81,7 @@ public interface BusinessMapper {
             @Result(property = "startImage",column = "起始里程照片_附件"),
             @Result(property = "endMileage",column = "终止里程"),
             @Result(property = "endImage",column = "终止里程照片_附件"),
-            @Result(property = "Mileage",column = "公里数"),
+            @Result(property = "mileage",column = "公里数"),
             @Result(property = "roadToll",column = "过路费"),
             @Result(property = "fuelCosts",column = "加油费"),
             @Result(property = "fuelVolume",column = "加油数（升）"),

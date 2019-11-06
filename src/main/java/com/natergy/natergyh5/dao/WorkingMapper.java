@@ -5,7 +5,10 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-
+/**
+ * 销售工作进程Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface WorkingMapper {

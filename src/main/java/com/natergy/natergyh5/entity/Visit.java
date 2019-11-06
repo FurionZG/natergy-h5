@@ -13,12 +13,12 @@ public class Visit {
     private String nowAddress;
     private String customerName;
     private String address;
-    private String contacts_1;
-    private String contacts_2;
-    private String contacts_3;
-    private String tel_1;
-    private String tel_2;
-    private String tel_3;
+    private String contacts1;
+    private String contacts2;
+    private String contacts3;
+    private String tel1;
+    private String tel2;
+    private String tel3;
     private String record;
     private String productBrand;
     private String productType;
@@ -47,12 +47,12 @@ public class Visit {
                 ", nowAddress='" + nowAddress + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", address='" + address + '\'' +
-                ", contacts_1='" + contacts_1 + '\'' +
-                ", contacts_2='" + contacts_2 + '\'' +
-                ", contacts_3='" + contacts_3 + '\'' +
-                ", tel_1='" + tel_1 + '\'' +
-                ", tel_2='" + tel_2 + '\'' +
-                ", tel_3='" + tel_3 + '\'' +
+                ", contacts1='" + contacts1 + '\'' +
+                ", contacts2='" + contacts2 + '\'' +
+                ", contacts3='" + contacts3 + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", tel3='" + tel3 + '\'' +
                 ", record='" + record + '\'' +
                 ", productBrand='" + productBrand + '\'' +
                 ", productType='" + productType + '\'' +
@@ -71,78 +71,20 @@ public class Visit {
                 '}';
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getBusinessNo() {
-        return businessNo;
-    }
-
-    public void setBusinessNo(String businessNo) {
-        this.businessNo = businessNo;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getCustomerNo() {
-        return customerNo;
-    }
-
-    public void setCustomerNo(String customerNo) {
-        this.customerNo = customerNo;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDate() {
@@ -201,52 +143,52 @@ public class Visit {
         this.address = address;
     }
 
-    public String getContacts_1() {
-        return contacts_1;
+    public String getContacts1() {
+        return contacts1;
     }
 
-    public void setContacts_1(String contacts_1) {
-        this.contacts_1 = contacts_1;
+    public void setContacts1(String contacts1) {
+        this.contacts1 = contacts1;
     }
 
-    public String getContacts_2() {
-        return contacts_2;
+    public String getContacts2() {
+        return contacts2;
     }
 
-    public void setContacts_2(String contacts_2) {
-        this.contacts_2 = contacts_2;
+    public void setContacts2(String contacts2) {
+        this.contacts2 = contacts2;
     }
 
-    public String getContacts_3() {
-        return contacts_3;
+    public String getContacts3() {
+        return contacts3;
     }
 
-    public void setContacts_3(String contacts_3) {
-        this.contacts_3 = contacts_3;
+    public void setContacts3(String contacts3) {
+        this.contacts3 = contacts3;
     }
 
-    public String getTel_1() {
-        return tel_1;
+    public String getTel1() {
+        return tel1;
     }
 
-    public void setTel_1(String tel_1) {
-        this.tel_1 = tel_1;
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
     }
 
-    public String getTel_2() {
-        return tel_2;
+    public String getTel2() {
+        return tel2;
     }
 
-    public void setTel_2(String tel_2) {
-        this.tel_2 = tel_2;
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
     }
 
-    public String getTel_3() {
-        return tel_3;
+    public String getTel3() {
+        return tel3;
     }
 
-    public void setTel_3(String tel_3) {
-        this.tel_3 = tel_3;
+    public void setTel3(String tel3) {
+        this.tel3 = tel3;
     }
 
     public String getRecord() {
@@ -311,5 +253,61 @@ public class Visit {
 
     public void setImgStr(String imgStr) {
         this.imgStr = imgStr;
+    }
+
+    public String getCustomerNo() {
+        return customerNo;
+    }
+
+    public void setCustomerNo(String customerNo) {
+        this.customerNo = customerNo;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getBusinessNo() {
+        return businessNo;
+    }
+
+    public void setBusinessNo(String businessNo) {
+        this.businessNo = businessNo;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 地产跟进业务层
+ * @author 杨枕戈
+ */
 @Service
 public class FollowUpService {
 
@@ -47,7 +51,11 @@ public class FollowUpService {
     @Autowired
     private OptionsMapper optionsDao;
 
-
+    /**
+     * 获取登录用户的最后10条地产跟进记录，同时将每条记录的图片附件文件名注入对应的地产跟进对象
+     * @param user 登录用户的用户名
+     * @return 该用户最后10条地产跟进记录
+     */
     public List<FollowUp> getFollowUpByUser(String user) {
         List<FollowUp> resultList = followUpDao.getFollowUpByUser(user);
         for (FollowUp followUp : resultList) {
@@ -66,10 +74,21 @@ public class FollowUpService {
         return resultList;
     }
 
+    /**
+     * 获取业务经理为登录用户的客户名称
+     * @param uname 登录用户的用户名
+     * @return 返回业务经理为登录用户的客户列表
+     */
     public List<String> getAllCompanys(String uname) {
         return customerDao.getCustomersByUser(uname);
     }
 
+    /**
+     * 获取某个公司的地址信息
+     * @param companyName 公司名
+     * @param uname 登录用户的用户名
+     * @return 返回被查询公司的地址信息
+     */
     public ResultOfAddress getAddressInfo(String companyName, String uname) {
         ResultOfAddress result = customerDao.getAddress(companyName, uname);
         result.setCompanyName(companyName);
@@ -77,15 +96,15 @@ public class FollowUpService {
     }
 
     /**
-     * 保存地产跟进，包括三部分
+     * 保存地产跟进，包括四部分
      * 1.将保存在微信服务器上的图片通过serverID取下来
      * 2.将该流转存到ftp服务器上，返回保存地址
      * 3.保存图片名到附件表和位置，返回id
      * 4.保存地产跟进信息
-     * 以上三条作为一个事务
+     * 以上四条作为一个事务
      *
-     * @param followUp
-     * @return
+     * @param followUp 地产跟进对象
+     * @return 是否保存成功
      */
     public Integer saveFollowUp(FollowUp followUp) throws Exception {
         WXJsSdk d = new WXJsSdk();
@@ -94,9 +113,9 @@ public class FollowUpService {
         List<Option> options = new ArrayList<>();
         List<String> list = followUp.getImages();
         if ("" != list.get(0)) {
-            for (String media_id : list) {
+            for (String mediaId : list) {
                 String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-                requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
+                requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
                 URL url = new URL(requestUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoInput(true);
@@ -131,6 +150,11 @@ public class FollowUpService {
         return followUpDao.saveFollowUp(followUp);
     }
 
+    /**
+     * 重新查询当前登录用户的地产跟进记录
+     * @param uname 登录用户的用户名
+     * @return 返回当前登录用户的最后10条地产跟进记录
+     */
     public List<FollowUp> refreshFollowUp(String uname) {
         List<FollowUp> resultList = followUpDao.getFollowUpByUser(uname);
         for (FollowUp followUp : resultList) {
@@ -149,10 +173,19 @@ public class FollowUpService {
         return resultList;
     }
 
+    /**
+     * 更新地产跟进记录
+     * @param followUp 地产跟进对象
+     * @param uname 当前登录用户的用户名
+     * @return 返回是否更新成功
+     */
     public Integer updateFollowUp(FollowUp followUp, String uname) {
         return followUpDao.updateFollowUp(followUp, uname);
     }
 
+    /**
+     * 测试方法
+     */
     @Test
     public void run() throws Exception {
         FTPClient ftpClient = FtpUtils.getFtpClient();
@@ -169,6 +202,12 @@ public class FollowUpService {
         }
     }
 
+    /**
+     * 查询更多的登录用户的地产跟进记录
+     * @param uname 登录用户的用户名
+     * @param limit 页面山显示的跟进记录条数
+     * @return 返回从limit开始之后的5条地产跟进记录
+     */
     public List<FollowUp> reloadFolloUp(String uname, Integer limit) {
         List<FollowUp> resultList = followUpDao.reloadFollowUp(limit, uname);
         for (FollowUp followUp : resultList) {

@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 销售订单Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface OrderMapper {
@@ -32,7 +36,7 @@ public interface OrderMapper {
     List<Order> queryOrders(String uname);
 
 
-    @Select("select * from 销售订单明细 where order_id=#{Id}")
+    @Select("select * from 销售订单明细 where order_id=#{id}")
     @Results({
 
             @Result(property = "size", column = "规格mm"),
@@ -46,7 +50,7 @@ public interface OrderMapper {
             @Result(property = "totalPrice", column = "金额"),
             @Result(property = "totalWeight", column = "净重kg"),
     })
-    List<OrderDetail> queryOrderDetails(String Id);
+    List<OrderDetail> queryOrderDetails(String id);
 
     @Select("select 客户编码,合同编号,合同方式,省,市 from 销售客户资料 where 客户名称=#{customerName} and 状态!='删除' and 状态!='撤销' and 状态!='' and 业务经理 like CONCAT('%',#{uname},'%')")
     Map<String,String> getCustomerInfo(String customerName,String uname);

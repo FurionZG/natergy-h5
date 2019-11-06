@@ -16,6 +16,10 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
+/**
+ * 防止重复提交切面
+ * @author 杨枕戈
+ */
 @Aspect
 @Component
 public class RepeatSubmitAspect {

@@ -1,15 +1,15 @@
 package com.natergy.natergyh5.controller;
 
-import com.natergy.natergyh5.service.RefundService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 退款控制器
+ * @author 杨枕戈
+ */
 @Controller
 @RequestMapping("/refund")
 public class RefundController {
-    @Autowired
-    private RefundService refundService ;
 
     @RequestMapping("/init")
     public void refundInit(){

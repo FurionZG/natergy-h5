@@ -4,6 +4,10 @@ import com.natergy.natergyh5.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+/**
+ * 用户Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface UserMapper {

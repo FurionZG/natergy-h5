@@ -22,8 +22,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户模块业务层
+ * @author 杨枕戈
+ */
 @Service
-
 public class UserService {
     @Autowired
     private UserMapper userDao;
@@ -34,10 +37,20 @@ public class UserService {
     @Value("${natergy.host}")
     private String host;
 
+    /**
+     * 检查用户名密码是否正确
+     * @param user 用户对象
+     * @return 返回用户名密码是否正确
+     */
     public Integer checkUser(User user) {
         return userDao.checkUser(user);
     }
 
+    /**
+     * 通过微信code，使用HttpClient发起模拟请求，请求打开公众号的微信用户的openId，并验证数据库中是否有该openId
+     * @param code 微信提供的code
+     * @return 返回数据库中是否有该用户的openId
+     */
     public String checkWxOpenId(String code) throws IOException {
         String openId=null;
         CloseableHttpClient httpClient = HttpClients.createDefault();

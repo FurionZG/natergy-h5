@@ -6,9 +6,12 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Ftp工具类
+ * @author 杨枕戈
+ */
 @Component
 public class FtpUtils {
-
 
     private static String ftpUrl="219.146.150.102";
     private static String ftpPort="60001";
@@ -17,18 +20,10 @@ public class FtpUtils {
 
     public static FTPClient getFtpClient() throws Exception{
         FTPClient ftpClient = new FTPClient();
-        //ftpClient.setControlEncoding("utf-8");
         ftpClient.connect(ftpUrl, Integer.parseInt(ftpPort));
         ftpClient.login(ftpUser,ftpPassword);
         ftpClient.setDataTimeout(120000);
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);//设置为二进制文件
-//        int replyCode = ftpClient.getReplyCode();
-//        if (!FTPReply.isPositiveCompletion(replyCode)) {
-//            ftpClient.disconnect();
-//            System.out.println("FTP连接失败");
-//        }else {
-//            System.out.println("FTP连接成功");
-//        }
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         return ftpClient;
 
     }

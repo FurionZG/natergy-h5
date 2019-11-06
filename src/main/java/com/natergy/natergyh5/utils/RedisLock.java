@@ -9,10 +9,8 @@ import redis.clients.jedis.Jedis;
 import java.util.Collections;
 
 /**
- * Redis 分布式锁实现
- * 如有疑问可参考 @see <a href="https://www.cnblogs.com/linjiqin/p/8003838.html">Redis分布式锁的正确实现方式</a>
- *
- *
+ * Redis 分布式锁
+ * @author 杨枕戈
  */
 @Service
 public class RedisLock {
@@ -22,6 +20,7 @@ public class RedisLock {
     private static final String SET_IF_NOT_EXIST = "NX";
     // 当前设置 过期时间单位, EX = seconds; PX = milliseconds
     private static final String SET_WITH_EXPIRE_TIME = "EX";
+    // Redis Eval表达式
     // if get(key) == value return del(key)
     private static final String RELEASE_LOCK_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 

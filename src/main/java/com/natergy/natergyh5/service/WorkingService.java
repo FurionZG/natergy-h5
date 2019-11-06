@@ -21,6 +21,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * 销售工作进程模块业务层
+ * @author 杨枕戈
+ */
 @Service
 public class WorkingService {
     @Value("${natergy.appId}")
@@ -37,6 +41,11 @@ public class WorkingService {
     private OptionsMapper optionsDao;
 
 
+    /**
+     * 查询登录用户的最后10条工作进程，并将图片附件的文件名注入到对应的工作进程中
+     * @param uname 登录用户的用户名
+     * @return 返回登录用户的最后10条工作进程
+     */
     public List<Working> getWorkings(String uname) {
         List<Working> resultList = workingDao.getWorkings(uname);
         for (Working working : resultList) {
@@ -55,18 +64,32 @@ public class WorkingService {
         return resultList;
     }
 
+    /**
+     * 保存工作进程
+     * @param working 工作进程对象
+     * @return 返回是否保存成功
+     */
     @Transactional
     public Integer saveWorking(Working working) throws Exception {
         saveWorkingOptions(working);
         return workingDao.saveWorking(working);
     }
 
+    /**
+     * 更新工作进程
+     * @param working 工作进程对象
+     * @return 返回是否更新成功
+     */
     public Integer updateWorking(Working working) throws Exception {
         saveWorkingOptions(working);
         System.out.println(working);
         return workingDao.updateWorking(working);
     }
 
+    /**
+     * 保存工作进程图片附件，将图片附件通过微信图片唯一标识medis_id取回后，直接通过I/O流保存到Ftp服务器
+     * @param working 工作进程对象
+     */
     private void saveWorkingOptions(Working working) throws Exception {
         WXJsSdk d = new WXJsSdk();
         Map map1 = d.getAccessToken(appId, appSecret);
@@ -74,9 +97,9 @@ public class WorkingService {
         List<Option> options = new ArrayList<>();
         List<String> list = working.getImages();
         if ("" != list.get(0)) {
-            for (String media_id : list) {
+            for (String mediaId : list) {
                 String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-                requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", media_id);
+                requestUrl = requestUrl.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
                 URL url = new URL(requestUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoInput(true);
@@ -111,19 +134,43 @@ public class WorkingService {
         working.setReader(salesExecutive);
     }
 
+    /**
+     * 查询更多登录用户的工作进程
+     * @param limit 页面显示的工作进程数量
+     * @param uname 登录用户的用户名
+     * @return 返回从limit开始之后的5条工作进程记录
+     */
     public List<Working> reloadWorkings(Integer limit, String uname) {
         return workingDao.reloadWorkings(limit,uname);
     }
 
+    /**
+     * 查询所有有工作进程的汇报人Set集
+     * @param uname 登录用户的用户名
+     * @return 返回所有有所有进程的汇报人Set集
+     */
     public Set<String> getWorkingsName(String uname) {
         Set<String>resultList = new HashSet<>(workingDao.getWorkingsName(uname));
         return resultList;
     }
 
+    /**
+     * 查询某个汇报人的工作汇报，此功能只对销售主管开放
+     * @param uname 登录用户的用户名
+     * @param name 汇报人姓名
+     * @return 返回某个汇报人的工作汇报列表
+     */
     public List<Working> getWorkingsByName(String uname,String name) {
         return workingDao.getWorkingsByName(uname,name,salesExecutive);
     }
 
+    /**
+     * 查询某个汇报人的更多的工作进程
+     * @param limit 页面显示的工作进程条数
+     * @param uname 登录用户的用户名
+     * @param name 汇报人姓名
+     * @return 返回某个汇报人的limit之后5条的工作进程
+     */
     public List<Working> reloadWorkingsByName(Integer limit, String uname,String name) {
         return workingDao.reloadWorkingsByName(limit,uname,name);
     }

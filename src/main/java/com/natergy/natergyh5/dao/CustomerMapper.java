@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 客户Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface CustomerMapper {
@@ -42,6 +46,6 @@ public interface CustomerMapper {
     Integer saveCustomer(Customer customer, String uname);
 
 
-    @Update("update 销售客户资料 set 干燥剂类型=#{visit.productType},玻璃企业规模=#{visit.consumption},客户类别=#{visit.customerType},联系人姓名=#{visit.contacts_1},联系人2姓名=#{visit.contacts_2},联系人3姓名=#{visit.contacts_3},联系人手机=#{visit.tel_1},联系人2手机=#{visit.tel_2},联系人3手机=#{visit.tel_3} where Id=#{visit.customerId} ")
+    @Update("update 销售客户资料 set 干燥剂类型=#{visit.productType},玻璃企业规模=#{visit.consumption},客户类别=#{visit.customerType},联系人姓名=#{visit.contacts1},联系人2姓名=#{visit.contacts2},联系人3姓名=#{visit.contacts3},联系人手机=#{visit.tel1},联系人2手机=#{visit.tel2},联系人3手机=#{visit.tel3} where Id=#{visit.customerId} ")
     Integer updateVisit(Visit visit, String uname);
 }

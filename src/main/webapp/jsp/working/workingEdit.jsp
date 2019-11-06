@@ -254,7 +254,7 @@
                 //alert("Data Loaded: " + data);
                 if (1 == data) {
                     mui.toast('修改成功');
-                    window.location.href = "/natergy-h5/visit/init"
+                    window.location.href = "/natergy-h5/working/init"
                 } else {
                     mui.toast('修改工作进程失败，请稍后重试...');
                 }

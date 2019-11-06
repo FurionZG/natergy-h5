@@ -2,22 +2,24 @@ package com.natergy.natergyh5.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.natergy.natergyh5.entity.Business;
-import com.natergy.natergyh5.entity.WXJsSdk;
+import com.natergy.natergyh5.entity.WxToken;
 import com.natergy.natergyh5.service.BusinessService;
+import com.natergy.natergyh5.utils.WxUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-@Controller
+
+/**
+ * 出差控制器
+ * @author 杨枕戈
+ */
+@RestController
 @RequestMapping("/business")
 public class BusinessController {
 
@@ -29,66 +31,78 @@ public class BusinessController {
     private String appSecret;
     @Value("${natergy.host}")
     private String host;
-
+    @Autowired
+    private WxUtils wxUtils;
+    /**
+     * 初始化出差
+     * @return 将出差状态和出差列表保存在模型中，并转发到business.jsp
+     */
     @RequestMapping("/init")
-    public ModelAndView businessInit(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ModelAndView mv = new ModelAndView();
-        String uname = (String) request.getSession().getAttribute("user");
+    public ModelAndView businessInit(HttpSession session)  {
+        ModelAndView mv = new ModelAndView("forward:/jsp/business/business.jsp");
+        String uname = (String) session.getAttribute("user");
         Integer onBusinessCount=businessService.getOnBusiness(uname);
         List<Business> businessList=businessService.getBusinessByUser(uname);
-
-        WXJsSdk d= new WXJsSdk();
-        Map map1= d.getAccessToken(appId,appSecret);
-        Map map2=d.getJsapiTicket((String) map1.get("accessToken"));
-        String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
-        String noncestr = UUID.randomUUID().toString().replace("-", "");
-        String url="http://"+host+"/natergy-h5/jsp/business/businessEdit.jsp";
-        String str = "jsapi_ticket=" + map2.get("ticket") + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
-        String signature = d.SHA1(str);
-
-        request.setAttribute("signature", signature);
-        request.setAttribute("timestamp", timestamp);
-        request.setAttribute("noncestr", noncestr);
-        request.setAttribute("appId", appId);
-
-        request.setAttribute("onBusinessCount", JSON.toJSONString(onBusinessCount));
-        request.setAttribute("businessList",JSON.toJSONString(businessList));
-        mv.setViewName("forward:/jsp/business/business.jsp");
+        WxToken wxToken = wxUtils.getWxToken("/natergy-h5/jsp/business/businessEdit.jsp");
+        //添加到模型中
+        mv.addObject("signature", wxToken.getSignature());
+        mv.addObject("timestamp", wxToken.getTimestamp());
+        mv.addObject("noncestr", wxToken.getNoncestr());
+        mv.addObject("appId", wxToken.getAppId());
+        mv.addObject("onBusinessCount", JSON.toJSONString(onBusinessCount));
+        mv.addObject("businessList",JSON.toJSONString(businessList));
         return mv;
     }
 
+    /**
+     * 开始出差
+     * @return 返回开始出差是否成功
+     */
     @RequestMapping("/begin")
-    public void businessBegin(HttpServletResponse response,HttpServletRequest request) throws Exception {
-        String uname = (String) request.getSession().getAttribute("user");
-        Integer onBusinessCount=businessService.setBusinessBegin(uname);
-        response.getWriter().write(JSON.toJSONString(onBusinessCount));
+    public Integer businessBegin(HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return businessService.setBusinessBegin(uname);
     }
 
+    /**
+     * 结束出差
+     * @return 返回结束出差是否成功
+     */
     @RequestMapping("/end")
-    public void businessEnd(HttpServletResponse response,HttpServletRequest request) throws Exception {
-        String uname = (String) request.getSession().getAttribute("user");
-        Integer onBusinessCount=businessService.setBusinessEnd(uname);
-        response.getWriter().write(JSON.toJSONString(onBusinessCount));
+    public Integer businessEnd(HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return businessService.setBusinessEnd(uname);
     }
 
+    /**
+     * 更新出差信息
+     * @param business 被选中的出差信息
+     * @return 是否更新成功
+     */
     @RequestMapping("/update")
-    public void businessUpdate(@RequestBody Business business, HttpServletResponse response, HttpServletRequest request) throws Exception {
-        String uname = (String) request.getSession().getAttribute("user");
-        Integer reten=businessService.updateBusiness(business,uname);
-        response.getWriter().write(JSON.toJSONString(reten));
+    public Integer businessUpdate(@RequestBody Business business, HttpSession session) throws Exception {
+        String uname = (String) session.getAttribute("user");
+        return businessService.updateBusiness(business,uname);
     }
 
+    /**
+     * 下拉刷新出差信息
+     * @return 重新查询的出差信息
+     */
     @RequestMapping("/refresh")
-    public void businessRefresh(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        List<Business> businessList=businessService.getBusinessByUser(uname);
-        response.getWriter().write(JSON.toJSONString(businessList));
+    public List<Business> businessRefresh(HttpSession session) {
+        String uname = (String) session.getAttribute("user");
+        return businessService.getBusinessByUser(uname);
     }
 
+    /**
+     * 上拉加载更多的出差信息
+     * @param limit 当前展示的出差信息条数
+     * @return 返回从limit开始后面的5条出差信息
+     */
     @RequestMapping("/reload")
-    public void businessReload(Integer limit,HttpServletResponse response,HttpServletRequest request) throws IOException {
-        String uname = (String) request.getSession().getAttribute("user");
-        List<Business> businessList=businessService.getBusinessByLimit(uname,limit);
-        response.getWriter().write(JSON.toJSONString(businessList));
+    public  List<Business> businessReload(Integer limit, HttpSession session)  {
+        String uname = (String) session.getAttribute("user");
+        return businessService.getBusinessByLimit(uname,limit);
     }
 }

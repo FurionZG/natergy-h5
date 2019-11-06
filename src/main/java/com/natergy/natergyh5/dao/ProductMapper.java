@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 销售产品规格Dao
+ * @author 杨枕戈
+ */
 @Repository
 @Mapper
 public interface ProductMapper {
