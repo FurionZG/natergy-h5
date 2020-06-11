@@ -1,0 +1,186 @@
+2020-05-09 08:43:05,097 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 18452 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 08:43:05,099 - No active profile set, falling back to default profiles: default
+2020-05-09 08:43:05,139 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 08:43:05,139 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 08:43:05,807 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 08:43:05,810 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 08:43:05,835 - Finished Spring Data repository scanning in 12ms. Found 0 repository interfaces.
+2020-05-09 08:43:06,103 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9114ea1d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-09 08:43:06,546 - Tomcat initialized with port(s): 8000 (http)
+2020-05-09 08:43:06,559 - Initializing ProtocolHandler ["http-nio-8000"]
+2020-05-09 08:43:06,566 - Starting service [Tomcat]
+2020-05-09 08:43:06,566 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-05-09 08:43:06,803 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-09 08:43:06,809 - Initializing Spring embedded WebApplicationContext
+2020-05-09 08:43:06,810 - Root WebApplicationContext: initialization completed in 1671 ms
+2020-05-09 08:43:07,495 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-09 08:43:07,779 - LiveReload server is running on port 35729
+2020-05-09 08:43:07,802 - Starting ProtocolHandler ["http-nio-8000"]
+2020-05-09 08:43:07,833 - Tomcat started on port(s): 8000 (http) with context path '/natergy-h5'
+2020-05-09 08:43:07,835 - Started NatergyH5Application in 3.089 seconds (JVM running for 6.081)
+2020-05-09 09:11:22,140 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 20400 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 09:11:22,143 - No active profile set, falling back to default profiles: default
+2020-05-09 09:11:22,203 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 09:11:22,203 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 09:11:22,589 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.natergy.natergyh5.NatergyH5Application]; nested exception is org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'orderService' for bean class [com.natergy.natergyh5.service.statisticsServices.OrderService] conflicts with existing, non-compatible bean definition of same name and class [com.natergy.natergyh5.service.OrderService]
+2020-05-09 09:13:32,555 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 12744 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 09:13:32,557 - No active profile set, falling back to default profiles: default
+2020-05-09 09:13:32,621 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 09:13:32,621 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 09:13:33,437 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 09:13:33,439 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 09:13:33,460 - Finished Spring Data repository scanning in 13ms. Found 0 repository interfaces.
+2020-05-09 09:14:24,873 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 18648 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 09:14:24,875 - No active profile set, falling back to default profiles: default
+2020-05-09 09:14:24,934 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 09:14:24,934 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 09:14:25,723 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 09:14:25,725 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 09:14:25,745 - Finished Spring Data repository scanning in 13ms. Found 0 repository interfaces.
+2020-05-09 09:14:26,028 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$21bbcce6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-09 09:14:26,473 - Tomcat initialized with port(s): 8000 (http)
+2020-05-09 09:14:26,486 - Initializing ProtocolHandler ["http-nio-8000"]
+2020-05-09 09:14:26,493 - Starting service [Tomcat]
+2020-05-09 09:14:26,493 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-05-09 09:14:26,720 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-09 09:14:26,726 - Initializing Spring embedded WebApplicationContext
+2020-05-09 09:14:26,727 - Root WebApplicationContext: initialization completed in 1792 ms
+2020-05-09 09:14:26,995 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyController': Unsatisfied dependency expressed through field 'applyService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyService': Unsatisfied dependency expressed through field 'applyMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyMapper' defined in file [D:\JavaProject\natergy\natergy-h5\target\classes\com\natergy\natergyh5\dao\ApplyMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [D:\JavaProject\natergy\natergy-h5\target\classes\sqlmap\OrderDetailsMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [D:\JavaProject\natergy\natergy-h5\target\classes\sqlmap\OrderDetailsMapper.xml]'. Cause: org.apache.ibatis.builder.BuilderException: Error resolving class. Cause: org.apache.ibatis.type.TypeException: Could not resolve type alias 'com.natergy.demo.bean.OrderDetail'.  Cause: java.lang.ClassNotFoundException: Cannot find class: com.natergy.demo.bean.OrderDetail
+2020-05-09 09:14:26,997 - Stopping service [Tomcat]
+2020-05-09 09:14:27,006 - The web application [natergy-h5] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:40)
+2020-05-09 09:14:27,011 - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-05-09 09:15:31,382 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 18828 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 09:15:31,384 - No active profile set, falling back to default profiles: default
+2020-05-09 09:15:31,440 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 09:15:31,441 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 09:15:32,229 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 09:15:32,230 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 09:15:32,255 - Finished Spring Data repository scanning in 16ms. Found 0 repository interfaces.
+2020-05-09 09:15:32,521 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$92cb3b66] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-09 09:15:32,942 - Tomcat initialized with port(s): 8000 (http)
+2020-05-09 09:15:32,955 - Initializing ProtocolHandler ["http-nio-8000"]
+2020-05-09 09:15:32,961 - Starting service [Tomcat]
+2020-05-09 09:15:32,962 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-05-09 09:15:33,188 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-09 09:15:33,194 - Initializing Spring embedded WebApplicationContext
+2020-05-09 09:15:33,195 - Root WebApplicationContext: initialization completed in 1754 ms
+2020-05-09 09:15:33,455 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyController': Unsatisfied dependency expressed through field 'applyService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyService': Unsatisfied dependency expressed through field 'applyMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'applyMapper' defined in file [D:\JavaProject\natergy\natergy-h5\target\classes\com\natergy\natergyh5\dao\ApplyMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [D:\JavaProject\natergy\natergy-h5\target\classes\sqlmap\OrderDetailsMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [D:\JavaProject\natergy\natergy-h5\target\classes\sqlmap\OrderDetailsMapper.xml]'. Cause: org.apache.ibatis.builder.BuilderException: Error resolving class. Cause: org.apache.ibatis.type.TypeException: Could not resolve type alias 'com.natergy.demo.bean.OrderDetail'.  Cause: java.lang.ClassNotFoundException: Cannot find class: com.natergy.demo.bean.OrderDetail
+2020-05-09 09:15:33,458 - Stopping service [Tomcat]
+2020-05-09 09:15:33,465 - The web application [natergy-h5] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:40)
+2020-05-09 09:15:33,470 - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-05-09 09:17:35,965 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 16128 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 09:17:35,968 - No active profile set, falling back to default profiles: default
+2020-05-09 09:17:36,028 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 09:17:36,028 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 09:17:36,920 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 09:17:36,922 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 09:17:36,950 - Finished Spring Data repository scanning in 18ms. Found 0 repository interfaces.
+2020-05-09 09:17:37,235 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$71d745f1] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-09 09:17:37,665 - Tomcat initialized with port(s): 8000 (http)
+2020-05-09 09:17:37,679 - Initializing ProtocolHandler ["http-nio-8000"]
+2020-05-09 09:17:37,686 - Starting service [Tomcat]
+2020-05-09 09:17:37,686 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-05-09 09:17:37,927 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-09 09:17:37,936 - Initializing Spring embedded WebApplicationContext
+2020-05-09 09:17:37,936 - Root WebApplicationContext: initialization completed in 1908 ms
+2020-05-09 09:17:38,644 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-09 09:17:38,917 - LiveReload server is running on port 35729
+2020-05-09 09:17:38,937 - Starting ProtocolHandler ["http-nio-8000"]
+2020-05-09 09:17:38,967 - Tomcat started on port(s): 8000 (http) with context path '/natergy-h5'
+2020-05-09 09:17:38,969 - Started NatergyH5Application in 3.413 seconds (JVM running for 6.342)
+2020-05-09 09:19:26,420 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-09 09:19:26,421 - Initializing Servlet 'dispatcherServlet'
+2020-05-09 09:19:26,427 - Completed initialization in 6 ms
+2020-05-09 09:19:28,215 - 
+时间：2020年05月09日09时19分28秒
+模块：用户模块
+操作：微信自动登录
+操作人：null
+接口名称：wxOpenId
+IP：0:0:0:0:0:0:0:1
+传入对象：{}
+传入对象：com.alibaba.druid.support.http.WebStatFilter$StatHttpServletResponseWrapper@2c455f9e
+传入对象：org.apache.catalina.connector.RequestFacade@4e44e74a
+2020-05-09 09:19:29,416 - 
+时间：2020年05月09日09时19分29秒
+模块：用户模块
+操作：用户名密码登录
+操作人：null
+接口名称：login
+IP：0:0:0:0:0:0:0:1
+传入对象：User{uname='杨枕戈', pwd='00100', openId='null'}
+传入对象：org.apache.catalina.session.StandardSessionFacade@5d5d56fc
+2020-05-09 09:19:29,467 - {dataSource-1} inited
+2020-05-09 09:19:35,206 - 
+时间：2020年05月09日09时19分35秒
+模块：用户模块
+操作：用户名密码登录
+操作人：null
+接口名称：login
+IP：0:0:0:0:0:0:0:1
+传入对象：User{uname='杨枕戈', pwd='112358', openId='null'}
+传入对象：org.apache.catalina.session.StandardSessionFacade@5d5d56fc
+2020-05-09 10:35:29,922 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-05-09 10:35:29,931 - {dataSource-1} closed
+2020-05-09 10:36:58,913 - Starting NatergyH5Application on DESKTOP-M9I59SO with PID 20664 (D:\JavaProject\natergy\natergy-h5\target\classes started by 杨枕戈 in D:\JavaProject\natergy\natergy-h5)
+2020-05-09 10:36:58,917 - No active profile set, falling back to default profiles: default
+2020-05-09 10:36:59,028 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-09 10:36:59,028 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-09 10:36:59,961 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-05-09 10:36:59,963 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-05-09 10:36:59,988 - Finished Spring Data repository scanning in 16ms. Found 0 repository interfaces.
+2020-05-09 10:37:00,300 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b5d58002] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-05-09 10:37:00,722 - Tomcat initialized with port(s): 8000 (http)
+2020-05-09 10:37:00,781 - Initializing ProtocolHandler ["http-nio-8000"]
+2020-05-09 10:37:00,789 - Starting service [Tomcat]
+2020-05-09 10:37:00,789 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-05-09 10:37:01,055 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-05-09 10:37:01,062 - Initializing Spring embedded WebApplicationContext
+2020-05-09 10:37:01,062 - Root WebApplicationContext: initialization completed in 2033 ms
+2020-05-09 10:37:01,862 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-09 10:37:02,262 - LiveReload server is running on port 35729
+2020-05-09 10:37:02,286 - Starting ProtocolHandler ["http-nio-8000"]
+2020-05-09 10:37:02,320 - Tomcat started on port(s): 8000 (http) with context path '/natergy-h5'
+2020-05-09 10:37:02,322 - Started NatergyH5Application in 3.988 seconds (JVM running for 7.135)
+2020-05-09 10:37:06,178 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-09 10:37:06,178 - Initializing Servlet 'dispatcherServlet'
+2020-05-09 10:37:06,189 - Completed initialization in 11 ms
+2020-05-09 10:37:08,703 - 
+时间：2020年05月09日10时37分08秒
+模块：用户模块
+操作：微信自动登录
+操作人：null
+接口名称：wxOpenId
+IP：0:0:0:0:0:0:0:1
+传入对象：{}
+传入对象：com.alibaba.druid.support.http.WebStatFilter$StatHttpServletResponseWrapper@49eb67c5
+传入对象：org.apache.catalina.connector.RequestFacade@7e5dac1d
+2020-05-09 10:37:09,643 - 
+时间：2020年05月09日10时37分09秒
+模块：用户模块
+操作：用户名密码登录
+操作人：null
+接口名称：login
+IP：0:0:0:0:0:0:0:1
+传入对象：User{uname='杨枕戈', pwd='00100', openId='null'}
+传入对象：org.apache.catalina.session.StandardSessionFacade@75d733c3
+2020-05-09 10:37:09,696 - {dataSource-1} inited
+2020-05-09 10:37:17,314 - 
+时间：2020年05月09日10时37分17秒
+模块：用户模块
+操作：用户名密码登录
+操作人：null
+接口名称：login
+IP：0:0:0:0:0:0:0:1
+传入对象：User{uname='杨枕戈', pwd='112358', openId='null'}
+传入对象：org.apache.catalina.session.StandardSessionFacade@75d733c3

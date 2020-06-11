@@ -91,10 +91,22 @@ public class BusinessService {
      */
     @Transactional
     public Integer updateBusiness(Business business, String uname) throws Exception {
-        String startSrc = saveImageToServer.saveImageToServer(business.getStartImage(), uname, "出差计划");
-        String endSrc = saveImageToServer.saveImageToServer(business.getEndImage(), uname, "出差计划");
-        business.setStartImage(startSrc);
-        business.setEndImage(endSrc);
+        if(!"".equals(business.getStartImage())){
+            String startSrc = saveImageToServer.saveImageToServer(business.getStartImage(), uname, "出差计划");
+            business.setStartImage(startSrc);
+        }
+        if(!"".equals(business.getEndImage())){
+            String endSrc = saveImageToServer.saveImageToServer(business.getEndImage(), uname, "出差计划");
+            business.setEndImage(endSrc);
+        }
+        if("".equals(business.getStartImage())){
+            String startImage = businessDao.getStartImageById(business.getId());
+            business.setStartImage(startImage);
+        }
+        if("".equals(business.getEndImage())){
+            String endImage = businessDao.getEndImageById(business.getId());
+            business.setEndImage(endImage);
+        }
         return businessDao.updateBusiness(business);
     }
 
@@ -124,5 +136,9 @@ public class BusinessService {
             }
         }
         return resultList;
+    }
+
+    public List<String> getBusinessNoByUser(String uname) {
+        return businessDao.getBusinessNoByUser(uname);
     }
 }

@@ -4,7 +4,7 @@ package com.natergy.natergyh5.controller;
 import com.alibaba.fastjson.JSON;
 import com.natergy.natergyh5.entity.FollowUp;
 import com.natergy.natergyh5.entity.ResultOfAddress;
-import com.natergy.natergyh5.entity.WxToken;
+import com.natergy.natergyh5.entity.wxEntity.WxToken;
 import com.natergy.natergyh5.service.FollowUpService;
 import com.natergy.natergyh5.utils.WxUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,9 +108,13 @@ public class FollowUpController {
      * @return 返回从limit开始后面的5条地产跟进记录
      */
     @RequestMapping("/reload")
-    public List<FollowUp> followUpReload(Integer limit,HttpSession session)  {
+    public List<FollowUp> followUpReload(Integer limit,HttpSession session,String salesmanName)  {
         String uname = (String) session.getAttribute("user");
-        return followUpService.reloadFolloUp(uname,limit);
+        if("".equals(salesmanName)){
+            return followUpService.reloadFolloUp(uname,limit);
+        }else{
+            return followUpService.reloadFolloUp(salesmanName,limit);
+        }
     }
 
     /**
@@ -123,5 +127,10 @@ public class FollowUpController {
     public Integer updateFollowUp(@RequestBody FollowUp followUp,HttpSession session) {
         String uname = (String) session.getAttribute("user");
         return followUpService.updateFollowUp(followUp,uname);
+    }
+
+    @RequestMapping("/getFollowUpInfoBySalesman")
+    public List<FollowUp> getFollowUpInfoBySalesman(String salesmanName){
+        return followUpService.getFollowUpInfoBySalesman(salesmanName);
     }
 }

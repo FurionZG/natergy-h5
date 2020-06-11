@@ -6,24 +6,18 @@ import com.natergy.natergyh5.dao.OptionsMapper;
 import com.natergy.natergyh5.entity.FollowUp;
 import com.natergy.natergyh5.entity.Option;
 import com.natergy.natergyh5.entity.ResultOfAddress;
-import com.natergy.natergyh5.entity.WXJsSdk;
+import com.natergy.natergyh5.entity.wxEntity.WXJsSdk;
 import com.natergy.natergyh5.utils.FtpUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sun.net.ftp.FtpClient;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +37,8 @@ public class FollowUpService {
     private String appSecret;
     @Value("${natergy.host}")
     private String host;
-
+    @Value("${SalesExecutive}")
+    String salesExecutive;
     @Autowired
     private FollowUpMapper followUpDao;
     @Autowired
@@ -127,7 +122,7 @@ public class FollowUpService {
                 ftpClient.changeWorkingDirectory("natergy");
                 ftpClient.enterLocalPassiveMode();
                 String fileName = followUp.getUser() + "-" + followUp.getDate() + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
-                String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
+                String path = new String(("./pic/" + fileName).getBytes(), "utf-8");
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
                 //System.out.println(ftpClient.storeFile(path,bis));
                 if (ftpClient.storeFile(path, bis)) {
@@ -210,6 +205,24 @@ public class FollowUpService {
      */
     public List<FollowUp> reloadFolloUp(String uname, Integer limit) {
         List<FollowUp> resultList = followUpDao.reloadFollowUp(limit, uname);
+        for (FollowUp followUp : resultList) {
+            List<String> imgesList = new ArrayList<>();
+            if (null != followUp.getImgStr()) {
+                String imgStr = followUp.getImgStr();
+                String[] images = imgStr.split("/");
+                //不要第一个值，因为第一个值是""
+                for (int i = 1; i < images.length; i++) {
+                    String imageUrl = optionsDao.queryOption(images[i]);
+                    imgesList.add(imageUrl);
+                }
+            }
+            followUp.setImages(imgesList);
+        }
+        return resultList;
+    }
+
+    public List<FollowUp> getFollowUpInfoBySalesman(String salesmanName) {
+        List<FollowUp> resultList = followUpDao.getFollowUpByUser(salesmanName);
         for (FollowUp followUp : resultList) {
             List<String> imgesList = new ArrayList<>();
             if (null != followUp.getImgStr()) {

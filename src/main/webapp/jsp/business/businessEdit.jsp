@@ -6,14 +6,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mui.picker.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/app.css" />
@@ -33,7 +33,7 @@
     <header class="mui-bar mui-bar-nav">
         <h1 class="mui-title">修改出差记录</h1>
         <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 30%;float: right">修改
+        <button id='id_btnSave' type="button" class="mui-btn mui-btn-success" style="width: 30%;float: right">保存
         </button>
     </header>
 
@@ -53,65 +53,65 @@
         <h5>终止日期</h5> <button id="endDate" data-options='{"value":"2019-10-10 10:10","beginYear":2019,"endYear":2020}' class="btn mui-btn mui-btn-block">选择终止时间 ...</button>
         <h5>统计信息</h5>
         <div class="mui-input-row">
-            <label>天数</label> <input type="text" placeholder="" id="time" readonly="true">
+            <label>天数</label> <input  class="onlyNum" type="text" placeholder="" id="time" >
         </div>
         <div class="mui-input-row">
-            <label>拜访客户数</label> <input type="text" placeholder="" id="visitCustomerCount" readonly="true">
+            <label>拜访客户数</label> <input  class="onlyNum" type="text" placeholder="" id="visitCustomerCount" >
         </div>
         <div class="mui-input-row">
-            <label>新户数</label> <input type="text" placeholder="" id="visitNewCustomerCount" readonly="true">
+            <label>新户数</label> <input  class="onlyNum" type="text" placeholder="" id="visitNewCustomerCount" >
         </div>
         <div class="mui-input-row">
-            <label>起始里程</label> <input type="text" placeholder="" id="startMileage">
+            <label>起始里程</label> <input  class="onlyNum" type="text" placeholder="" id="startMileage">
         </div>
         <h5>上传起始终止里程照片</h5>
         <button id='startImg' type="button" class="mui-btn mui-btn-success" onclick="ChoosePhoto(this);" style="width: 100%">上传</button>
             <div id ="dd1"></div>
         <input type="hidden" id ="startSrc">
         <div class="mui-input-row">
-            <label>终止里程</label> <input type="text" placeholder="" id="endMileage">
+            <label>终止里程</label> <input  class="onlyNum" type="text" placeholder="" id="endMileage">
         </div>
         <h5>上传起始终止里程照片</h5>
         <button id='endImg' type="button" class="mui-btn mui-btn-success" onclick="ChoosePhoto(this);" style="width: 100%">上传</button>
         <div id ="dd2"></div>
         <input type="hidden" id ="endSrc">
         <div class="mui-input-row">
-            <label>公里数</label> <input type="text" placeholder="" id="Mileage">
+            <label>公里数</label> <input  class="onlyNum" type="text" placeholder="" id="Mileage">
         </div>
         <div class="mui-input-row">
-            <label>过路费</label> <input type="text" placeholder="" id="roadToll">
+            <label>过路费</label> <input  class="onlyNum" type="text" placeholder="" id="roadToll">
         </div>
         <div class="mui-input-row">
-            <label>加油费</label> <input type="text" placeholder="" id="fuelCosts">
+            <label>加油费</label> <input  class="onlyNum" type="text" placeholder="" id="fuelCosts">
         </div>
         <div class="mui-input-row">
-            <label>加油数</label> <input type="text" placeholder="" id="fuelVolume">
+            <label>加油数</label> <input  class="onlyNum" type="text" placeholder="" id="fuelVolume">
         </div>
         <div class="mui-input-row">
-            <label>油耗</label> <input type="text" placeholder="" id="oilConsumption">
+            <label>油耗</label> <input  class="onlyNum" type="text" placeholder="" id="oilConsumption">
         </div>
         <div class="mui-input-row">
-            <label>车票</label> <input type="text" placeholder="" id="ticket">
+            <label>车票</label> <input  class="onlyNum" type="text" placeholder="" id="ticket">
         </div>
         <h5>补贴</h5>
         <div class="mui-input-row">
-            <label>特补</label> <input type="text" placeholder="" id="specialSubsidies">
+            <label>费用</label> <input  class="onlyNum" type="text" placeholder="" id="specialSubsidies">
         </div>
         <div class="mui-input-row">
-            <label>特补说明</label> <input type="text" placeholder="请输入特补说明" id="specialSubsidiesDescription">
+            <label>费用说明</label> <input type="text" placeholder="请输入费用说明" id="specialSubsidiesDescription">
         </div>
         <div class="mui-input-row">
-            <label>餐补</label> <input type="text" placeholder="" id="mealAllowance">
+            <label>餐补</label> <input class="onlyNum" type="text" placeholder="" id="mealAllowance">
         </div>
         <div class="mui-input-row">
-            <label>住宿</label> <input type="text" placeholder="" id="accommodation">
+            <label>住宿</label> <input class="onlyNum" type="text" placeholder="" id="accommodation">
         </div>
         <hr>
         <div class="mui-input-row">
-            <label>本次花费</label> <input type="text" placeholder="" id="totalCosts">
+            <label>本次花费</label> <input class="onlyNum" type="text" placeholder="" id="totalCosts">
         </div>
         <div class="mui-input-row">
-            <label>客情费</label> <input type="text" placeholder="" id="customerFee">
+            <label>客情费</label> <input class="onlyNum" type="text" placeholder="" id="customerFee">
         </div>
         <div class="mui-input-row">
             <label>行程</label> <input type="text" placeholder="请输入行程" id="trip">
@@ -154,11 +154,10 @@
 
 </body>
 
-
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
 <script src="<%=request.getContextPath()%>/js/mui.picker.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -314,6 +313,7 @@
                 "specialSubsidies": $("#specialSubsidies").val(),
                 "specialSubsidiesDescription": $("#specialSubsidiesDescription").val(),
                 "mealAllowance": $("#mealAllowance").val(),
+                "oilConsumption": $("#oilConsumption").val(),
                 "accommodation": $("#accommodation").val(),
                 "totalCosts": $("#totalCosts").val(),
                 "customerFee": $("#customerFee").val(),
@@ -321,13 +321,16 @@
                 "summary": $("#summary").val(),
                 "proposal": $("#proposal").val(),
                 "startImage":$("#startSrc").val(),
-                "endImage":$("#endSrc").val()
+                "endImage":$("#endSrc").val(),
+                "visitCustomerCount":$("#visitCustomerCount").val(),
+                "time":$("#time").val(),
+                "visitNewCustomerCount":$("#visitNewCustomerCount").val(),
             }), success: function (data) {
                 if (1 == data) {
                     mui.toast('修改成功');
                     window.location.href = "/natergy-h5/business/init"
                 } else {
-                    mui.toast('订单修改失败，请稍后重试...');
+                    mui.toast('出差记录修改失败，请稍后重试...');
                 }
             }
         });
@@ -497,6 +500,13 @@
         localStorage.setItem("visit", $(obj).find("input:hidden").val());
         window.location.href = "<%=request.getContextPath()%>/jsp/visit/visitEdit.jsp"
     }
+</script>
+<script>
+    $(".onlyNum").keyup(function() {
+        $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+    }).bind("paste", function() { //CTR+V事件处理
+        $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+    }).css("ime-mode", "disabled"); //CSS设置输入法不可用
 </script>
 
 

@@ -5,6 +5,7 @@ import com.natergy.natergyh5.entity.Order;
 import com.natergy.natergyh5.entity.OrderDetail;
 import com.natergy.natergyh5.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
@@ -143,5 +144,10 @@ public class OrderController {
     public Integer orderUpdate(@RequestBody Order order, HttpSession session)  {
         String uname = (String) session.getAttribute("user");
         return orderService.updateOrder(order, uname);
+    }
+
+    @RequestMapping("/getOrderInfoBySalesman")
+    public List<Order> getOrderInfoBySalesman(String salesmanName){
+        return orderService.getOrderInfoBySalesman(salesmanName);
     }
 }

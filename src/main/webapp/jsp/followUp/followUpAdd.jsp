@@ -6,109 +6,68 @@
 
 <head>
     <meta charset="UTF-8">
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
-
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/css/mui.poppicker.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/fonts/my002/iconfont.css"/>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-
     <style>
         h5 {
             margin: 5px 7px;
         }
-
         /* pop层样式 */
-
         .mui-plus .plus {
             display: inline;
         }
-
         .plus {
             display: none;
         }
-
         #topPopover {
             position: fixed;
             top: 16px;
             right: 6px;
         }
-
         #topPopover .mui-popover-arrow {
             left: auto;
             right: 6px;
         }
-
         p {
             text-indent: 22px;
         }
-
         span.mui-icon {
             font-size: 16px;
             color: #007aff;
             margin-left: 3px;
             padding-right: 10px;
         }
-
         .mui-popover {
             height: 140px;
             width: 100px;
         }
-
         .mui-content {
             padding: 10px;
         }
-
         .mui-content > .mui-table-view:first-child {
             margin-top: -1px;
         }
-
         selector {
             cursor: pointer;
         }
-
-
-
-
-
-
-
     </style>
 </head>
-
 <body>
-
 <div class="mui-content">
-
-
     <div class="mui-content-padded" style="margin: 15px;">
         <header class="mui-bar mui-bar-nav">
             <h1 class="mui-title">添加跟进记录</h1>
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
         </header>
-        <div id="topPopover" class="mui-popover">
-            <div class="mui-popover-arrow"></div>
-            <div class="mui-scroll-wrapper">
-                <div class="mui-scroll">
-                    <ul class="mui-table-view">
-                        <li class="mui-table-view-cell">
-                            <a href="javascript:;" onclick="funAdd()" id="addFollow"> <span
-                                    class="mui-icon iconfont icon-add"></span>客户
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <form id="form-country_v1" name="form-country_v1" style="margin-top: 50px;">
             <div class="typeahead__container">
                 <div class="typeahead__field">
@@ -239,8 +198,8 @@
 </body>
 
 
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -248,17 +207,8 @@
 <script src="<%=request.getContextPath()%>/js/mui.poppicker.js"></script>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.15&key=026415b8165d5b4fabe82bc9a253e96a&plugin=AMap.Geocoder"></script>
-
 <!-- 微信jssdk注入 -->
-
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-<script type="text/javascript">
-    /** 添加客户资料 **/
-    function funAdd() {
-        mui.toast('添加客户资料');
-        window.location.href = "<%=request.getContextPath()%>/jsp/customer/addCustomer.jsp";
-    }
-</script>
 <script>
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -302,11 +252,9 @@
 
 
     });
-
     wx.error(function (res) {
     });
 </script>
-
 <script>
     mui.init({
         swipeBack: false
@@ -316,7 +264,6 @@
     //			document.getElementById("search").addEventListener('recognized', function(e) {
     //				console.log(e.detail.value);
     //			});
-
     var nativeWebview, imm, InputMethodManager;
     var initNativeObjects = function () {
         if (mui.os.android) {
@@ -367,8 +314,6 @@
                 $("#province").val(data.province);
                 $("#city").val(data.city);
                 $("#address").val(data.address);
-
-
             }
         });
     }
@@ -398,7 +343,6 @@
 <script>
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function () {
-
         var cName = $("#customerName").val();
         if(""==cName){
             mui.toast('客户名为空，请关联客户名...');
@@ -422,8 +366,6 @@
         //     alert($(this).attr("alt"));
         //     arrayImgs.push($(this).attr("alt"));
         // });
-
-
 //			if("" == customerName || "" == consignee || "" == receivingAddress || null == producer) {
 //				mui.toast('请完善订单信息...');
 //				return;
@@ -450,7 +392,7 @@
                 "post2": $("#post_2").val(),
                 "tel": $("#tel").val(),
                 "email": $("#email").val(),
-                "web": $("#web").val(),
+                "web": $("#we").val(),
                 "chart1": $("#chart_1").val(),
                 "chart2": $("#chart_2").val(),
                 "industry": $("#industryPicker").text(),
@@ -468,15 +410,10 @@
                 }
             }
         });
-
-
         mui(this).button('loading');
-
         setTimeout(function () {
             mui(this).button('reset');
-
             //mui.back();
-
         }.bind(this), 2000);
     });
 </script>
@@ -494,11 +431,9 @@
             var _getParam = function (obj, param) {
                 return obj[param] || '';
             };
-
             var picker = new $.PopPicker({
                 layer: 2
             });
-
             picker.setData(industry_data);
             var industryPickerPickerButton = doc.getElementById('industryPicker');
             //				var cityResult3 = doc.getElementById('userResult');
@@ -510,14 +445,11 @@
                     //return false;
                 });
             }, false);
-
         });
     })(mui, document);
 </script>
 
 <script>
-
-
         var imgA=new Array();
         var imgserverId;  //存储的图片拼接字符；<br>function ChoosePhoto(){
         function ChoosePhoto(){
@@ -540,8 +472,6 @@
             }
         });
     };
-
-
     var syncUpload = function(localIds){
         var localId = localIds.pop();
         wx.uploadImage({
@@ -565,7 +495,6 @@
             }
         })
     }
-
     function preview(){
         var imgs = [];
         var imgObj = $("#dd img");//这里改成相应的对象
@@ -580,9 +509,6 @@
             });
         }
     }
-
-
 </script>
 </body>
-
 </html>

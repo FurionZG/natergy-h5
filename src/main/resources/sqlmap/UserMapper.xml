@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.natergy.natergyh5.dao.statisticsMapper.UserStatisticsMapper">
+
+    <select id="selectByPrimaryKey"  parameterType="java.lang.Integer" resultType="java.lang.String">
+        select `用户` from `用户` where id=#{cid}
+    </select>
+
+
+    <select id="selectUsers" resultType="com.natergy.natergyh5.entity.statisticsEntity.User"
+            parameterType="java.util.Map">
+        select Id as id,`用户` as name,`部门` as department , `职位` as jobposition,`分类` as classify,
+        性别 as  sex,`第一学历` as education,`身份证号码` as sfzh,`联系方式` as mobilephone,`家庭住址` as familyPlace,
+        `入职日期` as joinDate
+        from  `用户`
+        where `设置` !="停用"
+        <if test="department != null and department!=''">
+            and `部门`=#{department,jdbcType=VARCHAR}
+        </if>
+        <if test="jobposition != null and jobposition!='' ">
+            and `职位` =#{jobposition,jdbcType=VARCHAR}
+        </if>
+
+        <if test="userids != null ">
+            and Id in
+            <foreach item="item" index="index" collection="userids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+</mapper>

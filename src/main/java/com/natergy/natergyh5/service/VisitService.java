@@ -6,7 +6,7 @@ import com.natergy.natergyh5.dao.OptionsMapper;
 import com.natergy.natergyh5.dao.VisitMapper;
 import com.natergy.natergyh5.entity.Visit;
 import com.natergy.natergyh5.entity.Option;
-import com.natergy.natergyh5.entity.WXJsSdk;
+import com.natergy.natergyh5.entity.wxEntity.WXJsSdk;
 import com.natergy.natergyh5.utils.FtpUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,6 @@ public class VisitService {
     private String appSecret;
     @Value("${natergy.host}")
     private String host;
-
     /**
      * 查询登录用户有拜访记录的客户名
      * @param uname 登录用户的用户名
@@ -77,7 +76,7 @@ public class VisitService {
                 ftpClient.changeWorkingDirectory("natergy");
                 ftpClient.enterLocalPassiveMode();
                 String fileName = visit.getUser() + "-" + new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒").format(new Date()) + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
-                String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
+                String path = new String(("./pic/" + fileName).getBytes(), "utf-8");
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
                 if (ftpClient.storeFile(path, bis)) {
                     Option option = new Option();
@@ -170,7 +169,7 @@ public class VisitService {
      * @return 返回从limit开始之后的5条拜访记录
      */
     public List<Visit> reloadVisit(String uname, Integer limit) {
-        List<Visit> resultList = visitDao.reloadVisit(limit, uname);
+        List<Visit> resultList= visitDao.reloadVisit(limit, uname);
         detailImages(resultList);
         return resultList;
     }
@@ -255,5 +254,12 @@ public class VisitService {
      */
     public Integer deleteVisit(String id) {
         return visitDao.deleteVisit(id);
+    }
+
+
+    public List<Visit> getVisitInfoBySalesman(String salesmanName) {
+        List<Visit> resultList = visitDao.getVisitsByUser(salesmanName);
+        detailImages(resultList);
+        return resultList;
     }
 }

@@ -52,8 +52,8 @@ public interface BusinessMapper {
             @Result(property = "fuelVolume",column = "加油数（升）"),
             @Result(property = "oilConsumption",column = "油耗"),
             @Result(property = "ticket",column = "车票"),
-            @Result(property = "specialSubsidies",column = "特补"),
-            @Result(property = "specialSubsidiesDescription",column = "特补说明"),
+            @Result(property = "specialSubsidies",column = "费用"),
+            @Result(property = "specialSubsidiesDescription",column = "费用说明"),
             @Result(property = "mealAllowance",column = "餐补"),
             @Result(property = "accommodation",column = "住宿"),
             @Result(property = "totalCosts",column = "本次花费"),
@@ -64,7 +64,7 @@ public interface BusinessMapper {
     })
     List<Business> getBusinessByUser(String uname);
 
-    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},特补=#{specialSubsidies},特补说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},终止里程照片_附件=#{endImage} where Id=#{id}")
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},油耗=#{oilConsumption},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},费用=#{specialSubsidies},费用说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},终止里程照片_附件=#{endImage},天数=#{time},拜访客户数=#{visitCustomerCount},新户数=#{visitNewCustomerCount} where Id=#{id}")
     Integer updateBusiness(Business business);
 
     @Select("select * from 销售出差登记 where 姓名=#{uname} order by Id desc limit #{limit},5")
@@ -87,8 +87,8 @@ public interface BusinessMapper {
             @Result(property = "fuelVolume",column = "加油数（升）"),
             @Result(property = "oilConsumption",column = "油耗"),
             @Result(property = "ticket",column = "车票"),
-            @Result(property = "specialSubsidies",column = "特补"),
-            @Result(property = "specialSubsidiesDescription",column = "特补说明"),
+            @Result(property = "specialSubsidies",column = "费用"),
+            @Result(property = "specialSubsidiesDescription",column = "费用说明"),
             @Result(property = "mealAllowance",column = "餐补"),
             @Result(property = "accommodation",column = "住宿"),
             @Result(property = "totalCosts",column = "本次花费"),
@@ -98,4 +98,26 @@ public interface BusinessMapper {
             @Result(property = "proposal",column = "建议"),
     })
     List<Business> getBusinessByLimit(String uname, Integer limit);
+
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},费用=#{specialSubsidies},费用说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},终止里程照片_附件=#{endImage},天数=#{time},拜访客户数=#{visitCustomerCount},新户数=#{visitNewCustomerCount} where Id=#{id}")
+    Integer updateBusinessWithoutStartImage(Business business);
+
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},费用=#{specialSubsidies},费用说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},天数=#{time},拜访客户数=#{visitCustomerCount},新户数=#{visitNewCustomerCount} where Id=#{id}")
+    Integer updateBusinessWithoutEndImage(Business business);
+
+
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},费用=#{specialSubsidies},费用说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},起始里程照片_附件=#{startImage},终止里程照片_附件=#{endImage},天数=#{time},拜访客户数=#{visitCustomerCount},新户数=#{visitNewCustomerCount}  where Id=#{id}")
+    Integer updateBusinessWithImages(Business business);
+
+    @Update("update 销售出差登记 set 起始日期=#{startDate},终止日期=#{endDate},起始里程=#{startMileage},终止里程=#{endMileage},公里数=#{mileage},过路费=#{roadToll},加油费=#{fuelCosts},加油数（升）=#{fuelVolume},车票=#{ticket},费用=#{specialSubsidies},费用说明=#{specialSubsidiesDescription},餐补=#{mealAllowance},住宿=#{accommodation},本次花费=#{totalCosts},客情费=#{customerFee},行程=#{trip},总结=#{summary},建议=#{proposal},终止里程照片_附件=#{endImage},天数=#{time},拜访客户数=#{visitCustomerCount},新户数=#{visitNewCustomerCount} where Id=#{id}")
+    Integer updateBusinessWithEndImage(Business business);
+
+    @Select("select 起始里程照片_附件 from 销售出差登记 where Id =#{id}")
+    String getStartImageById(String id);
+
+    @Select("select 终止里程照片_附件 from 销售出差登记 where Id =#{id}")
+    String getEndImageById(String id);
+
+    @Select("select 编号 from 销售出差登记 where 状态!='删除' and 姓名=#{uname}")
+    List<String> getBusinessNoByUser(String uname);
 }

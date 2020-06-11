@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/fonts/my002/iconfont.css"/>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
@@ -67,17 +67,19 @@
         selector {
             cursor: pointer;
         }
+
     </style>
 </head>
 
 <body>
-
 <header class="mui-bar mui-bar-nav">
     <h1 class="mui-title">订单</h1>
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
     <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
-
 </header>
+<footer id="footer" class="mui-bar mui-bar-footer" style="display: none">
+    <a href="#bottomPopover" class="mui-btn mui-btn-link mui-pull-right">业务经理</a>
+</footer>
 <!--右上角弹出菜单-->
 <div id="topPopover" class="mui-popover">
     <div class="mui-popover-arrow"></div>
@@ -89,25 +91,29 @@
                             class="mui-icon iconfont icon-add"></span>添加
                     </a>
                 </li>
-
                 <li class="mui-table-view-cell">
                     <a href="javascript:;" onclick="funFilter()"> <span class="mui-icon iconfont icon-shaixuan"></span>筛选
                     </a>
                 </li>
-
                 <li class="mui-table-view-cell">
                     <a href="javascript:;" onclick="funRefresh()"> <span class="mui-icon iconfont icon-shuaxin"></span>刷新
-
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-
+</div>
+<div id="bottomPopover" class="mui-popover mui-popover-bottom" style="height: 300px">
+    <div class="mui-popover-arrow"></div>
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view" id = "salesmanList">
+            </ul>
+        </div>
+    </div>
 </div>
 
 <div class="mui-content">
-
     <form id="form-country_v1" name="form-country_v1" style="margin-top: 10px;">
         <div class="typeahead__container">
             <div class="typeahead__field" style="">
@@ -135,18 +141,8 @@
         </div>
     </div>
 </div>
-<!--<div style="margin-top: 30px;">
-    <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-        <div class="mui-scroll">
-            <ul class="mui-table-view mui-table-view-chevron" id="orderList">
-
-            </ul>
-        </div>
-    </div>
-
-</div>-->
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -170,28 +166,75 @@
 
 <script>
     $(document).ready(function loading() {
-
         var orderInfoListByUser = ${orderInfoListByUser};
-        //console.log(orderInfoListByUser);
-        //console.log(orderInfoListByUser[0]);
+        var salesExecutive="${salesExecutive}";
+        var user="${user}";
         for (var i = 0; i < orderInfoListByUser.length; i++) { //循环数据
             $("#orderList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'>" +
-                orderInfoListByUser[i].orderDetails[0].orderNumber +
+                orderInfoListByUser[i].orderDetails[0].orderNumber + "<p class='mui-ellipsis'>" + orderInfoListByUser[i].user + "</p>" +
                 "<p class='mui-ellipsis'>" + orderInfoListByUser[i].customerName + "</p>" +
                 "<p class='mui-ellipsis'>" + orderInfoListByUser[i].orderTime + "</p>" +
                 "<p class='mui-ellipsis'>" + orderInfoListByUser[i].state + "</p>" +
+                "<p class='mui-ellipsis'>运费：" + orderInfoListByUser[i].carriage + "</p>" +
                 "<input type='hidden' value ='" + JSON.stringify(orderInfoListByUser[i]) + "'/></div></a></li>");
-
+        }
+        if(salesExecutive.indexOf(user)!=-1){
+            $("#footer").css("display","")
+            $.ajax({
+                url: "/natergy-h5/getSalesman",
+                contentType: "application/json;charset=utf-8",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    html="";
+                    for(var i=0;i<data.length;i++){
+                        html +='<li class="mui-table-view-cell"><a href="#">'+data[i]+'</a></li>';
+                    }
+                    $("#salesmanList").append(html);
+                }
+            });
         }
 
+        mui('.mui-scroll-wrapper').scroll({
+            indicators:false
+        });
         mui('body').on('tap', '#orderList li', function () {
             clickLi(this)
+        });
+        mui('body').on('tap', '#salesmanList li', function () {
+            chooseSalesman(this)
         });
         mui('body').on('tap', '#addOrder', function () {
             funAdd()
         });
-
     });
+</script>
+<script>
+    function chooseSalesman(obj){
+        var $salesmanA = $(obj).find("a");
+        var salesmanName = $salesmanA.text();
+        $.ajax({
+            url: "/natergy-h5/order/getOrderInfoBySalesman",
+            contentType: "application/json;charset=utf-8",
+            type: "get",
+            data: {
+                "salesmanName":salesmanName,
+            },
+            dataType: "json",
+            success: function (orderList) {
+                $("#orderList li").remove()
+                for (var i = 0; i < orderList.length; i++) { //循环数据
+                    $("#orderList").append("<li class='mui-table-view-cell mui-media' ><a class='mui-navigate-right'><div class='mui-media-body'>" +
+                        orderList[i].orderDetails[0].orderNumber + "<p class='mui-ellipsis'>" + orderList[i].user + "</p>" +
+                        "<p class='mui-ellipsis'>" + orderList[i].customerName + "</p>" +
+                        "<p class='mui-ellipsis'>" + orderList[i].orderTime + "</p>" +
+                        "<p class='mui-ellipsis'>" + orderList[i].state + "</p>" +
+                        "<p class='mui-ellipsis'>运费：" + orderList[i].carriage + "</p>" +
+                        "<input type='hidden' value ='" + JSON.stringify(orderList[i]) + "'/></div></a></li>");
+                }
+            }
+        });
+    }
 </script>
 <script>
     var allName = ${orderNameSet}
@@ -223,15 +266,15 @@
                 $("#limit").val(orderList.limit);
                 for (var i = 0; i < orderList.length; i++) { //循环数据
                     $("#orderList").append("<li class='mui-table-view-cell mui-media' ><a class='mui-navigate-right'><div class='mui-media-body'>" +
-                        orderList[i].orderDetails[0].orderNumber +
+                        orderList[i].orderDetails[0].orderNumber + "<p class='mui-ellipsis'>" + orderList[i].user + "</p>" +
                         "<p class='mui-ellipsis'>" + orderList[i].customerName + "</p>" +
                         "<p class='mui-ellipsis'>" + orderList[i].orderTime + "</p>" +
                         "<p class='mui-ellipsis'>" + orderList[i].state + "</p>" +
+                        "<p class='mui-ellipsis'>运费：" + orderList[i].carriage + "</p>" +
                         "<input type='hidden' value ='" + JSON.stringify(orderList[i]) + "'/></div></a></li>");
                 }
             }
         });
-
     }
 </script>
 <script>
@@ -249,9 +292,7 @@
             }
         }
     });
-
     var count = 0;
-
     function pullupRefresh() {
         setTimeout(function () {
             $.ajax({
@@ -269,10 +310,11 @@
                         if (orderList[i].orderDetails[0].orderNumber != lastLi.text().substr(0, 15)) {
                             //这个if判断是判断上拉加载的第一个订单的订单号是否等于当前ul中最后一个li的订单号，因为使用limit可能导致一个订单的订单明细被分开，如果两者相等，则不动态生成li
                             $("#orderList").append("<li class='mui-table-view-cell mui-media'><a class='mui-navigate-right'><div class='mui-media-body'>" +
-                                orderList[i].orderDetails[0].orderNumber +
+                                orderList[i].orderDetails[0].orderNumber + "<p class='mui-ellipsis'>" + orderList[i].user + "</p>" +
                                 "<p class='mui-ellipsis'>" + orderList[i].customerName + "</p>" +
                                 "<p class='mui-ellipsis'>" + orderList[i].orderTime + "</p>" +
                                 "<p class='mui-ellipsis'>" + orderList[i].state + "</p>" +
+                                "<p class='mui-ellipsis'>运费：" + orderList[i].carriage + "</p>" +
                                 "<input type='hidden' value ='" + JSON.stringify(orderList[i]) + "'/></div></a></li>");
                         }
                     }
@@ -286,7 +328,6 @@
                         mui.toast("请求超时...");
                     }
                 }
-
             });
             mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 10)); //参数为true代表没有更多数据了。
         }, 1000);
@@ -309,13 +350,13 @@
                     $("#limit").val(orderList.limit);
                     for (var i = 0; i < orderList.length; i++) { //循环数据
                         $("#orderList").append("<li class='mui-table-view-cell mui-media' ><a class='mui-navigate-right'><div class='mui-media-body'>" +
-                            orderList[i].orderDetails[0].orderNumber +
+                            orderList[i].orderDetails[0].orderNumber + "<p class='mui-ellipsis'>" + orderList[i].user + "</p>" +
                             "<p class='mui-ellipsis'>" + orderList[i].customerName + "</p>" +
                             "<p class='mui-ellipsis'>" + orderList[i].orderTime + "</p>" +
                             "<p class='mui-ellipsis'>" + orderList[i].state + "</p>" +
+                            "<p class='mui-ellipsis'>运费：" + orderList[i].carriage + "</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(orderList[i]) + "'/></div></a></li>");
                     }
-
                 }
             });
             // mui('body').on('tap', 'li', function() {
@@ -328,9 +369,7 @@
 </script>
 <script>
     //查看订单
-
     function clickLi(obj) {
-
         var $orderInfo = $(obj).find("input:hidden");
         var json = $orderInfo.val();
         var data = eval("(" + json + ")")
@@ -349,7 +388,6 @@
                     var iframe = window['layui-layer-iframe' + index];
                     //调用子页面的全局函数
                     iframe.child(json);
-
                 },
 
                 cancel: function () {

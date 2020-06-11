@@ -6,13 +6,13 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>Hello MUI</title>
+		<title>订单明细</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 		<!--标准mui.css-->
-		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+		<link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
 		<!--App自定义的css-->
 		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
 		<style>
@@ -68,8 +68,8 @@
 		</form>
 
 		<div id="slider" class="mui-slider"></div>
-		<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+		<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript " charset="utf-8 ">
 			mui.init({
 				swipeBack: false //关闭右滑关闭功能

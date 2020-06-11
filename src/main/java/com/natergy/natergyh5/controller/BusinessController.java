@@ -2,7 +2,7 @@ package com.natergy.natergyh5.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.natergy.natergyh5.entity.Business;
-import com.natergy.natergyh5.entity.WxToken;
+import com.natergy.natergyh5.entity.wxEntity.WxToken;
 import com.natergy.natergyh5.service.BusinessService;
 import com.natergy.natergyh5.utils.WxUtils;
 import org.springframework.beans.factory.annotation.Autowired;

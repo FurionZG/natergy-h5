@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.natergy.natergyh5.dao.statisticsMapper.OrderDetailStatisticsMapper">
+
+
+    <select id="selectOrderDetails" resultType="com.natergy.natergyh5.entity.statisticsEntity.OrderDetail"
+            parameterType="java.util.Map">
+        select `Id` as id ,`状态` as goodsReach , `订单号` as orderNo, `产品编号` as productCode, `品名` as productName, `规格mm` as
+        productStandards, `包装` as pack, `净重kg` as netWeight , `单价` as price, `金额` as totalPrice , `已阅人员` as hasReadTime
+        from `销售订单明细`
+        where `状态`='已到货'
+        <if test="orderNO != null and orderNO!=''">
+            and `订单号`=#{orderNO,jdbcType=VARCHAR}
+        </if>
+        <if test="productNO != null and productNO!='' ">
+            and `产品编号` =#{productNO,jdbcType=VARCHAR}
+        </if>
+
+        <if test="productStandard != null and productNO!='' ">
+            and `规格mm` =#{productStandard,jdbcType=VARCHAR}
+        </if>
+        <if test="filterGift != null and filterGift!='' ">
+            <choose>
+                <when test="filterGift ='y' ">
+                    and `备注` not like '%赠品%'
+                </when>
+            </choose>
+        </if>
+
+        <if test="filter_sample != null and filter_sample!='' ">
+            <choose>
+                <when test="filter_sample ='y' ">
+                    and `备注` not like '%样本%'
+                </when>
+                <otherwise>
+                    '',
+                </otherwise>
+            </choose>
+        </if>
+
+        <if test="orderNos != null ">
+            and `订单号` in
+            <foreach item="item" index="index" collection="orderNos"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="detailids != null ">
+            and `Id` in
+            <foreach item="item" index="index" collection="detailids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="selectReturnBackOrderDetails" resultType="com.natergy.natergyh5.entity.statisticsEntity.ReturnBackOrderDetail"
+            parameterType="java.util.Map">
+
+        SELECT `Id`, `状态` as returnStatus,`系统编号` systemNo, `规格mm` as productStandard , `内包装` as innerPack ,
+        `外包装` as outerPack , `退货数量kg` as netWeight ,`单价` as price from `销售退货明细` where `单价` !=0 and `状态`='正常'
+        <if test="systemNo != null and systemNo!=''">
+            and `系统编号`=#{systemNo,jdbcType=VARCHAR}
+        </if>
+
+        <if test="productStandard != null and productStandard!='' ">
+            and `规格mm` =#{productStandard,jdbcType=VARCHAR}
+        </if>
+
+        <if test="returnBackOrderNos != null ">
+            and `系统编号` in
+            <foreach item="item" index="index" collection="returnBackOrderNos"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="detailids != null ">
+            and `Id` in
+            <foreach item="item" index="index" collection="detailids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.natergy.natergyh5.service;
 
+import com.natergy.natergyh5.entity.ResultOfAttention;
 import com.natergy.natergyh5.dao.CustomerMapper;
 import com.natergy.natergyh5.dao.OrderMapper;
 import com.natergy.natergyh5.dao.ProductMapper;
@@ -8,6 +9,7 @@ import com.natergy.natergyh5.entity.Order;
 import com.natergy.natergyh5.entity.OrderDetail;
 import com.natergy.natergyh5.entity.ResultOfSelectCustomerInfoByName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +29,8 @@ public class OrderService {
     private CustomerMapper customerDao;
     @Autowired
     private ProductMapper productMapper;
-
+    @Value("${SalesExecutive}")
+    String salesExecutive;
     /**
      * 查询登录用户的最后10条订单记录
      * @param uname 登录用户的用户名
@@ -44,7 +47,6 @@ public class OrderService {
      */
     public List<String> queryCustomersByUser(String uname) {
         return customerDao.getCustomersByUser(uname);
-
     }
 
     /**
@@ -135,7 +137,13 @@ public class OrderService {
      * @return 返回是否保存成功
      */
     public Integer saveCustomer(Customer customer, String uname) {
-        return customerDao.saveCustomer(customer, uname);
+        Integer selectCustomer = customerDao.selectCustomerCount(customer.getCustomerName());
+        if(0==selectCustomer){
+            return customerDao.saveCustomer(customer, uname);
+        }else{
+            return -1;
+        }
+
     }
 
     /**
@@ -187,5 +195,23 @@ public class OrderService {
         Integer deleteOrders = orderDao.deleteOrders(order.getId());
         Integer insertNewOrder = saveOrderTranscation(order, uname);
         return deleteOrderDetails * deleteOrders * insertNewOrder;
+    }
+
+    public List<String> getCustomerList(String uname) {
+        List<Customer> customerList = orderDao.getCustomerList(uname);
+        List<String> resultList = new ArrayList<>();
+        for(Customer customer :customerList){
+            String s = customer.getCustomerName()+"\t"+customer.getCustomerNo();
+            resultList.add(s);
+        }
+        return resultList;
+    }
+
+    public List<Order> getOrderInfoBySalesman(String salesmanName) {
+        return orderDao.getOrderInfoBySalesman(salesmanName);
+    }
+
+    public ResultOfAttention getAttention(String customerName, String uname) {
+        return customerDao.getAttention(customerName, uname);
     }
 }

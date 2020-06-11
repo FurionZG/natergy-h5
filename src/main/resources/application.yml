@@ -2,18 +2,17 @@
 spring:
   #配置druid数据源
   datasource:
-    url: jdbc:mysql://219.146.150.102:12309/natergy?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true
-    username: root
-    password: Nty-Mg-2018*04*09
+    url: jdbc:mysql://58.57.114.62:12310/natergy?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;autoReconnect=true&amp;failOverReadOnly=false
+    username: su
+    password: admin@natergy.com-2020
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     filters: stat,wall,log4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   mvc:
-    static-path-pattern=/static/**: #静态路径
-    #视图定位jsp
+    static-path-pattern: /**
     view:
-      prefix: /WEB-INF/jsp/
+      prefix: /jsp/
       suffix: .jsp
   resources:
     static-locations: classpath:/static/
@@ -38,30 +37,40 @@ spring:
 server:
   servlet:
     context-path: /natergy-h5 #访问路径带项目名
-    session:
-      timeout: PT30M #session失效时间
   port: 80
 
 
-#测试环境
+#孙公测试环境
 #natergy:
 #  appId: wx3dabea702b3ea6cb
 #  appSecret: a7425fad59cf43f1d7e4a6b946e42033
 #  host: sungong1987.hk1.tunnelfrp.cc
 
+#杨枕戈测试环境
+#natergy:
+#  appId: wxf5304d7eb35a3907
+#  appSecret: 9c7316b65bb71046c80d4532709d4b56
+#  host: www.iluluya.com
+
 #发布环境
 natergy:
-  appId: wxf5304d7eb35a3907
-  appSecret: 9c7316b65bb71046c80d4532709d4b56
+  appId: wx0beec6ea6bb0067d
+  appSecret: 891d1f6d611ecd8e73277ed1027810bb
   host: www.iluluya.com
 
-
-
 SalesExecutive: /尹龙/罗山
+DeliverWxTemplateName: /杨枕戈
 
 
+DeliverTemplateMessage: 5P43_jMioDr_XjQNXHqVsYMY3Z8eGHouQMIU8wCZ8hA
+SalesTemplateMessage: i6CtIElJ_490O9-cmYW-0SJgvAf4H2gkcj9pxgqAIlM
+SalesForwardUrl:  https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0beec6ea6bb0067d&redirect_uri=XXXXXX&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect
 
+logging:
+  config: classpath:logback.xml
 
-
+mybatis:
+  mapper-locations: classpath:sqlmap/*.xml
+  type-aliases-package: com.natergy.natergyh5.entity.statisticsEntity
 
 

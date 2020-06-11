@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/fonts/my002/iconfont.css"/>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
@@ -77,8 +77,19 @@
     <h1 class="mui-title">销售拜访</h1>
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
     <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
-
 </header>
+<footer id="footer" class="mui-bar mui-bar-footer" style="display: none">
+    <a href="#bottomPopover" class="mui-btn mui-btn-link mui-pull-right">业务经理</a>
+</footer>
+<div id="bottomPopover" class="mui-popover mui-popover-bottom" style="height: 300px">
+    <div class="mui-popover-arrow"></div>
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view" id = "salesmanList">
+            </ul>
+        </div>
+    </div>
+</div>
 <!--右上角弹出菜单-->
 <div id="topPopover" class="mui-popover">
     <div class="mui-popover-arrow"></div>
@@ -126,8 +137,7 @@
     <div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: 100px;padding-top: 0px">
 
         <div class="mui-scroll" style="width: 95%">
-            <!-- limit-->
-            <input type="hidden" id="limit" value=""/>
+            <input type="hidden" id="salesmanName" value=""/>
 
             <!--数据列表-->
             <ul class="mui-table-view mui-table-view-chevron" id="visitList">
@@ -139,8 +149,8 @@
 </div>
 
 
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -164,19 +174,38 @@
 
 <script>
     $(document).ready(function loading() {
-
+        var salesExecutive="${salesExecutive}";
+        var user="${user}";
         var visitListListByUser = ${visitList};
-
         var json = eval(visitListListByUser);
-
         $("#limit").val(10);
         for (var i = 0; i < json.length; i++) { //循环数据
-            $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
+            $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 50px;height: 50px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
                 json[i].customerName +
                 "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                "<p class='mui-ellipsis'>" + json[i].user +"</p>" +
                 "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
         }
-
+        if((salesExecutive.indexOf(user)!=-1)||"邢振"==user){
+            $("#footer").css("display","");
+            $.ajax({
+                url: "/natergy-h5/getSalesman",
+                contentType: "application/json;charset=utf-8",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    html="";
+                    for(var i=0;i<data.length;i++){
+                        html +='<li class="mui-table-view-cell"><a href="#">'+data[i]+'</a></li>';
+                    }
+                    $("#salesmanList").append(html);
+                }
+            });
+        }
+        mui('.mui-scroll-wrapper').scroll();
+        mui('body').on('tap', '#salesmanList li', function () {
+            chooseSalesman(this)
+        });
         mui('body').on('tap', '#visitList li', function () {
             clickLi(this)
         });
@@ -214,9 +243,10 @@
                 var json = eval(data);
                 $("#visitList li").remove();
                 for (var i = 0; i < json.length; i++) { //循环数据
-                    $("#visitList").append("<li class='mui-table-view-cell mui-media' style='height:55px' ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
+                    $("#visitList").append("<li class='mui-table-view-cell mui-media' style='height:55px' ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 50px;height: 50px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
                         json[i].customerName +
                         "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                        "<p class='mui-ellipsis'>" + json[i].user +"</p>" +
                         "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                 }
             }
@@ -252,7 +282,8 @@
                 timeout: "1000",
                 dataType: "json",
                 data: {
-                    "limit": $("#visitList li").length
+                    "limit": $("#visitList li").length,
+                    "salesmanName":$("#salesmanName").val()
                 },
                 success: function (data) {
                     var json = eval(data);
@@ -260,9 +291,10 @@
                         count = true;
                     }
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
+                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 50px;height: 50px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
                             json[i].customerName +
                             "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                            "<p class='mui-ellipsis'>" + json[i].user +"</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                     }
 
@@ -285,6 +317,7 @@
      * 下拉刷新具体业务实现
      */
     function pulldownRefresh() {
+        $("#salesmanName").val("");
         setTimeout(function () {
             $.ajax({
                 url: "/natergy-h5/visit/refresh",
@@ -296,9 +329,10 @@
                     $("#visitList li").remove();
                     //var json = eval(data);
                     for (var i = 0; i < json.length; i++) { //循环数据
-                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 40px;height: 40px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
+                        $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 50px;height: 50px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
                             json[i].customerName +
                             "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                            "<p class='mui-ellipsis'>" + json[i].user +"</p>" +
                             "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
                     }
                 }
@@ -314,7 +348,32 @@
         window.location.href = "<%=request.getContextPath()%>/jsp/visit/visitEdit.jsp"
     }
 </script>
-
+<script>
+    function chooseSalesman(obj){
+        var $salesmanA = $(obj).find("a");
+        var salesmanName = $salesmanA.text();
+        $("#salesmanName").val(salesmanName)
+        $.ajax({
+            url: "/natergy-h5/visit/getVisitInfoBySalesman",
+            contentType: "application/json;charset=utf-8",
+            type: "get",
+            data: {
+                "salesmanName":salesmanName,
+            },
+            dataType: "json",
+            success: function (json) {
+                $("#visitList li").remove()
+                for (var i = 0; i < json.length; i++) { //循环数据
+                    $("#visitList").append("<li class='mui-table-view-cell mui-media'  ><a class='mui-navigate-right'><div class='mui-media-body'><img style='width: 50px;height: 50px;' class='mui-media-object mui-pull-left' src='http://219.146.150.102:20005/" + json[i].images[0] + "'>" +
+                        json[i].customerName +
+                        "<p class='mui-ellipsis'>" + json[i].date + "</p>" +
+                        "<p class='mui-ellipsis'>" + json[i].user +"</p>" +
+                        "<input type='hidden' value ='" + JSON.stringify(json[i]) + "'/></div></a></li>");
+                }
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

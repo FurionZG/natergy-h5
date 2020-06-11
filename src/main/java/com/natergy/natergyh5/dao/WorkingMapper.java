@@ -14,7 +14,7 @@ import java.util.List;
 public interface WorkingMapper {
 
 
-    @Select("select * from 销售工作汇报 where 汇报人=#{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by Id desc limit 10")
+    @Select("select * from 销售工作汇报 where 汇报人=#{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by 日期 desc limit 10")
     @Results({
             @Result(property = "id",column = "Id"),
             @Result(property = "status",column = "状态"),
@@ -35,7 +35,7 @@ public interface WorkingMapper {
     @Update("update 销售工作汇报 set 日期=#{date},今日工作=#{todayWorking},明日工作=#{tomorrowWorking},备注=#{marks},附件=#{options} where Id=#{id}")
     Integer updateWorking(Working working);
 
-    @Select("select * from 销售工作汇报 where 汇报人=#{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by Id desc limit #{limit},5")
+    @Select("select * from 销售工作汇报 where 汇报人=#{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by 日期 desc limit #{limit},5")
     @Results({
             @Result(property = "id",column = "Id"),
             @Result(property = "status",column = "状态"),
@@ -53,7 +53,7 @@ public interface WorkingMapper {
     @Select("select 汇报人 from 销售工作汇报 where 汇报人=#{uname} or 可阅人 like CONCAT('%',#{uname},'%')")
     List<String> getWorkingsName(String uname);
 
-    @Select("select * from 销售工作汇报 where 汇报人=#{name} order by Id desc limit 30")
+    @Select("select * from 销售工作汇报 where 汇报人=#{name} order by 日期 desc limit 30")
     @Results({
             @Result(property = "id",column = "Id"),
             @Result(property = "status",column = "状态"),
@@ -68,7 +68,7 @@ public interface WorkingMapper {
     })
     List<Working> getWorkingsByName(String uname,String name,String salesExecutive);
 
-    @Select("select * from 销售工作汇报 where 汇报人=#{name} order by Id desc limit #{limit},5")
+    @Select("select * from 销售工作汇报 where 汇报人=#{name} order by 日期 desc limit #{limit},5")
     @Results({
             @Result(property = "id",column = "Id"),
             @Result(property = "status",column = "状态"),

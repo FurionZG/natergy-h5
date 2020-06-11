@@ -1,9 +1,10 @@
 package com.natergy.natergyh5.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.natergy.natergyh5.annotations.OperationLog;
 import com.natergy.natergyh5.entity.ResultOfAddress;
 import com.natergy.natergyh5.entity.Visit;
-import com.natergy.natergyh5.entity.WxToken;
+import com.natergy.natergyh5.entity.wxEntity.WxToken;
 import com.natergy.natergyh5.service.BusinessService;
 import com.natergy.natergyh5.service.FollowUpService;
 import com.natergy.natergyh5.service.VisitService;
@@ -45,6 +46,7 @@ public class VisitController {
      * @return 将当前用户的最近10条销售拜访记录和当前用户拜访过的公司名称列表添加到模型，并转发到visit.jsp
      */
     @RequestMapping("/init")
+    @OperationLog(operate = "初始化销售拜访",module = "销售拜访模块")
     public ModelAndView visitInit(HttpSession session){
         ModelAndView mv = new ModelAndView("forward:/jsp/visit/visit.jsp");
         String uname =  (String)session.getAttribute("user");
@@ -60,6 +62,7 @@ public class VisitController {
      * @return 将当前出差的开始时间，当前出差编号，业务经理为当前用户的所有客户名称，以及注入微信jssdk需要的字段添加到模型，并转发到visitAdd.jsp
      */
     @RequestMapping("/visitAddInit")
+    @OperationLog(operate = "初始化添加销售拜访",module = "销售拜访模块")
     public ModelAndView visitAddInit (HttpSession session,HttpServletResponse response) throws IOException {
         ModelAndView mv = new ModelAndView("forward:/jsp/visit/visitAdd.jsp");
         String uname = (String) session.getAttribute("user");
@@ -92,6 +95,7 @@ public class VisitController {
      */
     //@NoRepeatSubmit
     @RequestMapping("/save")
+    @OperationLog(operate = "保存销售拜访",module = "销售拜访模块")
     public Integer saveVisit(@RequestBody Visit visit, HttpSession session) throws Exception {
         String uname = (String)session.getAttribute("user");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -101,12 +105,13 @@ public class VisitController {
     }
 
     /**
-     * 更新地产跟进
+     * 更新拜访记录
      * @param visit 前台提交的拜访记录对象
      * @return 是否更新成功
      */
     @RequestMapping("/update")
     @ResponseBody
+    @OperationLog(operate = "更新销售拜访",module = "销售拜访模块")
     public Integer updateVisit(@RequestBody Visit visit,HttpSession session) {
         String uname = (String) session.getAttribute("user");
         return visitService.updateVisit(visit,uname);
@@ -118,6 +123,7 @@ public class VisitController {
      * @return 返回重新查询的最后10条拜访记录
      */
     @RequestMapping("/refresh")
+    @OperationLog(operate = "下拉重新加载拜访记录",module = "销售拜访模块")
     public List<Visit> visitRefresh(HttpSession session) {
         String uname = (String) session.getAttribute("user");
         return visitService.refreshVisit(uname);
@@ -129,9 +135,15 @@ public class VisitController {
      * @return 返回从limit开始后面的5条拜访记录
      */
     @RequestMapping("/reload")
-    public List<Visit> visitReload(Integer limit,HttpSession session) {
+    @OperationLog(operate = "上拉加载更多拜访记录",module = "销售拜访模块")
+    public List<Visit> visitReload(String salesmanName,Integer limit,HttpSession session) {
         String uname = (String) session.getAttribute("user");
-        return visitService.reloadVisit(uname,limit);
+        if("".equals(salesmanName)){
+            return visitService.reloadVisit(uname,limit);
+        }else{
+            return visitService.reloadVisit(salesmanName,limit);
+        }
+
     }
 
     /**
@@ -140,6 +152,7 @@ public class VisitController {
      * @return 返回该出差编号关联的所有拜访记录
      */
     @RequestMapping("/selectByBusinessNo")
+    @OperationLog(operate = "查询某个出差编号关联的所有拜访记录",module = "销售拜访模块")
     public List<Visit> selectVisitByBusinessNo(@RequestBody String businessNo) {
         return visitService.selectVisitByBusiness(businessNo);
     }
@@ -150,6 +163,7 @@ public class VisitController {
      * @return 返回该出差编号关联的拜访记录的客户名称Set
      */
     @RequestMapping("/getVisitCustomerNameByBusinessNo")
+    @OperationLog(operate = "查询某个出差编号关联的所有拜访记录的客户名称",module = "销售拜访模块")
     public Set<String> getVisitCustomerNameByBusinessNo(@RequestBody String businessNo){
         List<String>resultList = visitService.selectVisitCustomerNameByBusiness(businessNo);
         return new HashSet<>(resultList);
@@ -162,6 +176,7 @@ public class VisitController {
      * @return 返回某个出差编号关联的某个客户的拜访记录列表
      */
     @RequestMapping("/getVisitByAjax")
+    @OperationLog(operate = "获取某个出差编号关联的某个客户的全部拜访记录",module = "销售拜访模块")
     public List<Visit> getVisitByAjax(@RequestParam String customerName, @RequestParam String businessNo)  {
         return visitService.getVisitsByAjax(customerName,businessNo);
     }
@@ -172,6 +187,7 @@ public class VisitController {
      * @return 返回某个客户全部的拜访记录列表
      */
     @RequestMapping("/getVisitInfoByAjax")
+    @OperationLog(operate = "获取某个客户的全部拜访记录",module = "销售拜访模块")
     public List<Visit> getVisitInfoByAjax(@RequestParam String customerName, HttpSession session)  {
         String uname = (String) session.getAttribute("user");
         return visitService.getVisitsInfoByAjax(customerName,uname);
@@ -183,6 +199,7 @@ public class VisitController {
      * @return 返回该客户的地址信息
      */
     @RequestMapping("/getAddress")
+    @OperationLog(operate = "获取客户的地址信息",module = "销售拜访模块")
     public ResultOfAddress getAddress(@RequestParam String customerName,HttpSession session)  {
         String uname = (String) session.getAttribute("user");
         return followUpService.getAddressInfo(customerName,uname);
@@ -194,9 +211,15 @@ public class VisitController {
      * @return 返回是否删除成功
      */
     @RequestMapping("/delete")
+    @OperationLog(operate = "删除拜访记录",module = "销售拜访模块")
     public Integer deleteVisit(@RequestParam String id){
         return visitService.deleteVisit(id);
     }
 
+    @RequestMapping("/getVisitInfoBySalesman")
+    @OperationLog(operate = "根据业务经理名称获取销售拜访信息",module = "销售拜访模块")
+    public List<Visit> getVisitInfoBySalesman(String salesmanName){
+        return visitService.getVisitInfoBySalesman(salesmanName);
+    }
 
 }

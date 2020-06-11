@@ -7,10 +7,23 @@ package com.natergy.natergyh5.entity;
 public class User {
 	private String uname;
 	private String pwd;
+	private String openId;
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 
 	@Override
 	public String toString() {
-		return "User [uname=" + uname + ", pwd=" + pwd + "]";
+		return "User{" +
+				"uname='" + uname + '\'' +
+				", pwd='" + pwd + '\'' +
+				", openId='" + openId + '\'' +
+				'}';
 	}
 
 	public String getUname() {

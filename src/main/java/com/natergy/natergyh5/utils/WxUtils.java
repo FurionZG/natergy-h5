@@ -1,7 +1,7 @@
 package com.natergy.natergyh5.utils;
 
-import com.natergy.natergyh5.entity.WXJsSdk;
-import com.natergy.natergyh5.entity.WxToken;
+import com.natergy.natergyh5.entity.wxEntity.WXJsSdk;
+import com.natergy.natergyh5.entity.wxEntity.WxToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -45,4 +45,7 @@ public class WxUtils {
         wxToken.setTimestamp(timestamp);
         return wxToken;
     }
+
+
+
 }

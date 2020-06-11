@@ -2,7 +2,7 @@ package com.natergy.natergyh5.utils;
 
 import com.natergy.natergyh5.dao.OptionsMapper;
 import com.natergy.natergyh5.entity.Option;
-import com.natergy.natergyh5.entity.WXJsSdk;
+import com.natergy.natergyh5.entity.wxEntity.WXJsSdk;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,7 +54,7 @@ public class SaveImageToServer {
         ftpClient.changeWorkingDirectory("natergy");
         ftpClient.enterLocalPassiveMode();
         String fileName = user + "-" + new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒").format(new Date()) + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
-        String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
+        String path = new String(("./pic/" + fileName).getBytes(), "utf-8");
         ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
         if (ftpClient.storeFile(path, bis)) {
             Option option = new Option();

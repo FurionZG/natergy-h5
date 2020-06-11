@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.natergy.natergyh5.dao.statisticsMapper.OrderStatisticsMapper">
+
+
+    <select id="selectOrders" resultType="com.natergy.natergyh5.entity.statisticsEntity.Order"
+            parameterType="java.util.Map">
+        SELECT Id as `id` ,`状态` as goodsReach,`业务经理` as manager, `订单号` as orderNo, `发货编号` as sendNo, `订单日期` as orderDate ,`发货日期` as
+        sendDate, `所属省` as province
+        ,`所属市` as city, `客户编码` as customerCode, `客户名称` as customer , `收货地址` as deliveryAddress , `收货人` as deliveryPeople ,`是否新户` as
+        newCustomer , `合同编号` as contractCode, `注意事项` as attention, `备注` as remark ,`备注财务` as financeRemark , `发货地` as wareHouse,
+        `生产商` as producer from `销售订单` WHERE `业务经理` in
+        (select `用户` from `用户` where `设置` !="停用"
+        <if test="department != null and department!=''">
+            and `部门`=#{department,jdbcType=VARCHAR}
+        </if>
+        <if test="jobposition != null and jobposition!='' ">
+            and `职位` =#{jobposition,jdbcType=VARCHAR}
+        </if>
+
+        <if test="salerName != null and salerName!='' ">
+            and `用户` =#{salerName,jdbcType=VARCHAR}
+        </if>
+
+        <if test="userids != null ">
+            and Id in
+            <foreach item="item" index="index" collection="userids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+
+        and  `状态` in ("已发货","已到货")
+        <if test="start !=null and  start!='' ">
+            <![CDATA[and `订单日期` >= #{start}]]>
+        </if>
+
+        <if test="end !=null and  end!='' ">
+            <![CDATA[and `订单日期` <= #{end}]]>
+        </if>
+
+        order by `订单日期`,`业务经理`  desc
+
+    </select>
+
+
+    <select id="selectReturnBackOrders" resultType="com.natergy.natergyh5.entity.statisticsEntity.ReturnBackOrder"
+            parameterType="java.util.Map">
+
+        SELECT `a`.`状态`  as  returnStatus ,`a`.`业务经理` as manager,`a`.`系统编号` as systemNo,`a`.`退货日期` as returnDate,`a`.`客户编码` as customerCode,`b`.`省` as province  from `销售退货` `a` JOIN `销售客户资料`  `b`  USING(`客户编码`) WHERE `a`.`业务经理` in
+        (select `用户` from `用户` c where `设置` !="停用"
+        <if test="department != null and department!=''">
+            and `c`.`部门`=#{department,jdbcType=VARCHAR}
+        </if>
+        <if test="jobposition != null and jobposition!='' ">
+            and `c`.`职位` =#{jobposition,jdbcType=VARCHAR}
+        </if>
+
+        <if test="salerName != null and salerName!='' ">
+            and `c`.`用户` =#{salerName,jdbcType=VARCHAR}
+        </if>
+
+        <if test="userids != null ">
+            and Id in
+            <foreach item="item" index="index" collection="userids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        and `a`.`状态`="销售审批"
+        <if test="start !=null and  start!='' ">
+            <![CDATA[and `a`.`退货日期` >= #{start}]]>
+        </if>
+
+        <if test="end !=null and  end!='' ">
+            <![CDATA[and `a`.`退货日期` <= #{end}]]>
+        </if>
+
+        order by `a`.`退货日期`,`a`.`业务经理`  desc
+
+
+    </select>
+
+
+
+</mapper>

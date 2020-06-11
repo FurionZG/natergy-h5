@@ -13,9 +13,8 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
-
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/css/mui.poppicker.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/fonts/my002/iconfont.css"/>
@@ -85,22 +84,7 @@
         <header class="mui-bar mui-bar-nav">
             <h1 class="mui-title">添加销售拜访</h1>
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <a class="mui-icon mui-icon-right-nav mui-pull-right" href="#topPopover">···</a>
         </header>
-        <div id="topPopover" class="mui-popover">
-            <div class="mui-popover-arrow"></div>
-            <div class="mui-scroll-wrapper">
-                <div class="mui-scroll">
-                    <ul class="mui-table-view">
-                        <li class="mui-table-view-cell">
-                            <a href="javascript:;" onclick="funAdd()" id="addCustomer"> <span
-                                    class="mui-icon iconfont icon-add"></span>客户
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
         <form id="form-country_v1" name="form-country_v1" style="margin-top: 50px;">
             <div class="typeahead__container">
@@ -168,7 +152,7 @@
 
     </form>
     <h5 class="mui-content-padded">其他信息</h5>
-    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+    <div id="productBrandD" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
         <button id='productBrandPicker' class="mui-btn mui-btn-block" type='button'
                 style="width: 100%; text-align: center;">干燥剂品牌
         </button>
@@ -226,8 +210,8 @@
 </body>
 
 
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -239,14 +223,8 @@
 <!-- 微信jssdk注入 -->
 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-<script type="text/javascript">
-    /** 添加客户资料 **/
-    function funAdd() {
-        mui.toast('添加客户资料');
-        window.location.href = "<%=request.getContextPath()%>/jsp/customer/addCustomer.jsp";
-    }
-</script>
-<script>
+
+<script>0
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '${appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
@@ -357,8 +335,12 @@
                 $("#province").val(data.province);
                 $("#city").val(data.city);
                 $("#address").val(data.address);
-
-
+                $("#contacts_1").val(data.contacts1);
+                $("#contacts_2").val(data.contacts2);
+                $("#contacts_3").val(data.contacts3);
+                $("#tel_1").val(data.tel1);
+                $("#tel_2").val(data.tel2);
+                $("#tel_3").val(data.tel3);
             }
         });
     }
@@ -399,7 +381,18 @@
         for (i = 0; i < str.length; i++) {
             imgs.push(str[i]);
         }
+
         var businessNo = ${businessNo};
+        var productBrandT ;
+        if($("#tmpD").length > 0){
+            if(!($("#productBrandI").val().trim()=="")){
+                productBrandT=$("#productBrandI").val();
+            }else{
+                productBrandT= $("#productBrandPicker").text() ;
+            }
+        }else{
+            productBrandT=$("#productBrandPicker").text();
+        }
         mui.toast('正在保存拜访记录...');
         $.ajax({
             url: "/natergy-h5/visit/save",
@@ -418,7 +411,7 @@
                 "tel1": $("#tel_1").val(),
                 "tel2": $("#tel_2").val(),
                 "tel3": $("#tel_3").val(),
-                "productBrand": $("#productBrandPicker").text(),
+                "productBrand": productBrandT,
                 "productType": $("#productTypePicker").text(),
                 "consumption": $("#consumptionPicker").text(),
                 "customerType": $("#customerTypePicker").text(),
@@ -433,7 +426,6 @@
                 "longitude":$("#longitude").val(),
                 "businessNo":businessNo
             }), success: function (data) {
-                //alert("Data Loaded: " + data);
                 if (1 == data) {
                     mui.toast('保存成功');
                     window.location.href = "/natergy-h5/visit/init"
@@ -473,7 +465,15 @@
             var productBrandPickerButton = doc.getElementById('productBrandPicker');
             productBrandPickerButton.addEventListener('tap', function (event) {
                 picker.show(function (items) {
-                    doc.getElementById('productBrandPicker').innerText = _getParam(items[0], 'text');
+                    var text = _getParam(items[0], 'text');
+                    doc.getElementById('productBrandPicker').innerText = text;
+                    if(text=="其他"){
+                        if(!jQuery("#tmpD").length > 0) {
+                            jQuery("#productBrandD").append("<form class='mui-input-group' id='tmpD'><div  class='mui-input-row'><label>干燥剂品牌</label> <input type='text'placeholder='请输入干燥剂品牌' id='productBrandI'></div></div>")
+                        }
+                    }else{
+                        jQuery("#tmpD").remove();
+                    }
                     //返回 false 可以阻止选择框的关闭
                     //return false;
                 });
@@ -534,7 +534,7 @@
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
-                document.getElementById("dd").innerHTML = "";
+                //document.getElementById("dd").innerHTML = "";
                 imgA = [];
                 imgserverId = "";
                 var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
@@ -556,6 +556,11 @@
             localId: localId.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
+                var tmp =$("#imgId").val();
+                if(tmp!=[]){
+                    imgA.push(tmp.trim());
+                }
+
                 //res.serverId 返回图片的服务器端ID
                 var serverId = res.serverId; // 返回图片的服务器端ID
                 imgA.push(serverId)
@@ -570,6 +575,7 @@
                     }, 500);
 
                 }
+
             }
         })
     }
@@ -577,6 +583,8 @@
     function preview() {
         var imgs = [];
         var imgObj = $("#dd img");//这里改成相应的对象
+
+
         for (var i = 0; i < imgObj.length; i++) {
             imgs.push(imgObj.eq(i).attr('src'));
             imgObj.eq(i).click(function () {

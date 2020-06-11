@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Order {
 	private String id;
+	private String user;
 	private String orderTime;
 	private String orderNumber;
 	private String customerName;
@@ -20,12 +21,14 @@ public class Order {
 	private String invoiceAttention;
 	private String producer;
 	private String state;
+	private String carriage;
 	private List<OrderDetail> orderDetails;
 
 	@Override
 	public String toString() {
 		return "Order{" +
 				"id='" + id + '\'' +
+				", user='" + user + '\'' +
 				", orderTime='" + orderTime + '\'' +
 				", orderNumber='" + orderNumber + '\'' +
 				", customerName='" + customerName + '\'' +
@@ -37,11 +40,26 @@ public class Order {
 				", invoiceAttention='" + invoiceAttention + '\'' +
 				", producer='" + producer + '\'' +
 				", state='" + state + '\'' +
+				", carriage='" + carriage + '\'' +
 				", orderDetails=" + orderDetails +
 				'}';
 	}
 
+	public String getCarriage() {
+		return carriage;
+	}
 
+	public void setCarriage(String carriage) {
+		this.carriage = carriage;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
 
 	public void setId(String id) {
 		this.id = id;

@@ -3,8 +3,7 @@ package com.natergy.natergyh5.service;
 import com.natergy.natergyh5.dao.OptionsMapper;
 import com.natergy.natergyh5.dao.WorkingMapper;
 import com.natergy.natergyh5.entity.Option;
-import com.natergy.natergyh5.entity.Visit;
-import com.natergy.natergyh5.entity.WXJsSdk;
+import com.natergy.natergyh5.entity.wxEntity.WXJsSdk;
 import com.natergy.natergyh5.entity.Working;
 import com.natergy.natergyh5.utils.FtpUtils;
 import org.apache.commons.net.ftp.FTPClient;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +31,7 @@ public class WorkingService {
     @Value("${natergy.host}")
     private String host;
     @Value("${SalesExecutive}")
-    String salesExecutive ;
+    private String salesExecutive ;
     @Autowired
     private WorkingMapper workingDao;
     @Autowired
@@ -111,7 +108,7 @@ public class WorkingService {
                 ftpClient.changeWorkingDirectory("natergy");
                 ftpClient.enterLocalPassiveMode();
                 String fileName = working.getUser() + "-" + new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒").format(new Date()) + "-" + (UUID.randomUUID().toString().replace("-", "")) + ".jpg";
-                String path = new String(("./pic/" + fileName).getBytes("gbk"), "iso-8859-1");
+                String path = new String(("./pic/" + fileName).getBytes(), "utf-8");
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
                 //System.out.println(ftpClient.storeFile(path,bis));
                 if (ftpClient.storeFile(path, bis)) {

@@ -96,9 +96,13 @@
             }), success: function (data) {
                 if(1==data){
                     mui.toast('保存成功...');
-                    window.location.href=document.referrer;
-                }else{
-                    mui.toast('保存失败，请稍后重试...');
+                    window.location.href = "/natergy-h5/jsp/indexedList.jsp";
+                }
+                if(0==data){
+                    mui.toast('保存失败，请稍后重试...')
+                }
+                if(-1==data){
+                    mui.toast('已存在该客户')
                 }
             }
         });

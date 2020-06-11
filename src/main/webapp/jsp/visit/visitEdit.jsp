@@ -6,14 +6,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css">
 
     <link href="<%=request.getContextPath()%>/css/mui.picker.css" rel="stylesheet"/>
@@ -43,8 +43,7 @@
     <form  class="mui-input-group" style="margin: 50px 5px 0px 5px; border-radius: 10px;">
         <input type="hidden" id = "id">
         <hr>
-        <h5>出差开始时间${businessStartTime}</h5>
-        <h5>出差编号${businessNo}</h5>
+        <h5 id="t1"></h5>
         <div class="mui-input-row">
             <label>客户名称</label> <input type="text" placeholder="" id="customerName" readonly="true">
         </div>
@@ -84,7 +83,7 @@
 
     </form>
     <h5 class="mui-content-padded">其他信息</h5>
-    <div style="margin: 15px 5px 0px 5px; border-radius: 10px;">
+    <div id="productBrandD" style="margin: 15px 5px 0px 5px; border-radius: 10px;">
         <button id='productBrandPicker' class="mui-btn mui-btn-block" type='button'
                 style="width: 100%; text-align: center;">干燥剂品牌
         </button>
@@ -127,7 +126,7 @@
         </div>
     </div>
     <div class="mui-content-padded" style="margin-top: 20px;">
-        <button id='delete' type="button" class="mui-btn mui-btn-danger" style="width: 100%;">删除跟进记录</button>
+        <button id='delete' type="button" class="mui-btn mui-btn-danger" style="width: 100%;">删除拜访记录</button>
     </div>
 
 </div>
@@ -135,13 +134,11 @@
 </body>
 
 
-<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-
+<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/industry_data.js" type="text/javascript" charset="utf-8"></script>
-
 <script src="<%=request.getContextPath()%>/js/mui.picker.js"></script>
 <script src="<%=request.getContextPath()%>/js/mui.poppicker.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
 
 
@@ -196,20 +193,25 @@
 <script>
     var btnSave = document.getElementById("id_btnSave");
     btnSave.addEventListener("tap", function () {
-
-
+        var productBrandT;
+        if($("#tmpD").length > 0){
+            if(!($("#productBrandI").val().trim()=="")){
+                productBrandT=$("#productBrandI").val();
+            }else{
+                productBrandT= $("#productBrandPicker").text() ;
+            }
+        }else{
+            productBrandT=$("#productBrandPicker").text();
+        }
         var chk_value = [];//定义一个数组
         $('input[name="checkbox"]:checked').each(function () {//遍历每一个名字为interest的复选框，其中选中的执行函数
             chk_value.push($(this).val());//将选中的值添加到数组chk_value中
         });
-
-
 //			if("" == customerName || "" == consignee || "" == receivingAddress || null == producer) {
 //				mui.toast('请完善订单信息...');
 //				return;
 //			}
         mui.toast('正在保存拜访记录...');
-
         $.ajax({
             url: "/natergy-h5/visit/update",
             contentType: "application/json;charset=utf-8",
@@ -217,6 +219,9 @@
             dataType: "json",
             data: JSON.stringify({
                 "id":$("#id").val(),
+                "province":$("#province").val(),
+                "city":$("#city").val(),
+                "address":$("#address").val(),
                 "contacts1": $("#contacts_1").val(),
                 "contacts2": $("#contacts_2").val(),
                 "tel1": $("#tel_1").val(),
@@ -224,7 +229,7 @@
                 "contacts3": $("#contacts_3").val(),
                 "tel3": $("#tel_3").val(),
                 "record": $("#record").val(),
-                "productBrand":$("#productBrandPicker").text(),
+                "productBrand":productBrandT,
                 "productType":$("#productTypePicker").text(),
                 "consumption":$("#consumptionPicker").text(),
                 "customerType":$("#customerTypePicker").text(),
@@ -238,13 +243,10 @@
                 }
             }
         });
-
         mui(this).button('loading');
-
         setTimeout(function () {
             mui(this).button('reset');
             //mui.back();
-
         }.bind(this), 1000);
     });
 </script>
@@ -254,11 +256,21 @@
         $.init();
         $.ready(function () {
             var json =eval("("+localStorage.getItem("visit")+")");
-            console.log(json);
+            document.getElementById("t1").innerText="出差编号"+json.businessNo
+            var  pb =json.productBrand;
+            if(JSON.stringify(productBrand).indexOf(pb)==-1&&pb.trim()!="干燥剂品牌"){
+                if(!jQuery("#tmpD").length > 0) {
+                    jQuery("#productBrandD").append("<form class='mui-input-group' id='tmpD'><div  class='mui-input-row'><label>干燥剂品牌</label> <input type='text' value='"+json.productBrand+"' id='productBrandI'></div></div>")
+                    doc.getElementById('productBrandPicker').innerText ="其他";
+                }
+            }else{
+
+                doc.getElementById('productBrandPicker').innerText =json.productBrand;
+            }
             doc.getElementById('id').value=json.id;
             doc.getElementById('customerName').value=json.customerName;
-            doc.getElementById('province').value=json.province;
-            doc.getElementById('city').value=json.city;
+            doc.getElementById('province').value=(json.province==undefined?"":json.province);
+            doc.getElementById('city').value=(json.city==undefined?"":json.city);
             doc.getElementById('address').value=json.address;
             doc.getElementById('contacts_1').value=json.contacts1;
             doc.getElementById('tel_1').value=json.tel1;
@@ -266,7 +278,6 @@
             doc.getElementById('tel_2').value=json.tel2;
             doc.getElementById('contacts_3').value=json.contacts3;
             doc.getElementById('tel_3').value=json.tel3;
-            doc.getElementById('productBrandPicker').innerText =json.productBrand;
             doc.getElementById('productTypePicker').innerText =json.productType;
             doc.getElementById('consumptionPicker').innerText =json.consumption;
             doc.getElementById('customerTypePicker').innerText =json.customerType;
@@ -289,9 +300,17 @@
             var productBrandPickerButton = doc.getElementById('productBrandPicker');
             productBrandPickerButton.addEventListener('tap', function (event) {
                 picker.show(function (items) {
-                    doc.getElementById('productBrandPicker').innerText = _getParam(items[0], 'text');
+                    var text = _getParam(items[0], 'text');
+                    doc.getElementById('productBrandPicker').innerText = text;
                     //返回 false 可以阻止选择框的关闭
                     //return false;
+                    if(text=="其他"){
+                        if(!jQuery("#tmpD").length > 0) {
+                            jQuery("#productBrandD").append("<form class='mui-input-group' id='tmpD'><div  class='mui-input-row'><label>干燥剂品牌</label> <input type='text'placeholder='请输入干燥剂品牌' id='productBrandI'></div></div>")
+                        }
+                    }else{
+                        jQuery("#tmpD").remove();
+                    }
                 });
             }, false);
             var picker1 = new $.PopPicker();

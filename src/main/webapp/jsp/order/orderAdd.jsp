@@ -12,7 +12,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+		<link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.typeahead.css"> -
 
 		<style>
@@ -104,8 +104,8 @@
 
 	</body>
 
-	<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/layui/layui.all.js"></script>
 	<script src="<%=request.getContextPath()%>/js/update.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.typeahead.js"></script>
@@ -149,7 +149,7 @@
 							title: '订单明细',
 							shadeClose: true,
 							shade: 0.8,
-							area: ['90%', '80%'],
+							area: ['100%', '100%'],
 							content: '/natergy-h5/order/addDetailInit', //iframe的url
 							btn: ['确定', '关闭'],
 							yes: function(index) {
@@ -250,6 +250,20 @@
 
 				}
 			});
+
+			<%--$.ajax({--%>
+			<%--	url: "<%=request.getContextPath()%>/customer/getAttention",--%>
+			<%--	contentType: "application/x-www-form-urlencoded:charset=UTF-8",--%>
+			<%--	type: "get",--%>
+			<%--	dataType: "json",--%>
+			<%--	data: {--%>
+			<%--		"name": $("#searchedName").val()--%>
+			<%--	},--%>
+			<%--	success: function(data) {--%>
+			<%--		$("#attention").val(data.attention);--%>
+			<%--		$("#invoiceAttention").val(data.invoiceAttention);--%>
+			<%--	}--%>
+			<%--});--%>
 		}
 	</script>
 	<!--

@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface FollowUpMapper {
 
-    @Select("select * from 销售地产业务跟进 where 业务经理 = #{uname} order by Id desc limit 10")
+    @Select("select * from 销售地产业务跟进 where 业务经理 = #{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by Id desc limit 30")
     @Results({
             @Result(property = "id", column = "Id"),
             @Result(property = "date", column = "创建日期"),
@@ -45,19 +45,13 @@ public interface FollowUpMapper {
     })
     List<FollowUp> getFollowUpByUser(String uname);
 
-
     @Insert("insert into 销售地产业务跟进(创建日期,业务经理,省,市,所在地,公司,行业,地址,固话,网页,电子邮件,联系人1,移动电话1,聊天软件账号1,部门1,职位1,联系人2,移动电话2,聊天软件账号2,部门2,职位2,图片附件,影响关联,跟进记录) values(#{date},#{user},#{province},#{city},#{nowAddress},#{customerName},#{industry},#{address},#{tel},#{web},#{email},#{contacts1},#{tel1},#{chart1},#{department1},#{post1},#{contacts2},#{tel2},#{chart2},#{department2},#{post2},#{imgStr},#{relation},#{record})")
     Integer saveFollowUp(FollowUp followUp);
-
 
     @Update("update  销售地产业务跟进 set 业务经理=#{uname},行业=#{followUp.industry},固话=#{followUp.tel},网页=#{followUp.web},电子邮件=#{followUp.email},联系人1=#{followUp.contacts1},移动电话1=#{followUp.tel1},聊天软件账号1=#{followUp.chart1},部门1=#{followUp.department1},职位1=#{followUp.post1},联系人2=#{followUp.contacts2},移动电话2=#{followUp.tel2},聊天软件账号2=#{followUp.chart2},部门2=#{followUp.department2},职位2=#{followUp.post2},影响关联=#{followUp.relation},跟进记录=#{followUp.record}where id = #{followUp.id}")
     Integer updateFollowUp(FollowUp followUp, String uname);
 
-
-
-
-
-    @Select("select * from 销售地产业务跟进 where 业务经理 = #{uname} order by Id desc limit #{limit},5")
+    @Select("select * from 销售地产业务跟进 where 业务经理 = #{uname} or 可阅人 like CONCAT('%',#{uname},'%') order by Id desc limit #{limit},5")
     @Results({
             @Result(property = "id", column = "Id"),
             @Result(property = "date", column = "创建日期"),

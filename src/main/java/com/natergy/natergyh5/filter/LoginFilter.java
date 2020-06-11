@@ -22,8 +22,9 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        if (req.getServletPath().contains("/login.jsp") || req.getServletPath().contains("/login")
-                || req.getServletPath().endsWith(".js") || req.getServletPath().endsWith(".css")||req.getServletPath().contains("/wxOpenId")) {
+
+        if (req.getServletPath().contains("/login.jsp") || req.getServletPath().contains("/login") || req.getServletPath().contains(".txt")
+                || req.getServletPath().endsWith(".js") || req.getServletPath().endsWith(".css")||req.getServletPath().contains("/wxOpenId")||req.getServletPath().contains("bind")||req.getServletPath().contains("notice/viewInit")||req.getServletPath().contains("/infactory/dacang")) {
             chain.doFilter(request, response);
             return;
         }
@@ -31,9 +32,18 @@ public class LoginFilter implements Filter {
         HttpSession session = req.getSession();
         Object oUser = session.getAttribute("user");
         if (null==oUser) {// 用户为空不拦截
-            resp.setHeader("content-type", "text/html;charset=UTF-8");
-            resp.getWriter().write("<script>alert('请您登录！');window.location.href='"+req.getContextPath()+"/login.jsp';</script>");
-            return;
+            if(req.getRequestURL().toString().contains("infactory")){
+
+                resp.setHeader("content-type", "text/html;charset=UTF-8");
+                resp.getWriter().write("<script>alert('请您登录！');window.location.href='"+req.getContextPath()+"/jsp/infactory/login.jsp';</script>");
+                return;
+            }else{
+
+                resp.setHeader("content-type", "text/html;charset=UTF-8");
+                resp.getWriter().write("<script>alert('请您登录！');window.location.href='"+req.getContextPath()+"/login.jsp';</script>");
+                return;
+            }
+
         }
         chain.doFilter(request, response);
     }

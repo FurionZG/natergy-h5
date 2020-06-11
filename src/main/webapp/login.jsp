@@ -6,7 +6,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<%--
 		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+--%>
+		<link href="<%=request.getContextPath()%>/css/mui.min.css" rel="stylesheet">
 		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 		<title></title>
@@ -35,8 +38,10 @@
 
 		</div>
 
-		<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
-		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<%--<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>--%>
+		<script src="<%=request.getContextPath()%>/js/mui.min.js"></script>
+		<script src="<%=request.getContextPath()%>/js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				var code = getUrlParam('code');
